@@ -17,17 +17,15 @@ class Editor
  
   def win_contain
 	@hbox = Gtk::HBox.new(false,2)
-	label1 = Gtk::Label.new("Label1",true)
-	label2 = Gtk::Label.new("Label2",true)	
-	label3 = Gtk::Label.new("Label3",true)
-	vscrollBar1 = Gtk::VScrollbar.new(adjustment = nil)
-	vscrollBar2 = Gtk::VScrollbar.new(adjustment = nil)
-	@hbox.pack_start(label1,false,false,0)
-	@hbox.pack_start(label2,false,false,0)
-#	@hbox.pack_start(vscrollBar1,false,false,0)
-	@hbox.pack_start(label3,false,false,0)
-#	@hbox.pack_start(vscrollBar2,false,false,0)
-	@vbox.pack_start(@hbox,false,false,0)
+	label1 = Gtk::Label.new("Label",true)
+	@editor = Gtk::TextView.new
+	label3 = Gtk::Label.new("View",true)
+	@hbox.pack_start(label1,true,true,0)
+	swin = Gtk::ScrolledWindow.new
+	swin.add(@editor)
+	@hbox.pack_start(swin,true,true,0)
+	@hbox.pack_start(label3,true,true,0)
+	@vbox.pack_start(@hbox,true,true,0)
   end
 
   def toolBar
