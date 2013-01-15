@@ -1,9 +1,16 @@
 #encoding: UTF-8
+require 'gettext'
+require 'rubygems'
 require 'gtk2'
 
 class Editor
+  
+  include GetText
+
 
   def initialize
+	bindtextdomain("editor", :path => "locale")
+	GetText.set_locale_all("en")
 	@win = Gtk::Window.new
 	@win.set_title("RManEdit")
 	@win.signal_connect('delete_event'){false}
@@ -18,9 +25,9 @@ class Editor
  
   def win_contain
 	@hbox = Gtk::HBox.new(false,2)
-	label1 = Gtk::Label.new("Label",true)
+	label1 = Gtk::Label.new(_("Etiket"),true)
 	@editor = Gtk::TextView.new
-	label3 = Gtk::Label.new("View",true)
+	label3 = Gtk::Label.new(_("Görüntü"),true)
 	@hbox.pack_start(label1,true,true,0)
 	swin = Gtk::ScrolledWindow.new
 	swin.add(@editor)
@@ -30,37 +37,38 @@ class Editor
   end
 
   def toolBar
-	# undo redo counter
-	@count = 2
 	toolbar = Gtk::Toolbar.new
         toolbar.set_toolbar_style(Gtk::Toolbar::Style::ICONS)
         newtb = Gtk::ToolButton.new(Gtk::Stock::NEW)
         opentb = Gtk::ToolButton.new(Gtk::Stock::OPEN)
         savetb = Gtk::ToolButton.new(Gtk::Stock::SAVE)
-	undotb = Gtk::ToolButton.new(Gtk::Stock::UNDO)
-        redotb = Gtk::ToolButton.new(Gtk::Stock::REDO)
+	cuttb = Gtk::ToolButton.new(Gtk::Stock::CUT)
+	copytb = Gtk::ToolButton.new(Gtk::Stock::COPY)
+	pastetb = Gtk::ToolButton.new(Gtk::Stock::PASTE)
         sep = Gtk::SeparatorToolItem.new
         quittb = Gtk::ToolButton.new(Gtk::Stock::QUIT)
 
         toolbar.insert(0, newtb)
         toolbar.insert(1, opentb)
-	toolbar.insert(2, undotb)
-	toolbar.insert(3, redotb)
-        toolbar.insert(4, savetb)
-        toolbar.insert(5, sep)
-        toolbar.insert(6, quittb)
+        toolbar.insert(2, savetb)
+	toolbar.insert(3, cuttb)
+	toolbar.insert(4, copytb)
+	toolbar.insert(5, pastetb)
+        toolbar.insert(6, sep)
+        toolbar.insert(7, quittb)
 	opentb.signal_connect("clicked"){on_opentb}
 	savetb.signal_connect("clicked"){on_savetb}
+	cuttb.signal_connect("clicked"){on_cuttb}
+	copytb.signal_connect("clicked"){on_copytb}
+	pastetb.signal_connect("clicked"){on_pastetb}
 	newtb.signal_connect("clicked"){on_newtb}
-	undotb.signal_connect("clicked"){}
-	redotb.signal_connect("clicked"){}
 	quittb.signal_connect("clicked"){Gtk.main_quit}
 	@vbox.pack_start(toolbar,false,false,0)
 	@win.add(@vbox)
   end
 
   def on_savetb
-      dialog = Gtk::FileChooserDialog.new("Kaydet", @win, Gtk::FileChooser::ACTION_SAVE, nil,
+      dialog = Gtk::FileChooserDialog.new(_("Kaydet"), @win, Gtk::FileChooser::ACTION_SAVE, nil,
       [ Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL ],
       [ Gtk::Stock::SAVE, Gtk::Dialog::RESPONSE_APPLY ])	
 	dialog.show_all()
@@ -68,10 +76,10 @@ class Editor
       if dialog.run  == Gtk::Dialog::RESPONSE_APPLY
           file = dialog.filename
 	  if File.exist?(file)
-	      msg = Gtk::Dialog.new("Bilgilendirme", dialog,
+	      msg = Gtk::Dialog.new(_("Bilgilendirme"), dialog,
               Gtk::Dialog::DESTROY_WITH_PARENT,[Gtk::Stock::OK, Gtk::Dialog::RESPONSE_ACCEPT],
               [Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_REJECT])
-              msg.vbox.add(Gtk::Label.new("Aynı isme sahip bir dosya zaten var. Üzerine yazılsın mı?"))
+              msg.vbox.add(Gtk::Label.new(_("Aynı isme sahip bir dosya zaten var. Üzerine yazılsın mı?")))
               msg.show_all()
               if msg.run == Gtk::Dialog::RESPONSE_ACCEPT
 		  content = @editor.buffer.text
@@ -86,7 +94,7 @@ class Editor
               File.open(file, "w") { |f| f <<  content } 
               msg = Gtk::MessageDialog.new(dialog,
               Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO, 
-              Gtk::MessageDialog::BUTTONS_OK, "Kaydedildi")
+              Gtk::MessageDialog::BUTTONS_OK, _("Kaydedildi"))
               msg.show_all()
               if msg.run == Gtk::Dialog::RESPONSE_OK
                   msg.destroy
@@ -99,7 +107,7 @@ class Editor
   end  
 
   def on_opentb
-      dialog = Gtk::FileChooserDialog.new("Dosya Aç", @win, Gtk::FileChooser::ACTION_OPEN, nil, 
+      dialog = Gtk::FileChooserDialog.new(_("Dosya Aç"), @win, Gtk::FileChooser::ACTION_OPEN, nil, 
       [Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL],
       [Gtk::Stock::OPEN, Gtk::Dialog::RESPONSE_ACCEPT])
       dialog.show
@@ -117,14 +125,28 @@ class Editor
       Gtk::Dialog::MODAL,
       Gtk::MessageDialog::QUESTION,
       Gtk::MessageDialog::BUTTONS_YES_NO,
-      "Tüm değişiklikler kaybedilecek. Devam etmek istiyor musunuz?"
+      _("Tüm değişiklikler kaybedilecek. Devam etmek istiyor musunuz?")
   )
   if dialog.run == Gtk::Dialog::RESPONSE_YES
 	@editor.buffer.text = ""
   end	
   dialog.destroy
   end
+  
+  def on_cuttb
+      clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
+      @editor.buffer.cut_clipboard(clipboard, true)
+  end
 
+  def on_copytb
+      clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
+      @editor.buffer.copy_clipboard(clipboard)
+  end
+  
+  def on_pastetb
+      clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
+      @editor.buffer.paste_clipboard(clipboard, nil, true)
+  end
 end
 
 app = Editor.new
