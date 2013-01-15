@@ -6,12 +6,14 @@ require 'gtk2'
 class Utils
   include GetText 
   def on_savetb(win,editor)
+      btn = Gtk::Button.new("Buton")
       dialog = Gtk::FileChooserDialog.new(_("Kaydet"), win, Gtk::FileChooser::ACTION_SAVE, nil,
-      [ Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL ],
+      [Gtk::Stock::CANCEL,Gtk::Dialog::RESPONSE_CANCEL],
       [ Gtk::Stock::SAVE, Gtk::Dialog::RESPONSE_APPLY ])
       dialog.show_all()
       if dialog.run  == Gtk::Dialog::RESPONSE_APPLY
           file = dialog.filename
+=begin
           if File.exist?(file)
               msg = Gtk::Dialog.new(_("Bilgilendirme"), dialog,
               Gtk::Dialog::DESTROY_WITH_PARENT,[Gtk::Stock::OK, Gtk::Dialog::RESPONSE_ACCEPT],
@@ -26,7 +28,7 @@ class Utils
               else
                   msg.destroy
               end
-          else
+=end
               content = editor.buffer.text
               File.open(file, "w") { |f| f <<  content }
               msg = Gtk::MessageDialog.new(dialog,
@@ -37,7 +39,6 @@ class Utils
                   msg.destroy
                   dialog.destroy
               end
-          end
       else
           dialog.destroy
       end

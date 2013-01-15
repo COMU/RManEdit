@@ -10,6 +10,7 @@ class Editor
 	bindtextdomain("editor", :path => "locale")
 	GetText.set_locale_all("en")
 	@win = Gtk::Window.new
+	@win.set_icon("uzgun_surat.jpg")
 	@win.set_title("RManEdit")
 	@win.signal_connect('delete_event'){false}
 	@win.resize(500,500)
