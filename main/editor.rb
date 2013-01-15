@@ -1,3 +1,4 @@
+#encoding: UTF-8
 require 'gtk2'
 
 class Editor
@@ -67,10 +68,10 @@ class Editor
       if dialog.run  == Gtk::Dialog::RESPONSE_APPLY
           file = dialog.filename
 	  if File.exist?(file)
-	      msg = Gtk::Dialog.new("Message", dialog,
+	      msg = Gtk::Dialog.new("Bilgilendirme", dialog,
               Gtk::Dialog::DESTROY_WITH_PARENT,[Gtk::Stock::OK, Gtk::Dialog::RESPONSE_ACCEPT],
               [Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_REJECT])
-              msg.vbox.add(Gtk::Label.new("Ayni isme sahip bir dosya zaten var. Uzerine yazilsin mi?"))
+              msg.vbox.add(Gtk::Label.new("Aynı isme sahip bir dosya zaten var. Üzerine yazılsın mı?"))
               msg.show_all()
               if msg.run == Gtk::Dialog::RESPONSE_ACCEPT
 		  content = @editor.buffer.text
@@ -98,7 +99,7 @@ class Editor
   end  
 
   def on_opentb
-      dialog = Gtk::FileChooserDialog.new("Dosya Ac", @win, Gtk::FileChooser::ACTION_OPEN, nil, 
+      dialog = Gtk::FileChooserDialog.new("Dosya Aç", @win, Gtk::FileChooser::ACTION_OPEN, nil, 
       [Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL],
       [Gtk::Stock::OPEN, Gtk::Dialog::RESPONSE_ACCEPT])
       dialog.show
@@ -116,28 +117,13 @@ class Editor
       Gtk::Dialog::MODAL,
       Gtk::MessageDialog::QUESTION,
       Gtk::MessageDialog::BUTTONS_YES_NO,
-      "Tum degisiklikler kaybedilecek. Devam etmek istiyor musunuz?"
+      "Tüm değişiklikler kaybedilecek. Devam etmek istiyor musunuz?"
   )
   if dialog.run == Gtk::Dialog::RESPONSE_YES
 	@editor.buffer.text = ""
   end	
   dialog.destroy
   end
-  def on_undo
-        @count = @count - 1
-        if @count <= 0
-            @undo.set_sensitive(false)
-            @redo.set_sensitive(true)
-        end
-    end
-
-    def on_redo
-        @count = @count + 1
-        if @count >= 5
-            @redo.set_sensitive(false)
-            @undo.set_sensitive(true)
-        end
-    end
 
 end
 
