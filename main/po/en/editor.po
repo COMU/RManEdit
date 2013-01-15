@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-01-15 10:56+0200\n"
-"PO-Revision-Date: 2013-01-15 10:56+0200\n"
+"POT-Creation-Date: 2013-01-15 12:20+0200\n"
+"PO-Revision-Date: 2013-01-15 12:20+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,34 +16,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: editor.rb:28
+#: editor.rb:26
 msgid "Etiket"
 msgstr "Label"
 
-#: editor.rb:30
+#: editor.rb:28
 msgid "Görüntü"
 msgstr "View"
-
-#: editor.rb:71
-msgid "Kaydet"
-msgstr "Save"
-
-#: editor.rb:79
-msgid "Bilgilendirme"
-msgstr "Information"
-
-#: editor.rb:82
-msgid "Aynı isme sahip bir dosya zaten var. Üzerine yazılsın mı?"
-msgstr "This file named  already exists.  Do you want to replace it?"
-
-#: editor.rb:97
-msgid "Kaydedildi"
-msgstr "Saved"
-
-#: editor.rb:110
-msgid "Dosya Aç"
-msgstr "Open File"
-
-#: editor.rb:128
-msgid "Tüm değişiklikler kaybedilecek. Devam etmek istiyor musunuz?"
-msgstr "All changes will be lost. Do you want to continue?"

@@ -1,13 +1,11 @@
 #encoding: UTF-8
+require './utils'
 require 'gettext'
 require 'rubygems'
 require 'gtk2'
 
 class Editor
-  
   include GetText
-
-
   def initialize
 	bindtextdomain("editor", :path => "locale")
 	GetText.set_locale_all("en")
@@ -56,97 +54,17 @@ class Editor
 	toolbar.insert(5, pastetb)
         toolbar.insert(6, sep)
         toolbar.insert(7, quittb)
-	opentb.signal_connect("clicked"){on_opentb}
-	savetb.signal_connect("clicked"){on_savetb}
-	cuttb.signal_connect("clicked"){on_cuttb}
-	copytb.signal_connect("clicked"){on_copytb}
-	pastetb.signal_connect("clicked"){on_pastetb}
-	newtb.signal_connect("clicked"){on_newtb}
+	opentb.signal_connect("clicked"){o = Utils.new; o.on_opentb(@win,@editor)}
+	savetb.signal_connect("clicked"){o= Utils.new; o.on_savetb(@win,@editor)}
+	cuttb.signal_connect("clicked"){o = Utils.new; o.on_cuttb(@editor)}
+	copytb.signal_connect("clicked"){o = Utils.new; o.on_copytb(@editor)}
+	pastetb.signal_connect("clicked"){o= Utils.new; o.on_pastetb(@editor)}
+	newtb.signal_connect("clicked"){o= Utils.new; o.on_newtb(@win,@editor)}
 	quittb.signal_connect("clicked"){Gtk.main_quit}
 	@vbox.pack_start(toolbar,false,false,0)
 	@win.add(@vbox)
   end
 
-  def on_savetb
-      dialog = Gtk::FileChooserDialog.new(_("Kaydet"), @win, Gtk::FileChooser::ACTION_SAVE, nil,
-      [ Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL ],
-      [ Gtk::Stock::SAVE, Gtk::Dialog::RESPONSE_APPLY ])	
-	dialog.show_all()
-          
-      if dialog.run  == Gtk::Dialog::RESPONSE_APPLY
-          file = dialog.filename
-	  if File.exist?(file)
-	      msg = Gtk::Dialog.new(_("Bilgilendirme"), dialog,
-              Gtk::Dialog::DESTROY_WITH_PARENT,[Gtk::Stock::OK, Gtk::Dialog::RESPONSE_ACCEPT],
-              [Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_REJECT])
-              msg.vbox.add(Gtk::Label.new(_("Aynı isme sahip bir dosya zaten var. Üzerine yazılsın mı?")))
-              msg.show_all()
-              if msg.run == Gtk::Dialog::RESPONSE_ACCEPT
-		  content = @editor.buffer.text
-                  File.open(file, "w") { |f| f <<  content }
-                  msg.destroy
-		  dialog.destroy
-              else
-                  msg.destroy
-              end
-	  else
-              content = @editor.buffer.text
-              File.open(file, "w") { |f| f <<  content } 
-              msg = Gtk::MessageDialog.new(dialog,
-              Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO, 
-              Gtk::MessageDialog::BUTTONS_OK, _("Kaydedildi"))
-              msg.show_all()
-              if msg.run == Gtk::Dialog::RESPONSE_OK
-                  msg.destroy
-                  dialog.destroy
-              end
-	  end
-      else
-          dialog.destroy
-      end
-  end  
-
-  def on_opentb
-      dialog = Gtk::FileChooserDialog.new(_("Dosya Aç"), @win, Gtk::FileChooser::ACTION_OPEN, nil, 
-      [Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL],
-      [Gtk::Stock::OPEN, Gtk::Dialog::RESPONSE_ACCEPT])
-      dialog.show
-      if dialog.run == Gtk::Dialog::RESPONSE_ACCEPT
-          file = dialog.filename
-        content = ""
-	IO.foreach(file){|block|  content = content + "\n"+ block}
-	@editor.buffer.text = content
-      end
-      dialog.destroy
-   end 
-  def on_newtb
-      dialog = Gtk::MessageDialog.new(
-      nil,
-      Gtk::Dialog::MODAL,
-      Gtk::MessageDialog::QUESTION,
-      Gtk::MessageDialog::BUTTONS_YES_NO,
-      _("Tüm değişiklikler kaybedilecek. Devam etmek istiyor musunuz?")
-  )
-  if dialog.run == Gtk::Dialog::RESPONSE_YES
-	@editor.buffer.text = ""
-  end	
-  dialog.destroy
-  end
-  
-  def on_cuttb
-      clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
-      @editor.buffer.cut_clipboard(clipboard, true)
-  end
-
-  def on_copytb
-      clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
-      @editor.buffer.copy_clipboard(clipboard)
-  end
-  
-  def on_pastetb
-      clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
-      @editor.buffer.paste_clipboard(clipboard, nil, true)
-  end
 end
 
 app = Editor.new
