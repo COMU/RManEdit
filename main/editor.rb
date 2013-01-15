@@ -49,24 +49,80 @@ class Editor
         toolbar.insert(5, sep)
         toolbar.insert(6, quittb)
 	opentb.signal_connect("clicked"){on_opentb}
+	savetb.signal_connect("clicked"){on_savetb}
+	newtb.signal_connect("clicked"){on_newtb}
 	undotb.signal_connect("clicked"){}
 	redotb.signal_connect("clicked"){}
 	quittb.signal_connect("clicked"){Gtk.main_quit}
 	@vbox.pack_start(toolbar,false,false,0)
 	@win.add(@vbox)
   end
- 
+
+  def on_savetb
+      dialog = Gtk::FileChooserDialog.new("Kaydet", @win, Gtk::FileChooser::ACTION_SAVE, nil,
+      [ Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL ],
+      [ Gtk::Stock::SAVE, Gtk::Dialog::RESPONSE_APPLY ])	
+	dialog.show_all()
+          
+      if dialog.run  == Gtk::Dialog::RESPONSE_APPLY
+          file = dialog.filename
+	  if File.exist?(file)
+	      msg = Gtk::Dialog.new("Message", dialog,
+              Gtk::Dialog::DESTROY_WITH_PARENT,[Gtk::Stock::OK, Gtk::Dialog::RESPONSE_ACCEPT],
+              [Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_REJECT])
+              msg.vbox.add(Gtk::Label.new("Ayni isme sahip bir dosya zaten var. Uzerine yazilsin mi?"))
+              msg.show_all()
+              if msg.run == Gtk::Dialog::RESPONSE_ACCEPT
+		  content = @editor.buffer.text
+                  File.open(file, "w") { |f| f <<  content }
+                  msg.destroy
+		  dialog.destroy
+              else
+                  msg.destroy
+              end
+	  else
+              content = @editor.buffer.text
+              File.open(file, "w") { |f| f <<  content } 
+              msg = Gtk::MessageDialog.new(dialog,
+              Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO, 
+              Gtk::MessageDialog::BUTTONS_OK, "Kaydedildi")
+              msg.show_all()
+              if msg.run == Gtk::Dialog::RESPONSE_OK
+                  msg.destroy
+                  dialog.destroy
+              end
+	  end
+      else
+          dialog.destroy
+      end
+  end  
+
   def on_opentb
-	dialog = Gtk::FileChooserDialog.new("Open File",
-                                     @win,
-                                     Gtk::FileChooser::ACTION_OPEN,
-                                     nil,
-                                     [Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL],
-                                     [Gtk::Stock::OPEN, Gtk::Dialog::RESPONSE_ACCEPT])
-	dialog.show
-
+      dialog = Gtk::FileChooserDialog.new("Dosya Ac", @win, Gtk::FileChooser::ACTION_OPEN, nil, 
+      [Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL],
+      [Gtk::Stock::OPEN, Gtk::Dialog::RESPONSE_ACCEPT])
+      dialog.show
+      if dialog.run == Gtk::Dialog::RESPONSE_ACCEPT
+          file = dialog.filename
+        content = ""
+	IO.foreach(file){|block|  content = content + "\n"+ block}
+	@editor.buffer.text = content
+      end
+      dialog.destroy
+   end 
+  def on_newtb
+      dialog = Gtk::MessageDialog.new(
+      nil,
+      Gtk::Dialog::MODAL,
+      Gtk::MessageDialog::QUESTION,
+      Gtk::MessageDialog::BUTTONS_YES_NO,
+      "Tum degisiklikler kaybedilecek. Devam etmek istiyor musunuz?"
+  )
+  if dialog.run == Gtk::Dialog::RESPONSE_YES
+	@editor.buffer.text = ""
+  end	
+  dialog.destroy
   end
-
   def on_undo
         @count = @count - 1
         if @count <= 0
