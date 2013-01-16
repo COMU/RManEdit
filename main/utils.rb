@@ -55,16 +55,25 @@ class Utils
       if dialog.run == Gtk::Dialog::RESPONSE_ACCEPT
           file = dialog.filename
           fm = FileMagic.new
-	  # dosya turu kontrol
+	  # gzip dosyasi
           if fm.file(file).scan(/gziP/i).length != 0
-		gz = Zlib::GzipReader.new(open("ls.1.gz")).read
-		editor.buffer.text = gz
-	 else 
-		puts "**"
-	 end
-      dialog.destroy
+	      gz = Zlib::GzipReader.new(open("ls.1.gz")).read
+              editor.buffer.text = gz
+	  elsif fm.file(file).scan(/zip/i).length != 0
+	      Zip::ZipFile.open("ls.1.zip") do |zip_file|
+	      zip_file.each do |f|
+              editor.buffer.text = zip_file.read(f)
+                 end
+               end			
+	  else
+              content = ""
+              IO.foreach(file){|block|  content = content + "\n"+ block}
+              editor.buffer.text = content
+          end
+              dialog.destroy
       end
   end 
+
  
   def on_newtb(win,editor)
       dialog = Gtk::MessageDialog.new(
