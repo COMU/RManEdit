@@ -1,4 +1,7 @@
 #encoding: UTF-8
+require 'filemagic'
+require 'zlib'
+require 'zip/zip'
 require 'gettext'
 require 'rubygems'
 require 'gtk2'
@@ -51,11 +54,16 @@ class Utils
       dialog.show
       if dialog.run == Gtk::Dialog::RESPONSE_ACCEPT
           file = dialog.filename
-        content = ""
-        IO.foreach(file){|block|  content = content + "\n"+ block}
-        editor.buffer.text = content
-      end
+          fm = FileMagic.new
+	  # dosya turu kontrol
+          if fm.file(file).scan(/gziP/i).length != 0
+		gz = Zlib::GzipReader.new(open("ls.1.gz")).read
+		editor.buffer.text = gz
+	 else 
+		puts "**"
+	 end
       dialog.destroy
+      end
   end 
  
   def on_newtb(win,editor)

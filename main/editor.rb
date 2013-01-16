@@ -1,4 +1,7 @@
 #encoding: UTF-8
+require 'filemagic'
+require 'zlib'
+require 'zip/zip'
 require './utils'
 require 'gettext'
 require 'rubygems'
