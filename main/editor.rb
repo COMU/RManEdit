@@ -6,6 +6,8 @@ require 'gtk2'
 
 class Editor
   include GetText
+  INDEX = 0
+  attr_accessor :data
   def initialize
 	bindtextdomain("editor", :path => "locale")
 	GetText.set_locale_all("en")
@@ -23,16 +25,30 @@ class Editor
   end
  
   def win_contain
-	@hbox = Gtk::HBox.new(false,2)
-	label1 = Gtk::Label.new(_("Etiket"),true)
-	@editor = Gtk::TextView.new
-	label3 = Gtk::Label.new(_("Görüntü"),true)
-	@hbox.pack_start(label1,true,true,0)
-	swin = Gtk::ScrolledWindow.new
-	swin.add(@editor)
-	@hbox.pack_start(swin,true,true,0)
-	@hbox.pack_start(label3,true,true,0)
-	@vbox.pack_start(@hbox,true,true,0)
+      @hbox = Gtk::HBox.new(false,2)
+      label1 = Gtk::Label.new(_("Etiket"),true)
+      @editor = Gtk::TextView.new
+      label3 = Gtk::Label.new(_("Görüntü"),true)
+      swin = Gtk::ScrolledWindow.new
+      swin.add(@editor)
+      @treeview = Gtk::TreeView.new
+      renderer = Gtk::CellRendererText.new 
+      column   = Gtk::TreeViewColumn.new(_("Bölümler"), renderer,  :text => INDEX)
+      @treeview.append_column(column)
+      list = Array.new
+      list = ["NAME", "SYNOPSIS","AVAILABILITY","DESCRIPTION","OPTIONS","EXAMPLES","NOTES",
+      "MESSAGES AND EXIT CALLS","AUTHOR","HISTORY","RESOURCES","FILES","BUGS","CAVEATS","SEE ALSO"]
+      store = Gtk::ListStore.new(String) 
+      list.each_with_index do |e, i|
+	  iter = store.append
+	  iter[INDEX] = list[i]
+          end
+      @treeview.model = store
+      @treeview.signal_connect("cursor-changed"){selection = @treeview.selection; iter = selection.selected; puts iter[0]}
+      @hbox.pack_start(@treeview,true,true,0)
+      @hbox.pack_start(swin,true,true,0)
+      @hbox.pack_start(label3,true,true,0)
+      @vbox.pack_start(@hbox,true,true,0)
   end
 
   def toolBar
