@@ -8,6 +8,7 @@ require 'gtk2'
 
 class Utils
   include GetText 
+  @@changed = false
   def on_savetb(win,editor)
       btn = Gtk::Button.new("Buton")
       dialog = Gtk::FileChooserDialog.new(_("Kaydet"), win, Gtk::FileChooser::ACTION_SAVE, nil,
@@ -57,10 +58,10 @@ class Utils
           fm = FileMagic.new
 	  # gzip dosyasi
           if fm.file(file).scan(/gziP/i).length != 0
-	      gz = Zlib::GzipReader.new(open("ls.1.gz")).read
+	      gz = Zlib::GzipReader.new(open(file)).read
               editor.buffer.text = gz
 	  elsif fm.file(file).scan(/zip/i).length != 0
-	      Zip::ZipFile.open("ls.1.zip") do |zip_file|
+	      Zip::ZipFile.open(file) do |zip_file|
 	      zip_file.each do |f|
               editor.buffer.text = zip_file.read(f)
                  end
@@ -101,6 +102,23 @@ class Utils
   def on_pastetb(editor)
       clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
       editor.buffer.paste_clipboard(clipboard, nil, true)
+  end
+  
+  def label_find(find,editor)
+      start = editor.buffer.start_iter
+      first, last = start.forward_search(find, Gtk::TextIter::SEARCH_TEXT_ONLY, nil)
+      if (first)    
+          mark = editor.buffer.create_mark(nil, first, false)
+          editor.scroll_mark_onscreen(mark)
+          editor.buffer.delete_mark(mark)
+          editor.buffer.select_range(first, last)
+      else
+          dialogue = Gtk::MessageDialog.new(nil, Gtk::Dialog::MODAL, Gtk::MessageDialog::INFO, 
+          Gtk::MessageDialog::BUTTONS_OK, _("Bu etiketi girmemişsiniz"))
+         dialogue.run
+         dialogue.destroy
+      end
+      first = last = nil
   end
 
 end

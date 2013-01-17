@@ -1,4 +1,5 @@
 #encoding: UTF-8
+require 'vte'
 require 'filemagic'
 require 'zlib'
 require 'zip/zip'
@@ -29,11 +30,10 @@ class Editor
  
   def win_contain
       @hbox = Gtk::HBox.new(false,2)
-      label1 = Gtk::Label.new(_("Etiket"),true)
       @editor = Gtk::TextView.new
-      label3 = Gtk::Label.new(_("Görüntü"),true)
       swin = Gtk::ScrolledWindow.new
       swin.add(@editor)
+      label3 = Gtk::Label.new("Etiket")
       @treeview = Gtk::TreeView.new
       renderer = Gtk::CellRendererText.new 
       column   = Gtk::TreeViewColumn.new(_("Bölümler"), renderer,  :text => INDEX)
@@ -47,7 +47,8 @@ class Editor
 	  iter[INDEX] = list[i]
           end
       @treeview.model = store
-      @treeview.signal_connect("cursor-changed"){selection = @treeview.selection; iter = selection.selected; puts iter[0]}
+      @treeview.signal_connect("cursor-changed"){selection = @treeview.selection; 
+      iter = selection.selected; o = Utils.new; o.label_find(iter[0],@editor)}
       @hbox.pack_start(@treeview,true,true,0)
       @hbox.pack_start(swin,true,true,0)
       @hbox.pack_start(label3,true,true,0)
