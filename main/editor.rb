@@ -23,6 +23,7 @@ class Editor
 	@win.signal_connect('destroy'){Gtk.main_quit}
 	@win.set_window_position(Gtk::Window::POS_CENTER)
 	@vbox = Gtk::VBox.new(false,2)
+	menuBar
 	toolBar
 	win_contain
 	@win.show_all()
@@ -33,7 +34,22 @@ class Editor
       @editor = Gtk::TextView.new
       swin = Gtk::ScrolledWindow.new
       swin.add(@editor)
-      label3 = Gtk::Label.new("Etiket")
+      # ornek man2html eklenmesi
+      output = IO.popen("man2html ls.1")
+      str = output.readlines
+      i = 0
+      content = ""
+      while i< str.length do
+          content = content + str[i]
+          i = i + 1
+      end
+      buf = Gtk::TextBuffer.new
+      buf.set_text(content)
+      # man page icin textView
+      manview = Gtk::TextView.new(buf)
+      # man goruntusu icin scrollWind
+      swin2 = Gtk::ScrolledWindow.new
+      swin2.add(manview)
       @treeview = Gtk::TreeView.new
       renderer = Gtk::CellRendererText.new 
       column   = Gtk::TreeViewColumn.new(_("Bölümler"), renderer,  :text => INDEX)
@@ -51,10 +67,30 @@ class Editor
       iter = selection.selected; o = Utils.new; o.label_find(iter[0],@editor)}
       @hbox.pack_start(@treeview,true,true,0)
       @hbox.pack_start(swin,true,true,0)
-      @hbox.pack_start(label3,true,true,0)
+      @hbox.pack_start(swin2,true,true,0)
       @vbox.pack_start(@hbox,true,true,0)
   end
-
+  def menuBar
+      
+     mb = Gtk::MenuBar.new
+     filemenu = Gtk::Menu.new
+     filemenuitem = Gtk::MenuItem.new "Dosya"
+     filemenuitem.set_submenu(filemenu)
+     open = Gtk::MenuItem.new("Aç")
+     save = Gtk::MenuItem.new("Kaydet")
+     save_as = Gtk::MenuItem.new("Farklı Kaydet")
+     make_html = Gtk::MenuItem.new("Html Sayfasına Dönüştür")
+     exit_ = Gtk::MenuItem.new("Çıkış")
+     filemenu.append(open)     
+     filemenu.append(save) 
+     filemenu.append(save_as)
+     filemenu.append(make_html)
+     filemenu.append(exit_)
+     mb.append(filemenuitem)
+     exit_.signal_connect("activate"){Gtk.main_quit}
+     make_html.signal_connect("activate"){o=Utils.new; o.create_html_file(@editor,@win)}
+     @vbox.pack_start(mb,false,false,0) 
+  end
   def toolBar
 	toolbar = Gtk::Toolbar.new
         toolbar.set_toolbar_style(Gtk::Toolbar::Style::ICONS)
