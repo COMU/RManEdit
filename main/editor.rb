@@ -1,12 +1,12 @@
 #encoding: UTF-8
-require 'vte'
+require 'gtk2'
+require 'webkit'
 require 'filemagic'
 require 'zlib'
 require 'zip/zip'
 require './utils'
 require 'gettext'
 require 'rubygems'
-require 'gtk2'
 
 class Editor
   include GetText
@@ -43,10 +43,9 @@ class Editor
           content = content + str[i]
           i = i + 1
       end
-      buf = Gtk::TextBuffer.new
-      buf.set_text(content)
       # man page icin textView
-      manview = Gtk::TextView.new(buf)
+      manview = WebKit::WebView.new
+      manview.load_string(content,"text/html", "UTF-8", "file://home") 
       # man goruntusu icin scrollWind
       swin2 = Gtk::ScrolledWindow.new
       swin2.add(manview)
