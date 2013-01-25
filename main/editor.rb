@@ -30,7 +30,7 @@ class Editor
       @hbox = Gtk::HBox.new(false,2)
       @editor = Gtk::TextView.new
       swin = Gtk::ScrolledWindow.new
- #     swin.add(@editor)
+      swin.add(@editor)
       # ornek man2html eklenmesi
       output = IO.popen("man2html ls.1")
       str = output.readlines
@@ -45,7 +45,7 @@ class Editor
       manview.load_string(content,"text/html", "UTF-8", "file://home") 
       # man goruntusu icin scrollWind
       swin2 = Gtk::ScrolledWindow.new
-#      swin2.add(manview)
+      swin2.add(manview)
       @treeview = Gtk::TreeView.new
       renderer = Gtk::CellRendererText.new 
       column   = Gtk::TreeViewColumn.new(CATEGORY, renderer,  :text => INDEX)
@@ -62,17 +62,15 @@ class Editor
       @treeview.signal_connect("cursor-changed"){selection = @treeview.selection; 
       iter = selection.selected; o = Utils.new; o.label_find(iter[0],@editor)}
       hpaned = Gtk::HPaned.new    
-      hpaned.set_size_request(900,500)
+      hpaned.set_size_request(900,-1)
       hpaned2 = Gtk::HPaned.new
       hpaned2.set_size_request(800,500)
-      hpaned.pack1(@treeview,false,true)
-      hpaned.pack2(hpaned2,false,true)
-  #    swin.set_size_request(500,500)
-   #   swin2.set_size_request(300,500)
-      @editor.set_size_request(500,500)
-      manview.set_size_request(300,500)
-      hpaned2.pack1(@editor,false,true)
-      hpaned2.pack2(manview,false,true)
+      hpaned.pack1(@treeview,true,true)
+      hpaned.pack2(hpaned2,true,true)
+      swin.set_size_request(500,500)
+      swin2.set_size_request(300,500)
+      hpaned2.pack1(swin,true,true)
+      hpaned2.pack2(swin2,true,true)
       @win.set_size_request(900,500)
       @win.set_resizable(true)
       @hbox.pack_start(hpaned,true,true,0)
