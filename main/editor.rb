@@ -5,21 +5,18 @@ require 'filemagic'
 require 'zlib'
 require 'zip/zip'
 require './utils'
-require 'gettext'
+require './messages'
 require 'rubygems'
 
 class Editor
-  include GetText
   INDEX = 0
   attr_accessor :data
   def initialize
-	bindtextdomain("editor", :path => "locale")
-	GetText.set_locale_all("en")
 	@win = Gtk::Window.new
 	@win.set_icon("uzgun_surat.jpg")
 	@win.set_title("RManEdit")
 	@win.signal_connect('delete_event'){false}
-	@win.resize(500,500)
+#	@win.resize(700,500)
 	@win.signal_connect('destroy'){Gtk.main_quit}
 	@win.set_window_position(Gtk::Window::POS_CENTER)
 	@vbox = Gtk::VBox.new(false,2)
@@ -51,7 +48,7 @@ class Editor
       swin2.add(manview)
       @treeview = Gtk::TreeView.new
       renderer = Gtk::CellRendererText.new 
-      column   = Gtk::TreeViewColumn.new(_("Bölümler"), renderer,  :text => INDEX)
+      column   = Gtk::TreeViewColumn.new(CATEGORY, renderer,  :text => INDEX)
       @treeview.append_column(column)
       list = Array.new
       list = ["NAME", "SYNOPSIS","AVAILABILITY","DESCRIPTION","OPTIONS","EXAMPLES","NOTES",
@@ -64,8 +61,15 @@ class Editor
       @treeview.model = store
       @treeview.signal_connect("cursor-changed"){selection = @treeview.selection; 
       iter = selection.selected; o = Utils.new; o.label_find(iter[0],@editor)}
-      @hbox.pack_start(@treeview,true,true,0)
-      @hbox.pack_start(swin,true,true,0)
+      hpaned = Gtk::HPaned.new    
+      hpaned.pack1(@treeview, true, true)
+      hpaned.pack2(swin,true,true)
+      @hbox.pack_start(hpaned,true,true,0)
+      swin.set_size_request(500,500)
+      hpaned.set_size_request(600,500)
+      swin2.set_size_request(300,500)
+      @win.set_default_size(900,500)
+      @win.set_resizable(true)
       @hbox.pack_start(swin2,true,true,0)
       @vbox.pack_start(@hbox,true,true,0)
   end
@@ -73,13 +77,13 @@ class Editor
       
      mb = Gtk::MenuBar.new
      filemenu = Gtk::Menu.new
-     filemenuitem = Gtk::MenuItem.new "Dosya"
+     filemenuitem = Gtk::MenuItem.new(FILE)
      filemenuitem.set_submenu(filemenu)
-     open = Gtk::MenuItem.new("Aç")
-     save = Gtk::MenuItem.new("Kaydet")
-     save_as = Gtk::MenuItem.new("Farklı Kaydet")
-     make_html = Gtk::MenuItem.new("Html Sayfasına Dönüştür")
-     exit_ = Gtk::MenuItem.new("Çıkış")
+     open = Gtk::MenuItem.new(OPEN)
+     save = Gtk::MenuItem.new(SAVE)
+     save_as = Gtk::MenuItem.new(SAVE_AS)
+     make_html = Gtk::MenuItem.new(CREATE_HTML_FILE)
+     exit_ = Gtk::MenuItem.new(EXIT)
      filemenu.append(open)     
      filemenu.append(save) 
      filemenu.append(save_as)

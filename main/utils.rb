@@ -153,8 +153,5 @@ class Utils
           dialog.destroy
       end
   end
-=begin
-output = IO.popen("man2html ls.1")
-str = output.readlines
-=end 
+
 end
