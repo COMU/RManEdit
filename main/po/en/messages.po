@@ -1,0 +1,45 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2013-01-25 11:31+0200\n"
+"PO-Revision-Date: 2013-01-25 11:31+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: messages.rb:7
+msgid "Bölümler"
+msgstr "Category"
+
+#: messages.rb:8
+msgid "Dosya"
+msgstr "File"
+
+#: messages.rb:9
+msgid "Aç"
+msgstr "Open"
+
+#: messages.rb:10
+msgid "Kaydet"
+msgstr "Save"
+
+#: messages.rb:11
+msgid "Farklı Kaydet"
+msgstr "Save as"
+
+#: messages.rb:12
+msgid "Html dosyasına dönüştür"
+msgstr "Convert to html file"
+
+#: messages.rb:13
+msgid "Çıkış"
+msgstr "Exit"
