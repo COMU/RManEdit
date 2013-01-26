@@ -75,8 +75,7 @@ class Editor
       @hbox.pack_start(hpaned,true,true,0)
       @vbox.pack_start(@hbox,true,true,0)
   end
-  def menuBar
-      
+  def menuBar      
      mb = Gtk::MenuBar.new
      filemenu = Gtk::Menu.new
      filemenuitem = Gtk::MenuItem.new(FILE)
@@ -97,6 +96,7 @@ class Editor
      open.signal_connect("activate"){o=Utils.new; o.open_file(@win,@editor)}
      new.signal_connect("activate"){o=Utils.new; o.open_new_empty_file(@win,@editor)}
      save.signal_connect("activate"){o=Utils.new; o.save(@win,@editor)}
+     save_as.signal_connect("activate"){o=Utils.new; o.save_as(@win,@editor)}
      exit_.signal_connect("activate"){Gtk.main_quit}
      make_html.signal_connect("activate"){o=Utils.new; o.create_html_file(@editor,@win)}
      @vbox.pack_start(mb,false,false,0) 

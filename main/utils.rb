@@ -10,10 +10,15 @@ class Utils
   include GetText 
   @@filename = ""
 
+  def save_as(win,editor)
+      @@filename = ""
+      save(win,editor)   
+  end
+
   def save(win,editor)
       # daha once hic kaydedilmemis
       if @@filename == ""
-          dialog = Gtk::FileChooserDialog.new(_("Kaydet"), win, Gtk::FileChooser::ACTION_SAVE, nil,
+          dialog = Gtk::FileChooserDialog.new(SAVE, win, Gtk::FileChooser::ACTION_SAVE, nil,
           [Gtk::Stock::CANCEL,Gtk::Dialog::RESPONSE_CANCEL],
           [Gtk::Stock::SAVE, Gtk::Dialog::RESPONSE_APPLY ])
           dialog.show_all()
@@ -24,7 +29,7 @@ class Utils
               File.open(file, "w") { |f| f <<  content }
               msg = Gtk::MessageDialog.new(dialog,
               Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
-              Gtk::MessageDialog::BUTTONS_OK, _("Kaydedildi"))
+              Gtk::MessageDialog::BUTTONS_OK, SAVED)
               msg.show_all()
               if msg.run == Gtk::Dialog::RESPONSE_OK
                   msg.destroy
@@ -57,7 +62,11 @@ class Utils
               which_func = "open_new_empty_file"
               will_change_lost(win,editor,which_func)
           else
+              editor.buffer.text = ""
           end
+       elsif editor.buffer.text != ""
+           which_func = "open_new_empty_file"
+           will_change_lost(win,editor,which_func)
        end
   end
 
@@ -70,6 +79,8 @@ class Utils
          else
              open_new_file(win,editor)
         end
+     else
+          open_new_file(win,editor)
      end
   end 
   
@@ -80,7 +91,7 @@ class Utils
       Gtk::Dialog::MODAL,
       Gtk::MessageDialog::QUESTION,
       Gtk::MessageDialog::BUTTONS_YES_NO,
-      _("Tüm değişiklikler kaybedilecek. Devam etmek istiyor musunuz?"))
+      CHANGE_WILL_LOST)
      if dialog.run == Gtk::Dialog::RESPONSE_YES
           dialog.destroy
           @@filename = ""
@@ -94,7 +105,7 @@ class Utils
   end
   
   def open_new_file(win,editor)
-  dialog = Gtk::FileChooserDialog.new(_("Dosya Aç"), win, Gtk::FileChooser::ACTION_OPEN, nil, 
+        dialog = Gtk::FileChooserDialog.new(OPEN, win, Gtk::FileChooser::ACTION_OPEN, nil, 
         [Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL],
         [Gtk::Stock::OPEN, Gtk::Dialog::RESPONSE_ACCEPT])
         dialog.show
@@ -151,7 +162,7 @@ class Utils
           editor.buffer.select_range(first, last)
       else
           dialogue = Gtk::MessageDialog.new(nil, Gtk::Dialog::MODAL, Gtk::MessageDialog::INFO, 
-          Gtk::MessageDialog::BUTTONS_OK, _("Bu etiketi girmemişsiniz"))
+          Gtk::MessageDialog::BUTTONS_OK, NO_LABEL)
          dialogue.run
          dialogue.destroy
       end
@@ -160,7 +171,7 @@ class Utils
   
   # html dosyasina donusturme  
   def create_html_file(editor,win)
-      dialog = Gtk::FileChooserDialog.new(_("Kaydet"), win, Gtk::FileChooser::ACTION_SAVE, nil,
+      dialog = Gtk::FileChooserDialog.new(SAVE, win, Gtk::FileChooser::ACTION_SAVE, nil,
       [Gtk::Stock::CANCEL,Gtk::Dialog::RESPONSE_CANCEL],
       [ Gtk::Stock::SAVE, Gtk::Dialog::RESPONSE_APPLY ])
       dialog.show_all() 
@@ -182,7 +193,7 @@ class Utils
           File.open(file, "w") { |f| f <<  content }
           msg = Gtk::MessageDialog.new(dialog,
               Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
-              Gtk::MessageDialog::BUTTONS_OK, _("Kaydedildi"))
+              Gtk::MessageDialog::BUTTONS_OK, SAVED)
               msg.show_all()
               if msg.run == Gtk::Dialog::RESPONSE_OK
                   msg.destroy

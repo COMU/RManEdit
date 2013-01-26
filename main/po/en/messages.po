@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-01-25 11:31+0200\n"
-"PO-Revision-Date: 2013-01-25 11:31+0200\n"
+"POT-Creation-Date: 2013-01-26 17:24+0200\n"
+"PO-Revision-Date: 2013-01-26 17:24+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -29,17 +29,33 @@ msgid "Aç"
 msgstr "Open"
 
 #: messages.rb:10
-msgid "Kaydet"
-msgstr "Save"
+msgid "Yeni"
+msgstr "New"
 
 #: messages.rb:11
+msgid "Kaydet"
+msgstr "Save "
+
+#: messages.rb:12
 msgid "Farklı Kaydet"
 msgstr "Save as"
 
-#: messages.rb:12
+#: messages.rb:13
+msgid "Kaydedildi"
+msgstr "Saved"
+
+#: messages.rb:14
+msgid "Tüm değişiklikler kaybedilecek. Devam etmek istiyor musunuz?"
+msgstr "Your changes will be lost. Do you want to continue?"
+
+#: messages.rb:15
 msgid "Html dosyasına dönüştür"
 msgstr "Convert to html file"
 
-#: messages.rb:13
+#: messages.rb:16
+msgid "Bu etiketi girmemişsiniz."
+msgstr "You didn't enter this tag"
+
+#: messages.rb:17
 msgid "Çıkış"
 msgstr "Exit"
