@@ -8,7 +8,7 @@ require './utils'
 require './messages'
 require 'rubygems'
 
-class Editor
+class Editor < Utils
   INDEX = 0
   attr_accessor :data
   def initialize
@@ -30,21 +30,13 @@ class Editor
       @editor = Gtk::TextView.new
       swin = Gtk::ScrolledWindow.new
       swin.add(@editor)
-      # ornek man2html eklenmesi
-      output = IO.popen("man2html ls.1")
-      str = output.readlines
-      i = 0
-      content = ""
-      while i< str.length do
-          content = content + str[i]
-          i = i + 1
-      end
+      content = "<HTML><h2> #{NO_MAN_FILE}</h2></HTML>"
       # man page icin textView
-      manview = WebKit::WebView.new
-      manview.load_string(content,"text/html", "UTF-8", "file://home") 
+      @manview = WebKit::WebView.new
+      @manview.load_string(content,"text/html", "UTF-8", "file://home") 
       # man goruntusu icin scrollWind
       swin2 = Gtk::ScrolledWindow.new
-      swin2.add(manview)
+      swin2.add(@manview)
       @treeview = Gtk::TreeView.new
       renderer = Gtk::CellRendererText.new 
       column   = Gtk::TreeViewColumn.new(CATEGORY, renderer,  :text => INDEX)
@@ -93,7 +85,7 @@ class Editor
      filemenu.append(make_html)
      filemenu.append(exit_)
      mb.append(filemenuitem)
-     open.signal_connect("activate"){o=Utils.new; o.open_file(@win,@editor)}
+     open.signal_connect("activate"){o=Utils.new; o.open_file(@win,@editor,@manview)}
      new.signal_connect("activate"){o=Utils.new; o.open_new_empty_file(@win,@editor)}
      save.signal_connect("activate"){o=Utils.new; o.save(@win,@editor)}
      save_as.signal_connect("activate"){o=Utils.new; o.save_as(@win,@editor)}
@@ -121,12 +113,12 @@ class Editor
 	toolbar.insert(5, pastetb)
         toolbar.insert(6, sep)
         toolbar.insert(7, quittb)
-	opentb.signal_connect("clicked"){o = Utils.new; o.on_opentb(@win,@editor)}
-	savetb.signal_connect("clicked"){o= Utils.new; o.on_savetb(@win,@editor)}
+	opentb.signal_connect("clicked"){o = Utils.new; o.open_file(@win,@editor)}
+	savetb.signal_connect("clicked"){o= Utils.new; o.save(@win,@editor)}
 	cuttb.signal_connect("clicked"){o = Utils.new; o.on_cuttb(@editor)}
 	copytb.signal_connect("clicked"){o = Utils.new; o.on_copytb(@editor)}
 	pastetb.signal_connect("clicked"){o= Utils.new; o.on_pastetb(@editor)}
-	newtb.signal_connect("clicked"){o= Utils.new; o.on_newtb(@win,@editor)}
+	newtb.signal_connect("clicked"){o= Utils.new; o.open_new_empty_file(@win,@editor)}
 	quittb.signal_connect("clicked"){Gtk.main_quit}
 	@vbox.pack_start(toolbar,false,false,0)
 	@win.add(@vbox)

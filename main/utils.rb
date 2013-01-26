@@ -27,6 +27,7 @@ class Utils
             @@filename = file
             content = editor.buffer.text
               File.open(file, "w") { |f| f <<  content }
+              IO.popen("gzip #{@@filename}")
               msg = Gtk::MessageDialog.new(dialog,
               Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
               Gtk::MessageDialog::BUTTONS_OK, SAVED)
@@ -42,27 +43,32 @@ class Utils
       else
         content = editor.buffer.text
         File.open(@@filename, "w") { |f| f <<  content }
+        IO.popen("gzip #{@@filename}")
       end
   end
   
   def read_file(editor)
-      f = File.open(@@filename)
-      content = f.readlines.join
-      if editor.buffer.text == content
+      @@ret = ""
+      File.open(@@filename){|f| @@ret = f.readlines.join }
+      if editor.buffer.text == @@ret
           return "degismemis"
       else
           return "degismis"
       end
   end
-
+  def man_view
+  
+  end
   def open_new_empty_file(win,editor)
       # file name bossa hic bir sey yapmaz
       if @@filename != ""
           if read_file(editor) == "degismis"
+              puts "degismis"
               which_func = "open_new_empty_file"
               will_change_lost(win,editor,which_func)
           else
               editor.buffer.text = ""
+              @@filename = ""
           end
        elsif editor.buffer.text != ""
            which_func = "open_new_empty_file"
@@ -71,7 +77,7 @@ class Utils
   end
 
   # kaydedilmis bir dosyayi acma
-  def open_file(win,editor)
+  def open_file(win,editor,manview)
       if @@filename != ""
          if read_file(editor) == "degismis"
              which_func = "open_file"
@@ -79,6 +85,9 @@ class Utils
          else
              open_new_file(win,editor)
         end
+     elsif editor.buffer.text != "" and @@filename == ""
+         which_func = "open_file"
+         will_change_lost(win,editor,which_func)
      else
           open_new_file(win,editor)
      end
@@ -86,11 +95,8 @@ class Utils
   
   # dosya acikken yeni dosya acma icin dialog
   def will_change_lost(win,editor,which_func)
-      dialog = Gtk::MessageDialog.new(
-      nil,
-      Gtk::Dialog::MODAL,
-      Gtk::MessageDialog::QUESTION,
-      Gtk::MessageDialog::BUTTONS_YES_NO,
+      dialog = Gtk::MessageDialog.new(win, Gtk::Dialog::MODAL,
+      Gtk::MessageDialog::QUESTION,Gtk::MessageDialog::BUTTONS_YES_NO,
       CHANGE_WILL_LOST)
      if dialog.run == Gtk::Dialog::RESPONSE_YES
           dialog.destroy
