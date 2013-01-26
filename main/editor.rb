@@ -96,6 +96,7 @@ class Editor
      mb.append(filemenuitem)
      open.signal_connect("activate"){o=Utils.new; o.open_file(@win,@editor)}
      new.signal_connect("activate"){o=Utils.new; o.open_new_empty_file(@win,@editor)}
+     save.signal_connect("activate"){o=Utils.new; o.save(@win,@editor)}
      exit_.signal_connect("activate"){Gtk.main_quit}
      make_html.signal_connect("activate"){o=Utils.new; o.create_html_file(@editor,@win)}
      @vbox.pack_start(mb,false,false,0) 

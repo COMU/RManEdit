@@ -8,32 +8,19 @@ require 'gtk2'
 
 class Utils
   include GetText 
-  @@changed = false
-  # kaydet
-  def on_savetb(win,editor)
-      dialog = Gtk::FileChooserDialog.new(_("Kaydet"), win, Gtk::FileChooser::ACTION_SAVE, nil,
-      [Gtk::Stock::CANCEL,Gtk::Dialog::RESPONSE_CANCEL],
-      [ Gtk::Stock::SAVE, Gtk::Dialog::RESPONSE_APPLY ])
-      dialog.show_all()
-      if dialog.run  == Gtk::Dialog::RESPONSE_APPLY
-          file = dialog.filename
-=begin
-          if File.exist?(file)
-              msg = Gtk::Dialog.new(_("Bilgilendirme"), dialog,
-              Gtk::Dialog::DESTROY_WITH_PARENT,[Gtk::Stock::OK, Gtk::Dialog::RESPONSE_ACCEPT],
-              [Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_REJECT])
-              msg.vbox.add(Gtk::Label.new(_("Aynı isme sahip bir dosya zaten var. Üzerine yazılsın mı?")))
-              msg.show_all()
-              if msg.run == Gtk::Dialog::RESPONSE_ACCEPT
-                  content = editor.buffer.text
-                  File.open(file, "w") { |f| f <<  content }
-                  msg.destroy
-                  dialog.destroy
-              else
-                  msg.destroy
-              end
-=end
-              content = editor.buffer.text
+  @@filename = ""
+
+  def save(win,editor)
+      # daha once hic kaydedilmemis
+      if @@filename == ""
+          dialog = Gtk::FileChooserDialog.new(_("Kaydet"), win, Gtk::FileChooser::ACTION_SAVE, nil,
+          [Gtk::Stock::CANCEL,Gtk::Dialog::RESPONSE_CANCEL],
+          [Gtk::Stock::SAVE, Gtk::Dialog::RESPONSE_APPLY ])
+          dialog.show_all()
+          if dialog.run  == Gtk::Dialog::RESPONSE_APPLY
+            file = dialog.filename
+            @@filename = file
+            content = editor.buffer.text
               File.open(file, "w") { |f| f <<  content }
               msg = Gtk::MessageDialog.new(dialog,
               Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
@@ -43,26 +30,47 @@ class Utils
                   msg.destroy
                   dialog.destroy
               end
+          else
+              dialog.destroy
+          end
+      # dosyanin ismi varsa onceden kaydedilmistir
       else
-          dialog.destroy
+        content = editor.buffer.text
+        File.open(@@filename, "w") { |f| f <<  content }
+      end
+  end
+  
+  def read_file(editor)
+      f = File.open(@@filename)
+      content = f.readlines.join
+      if editor.buffer.text == content
+          return "degismemis"
+      else
+          return "degismis"
       end
   end
 
   def open_new_empty_file(win,editor)
-      if editor.buffer.text != ""
-          which_func = "open_new_empty_file"
-          will_change_lost(win,editor,which_func)
-      end
+      # file name bossa hic bir sey yapmaz
+      if @@filename != ""
+          if read_file(editor) == "degismis"
+              which_func = "open_new_empty_file"
+              will_change_lost(win,editor,which_func)
+          else
+          end
+       end
   end
-  # dosya acma
+
+  # kaydedilmis bir dosyayi acma
   def open_file(win,editor)
-      if editor.buffer.text == ""
-         open_new_file(win,editor)
-      else
-         which_func = "open_file"
-         will_change_lost(win,editor,which_func)
-      end
-      
+      if @@filename != ""
+         if read_file(editor) == "degismis"
+             which_func = "open_file"
+             will_change_lost(win,editor,which_func)
+         else
+             open_new_file(win,editor)
+        end
+     end
   end 
   
   # dosya acikken yeni dosya acma icin dialog
@@ -75,6 +83,7 @@ class Utils
       _("Tüm değişiklikler kaybedilecek. Devam etmek istiyor musunuz?"))
      if dialog.run == Gtk::Dialog::RESPONSE_YES
           dialog.destroy
+          @@filename = ""
           editor.buffer.text = ""
           if which_func == "open_file"
               open_new_file(win,editor)
@@ -91,6 +100,7 @@ class Utils
         dialog.show
         if dialog.run == Gtk::Dialog::RESPONSE_ACCEPT
           file = dialog.filename
+          @@filename = file
           fm = FileMagic.new
       	  # gzip dosyasi
           if fm.file(file).scan(/gziP/i).length != 0
