@@ -9,6 +9,7 @@ require 'gtk2'
 class Utils
   include GetText 
   @@changed = false
+  # kaydet
   def on_savetb(win,editor)
       dialog = Gtk::FileChooserDialog.new(_("Kaydet"), win, Gtk::FileChooser::ACTION_SAVE, nil,
       [Gtk::Stock::CANCEL,Gtk::Dialog::RESPONSE_CANCEL],
@@ -47,35 +48,18 @@ class Utils
       end
   end
   
-  def on_opentb(win,editor)
-      dialog = Gtk::FileChooserDialog.new(_("Dosya Aç"), win, Gtk::FileChooser::ACTION_OPEN, nil, 
-      [Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL],
-      [Gtk::Stock::OPEN, Gtk::Dialog::RESPONSE_ACCEPT])
-      dialog.show
-      if dialog.run == Gtk::Dialog::RESPONSE_ACCEPT
-          file = dialog.filename
-          fm = FileMagic.new
-	  # gzip dosyasi
-          if fm.file(file).scan(/gziP/i).length != 0
-	      gz = Zlib::GzipReader.new(open(file)).read
-              editor.buffer.text = gz
-	  elsif fm.file(file).scan(/zip/i).length != 0
-	      Zip::ZipFile.open(file) do |zip_file|
-	      zip_file.each do |f|
-              editor.buffer.text = zip_file.read(f)
-                 end
-               end			
-	  else
-              content = ""
-              IO.foreach(file){|block|  content = content + "\n"+ block}
-              editor.buffer.text = content
-          end
-              dialog.destroy
+  # dosya acma
+  def open_file(win,editor)
+      if editor.buffer.text == ""
+         open_new_file(win,editor)
+      else
+         will_change_lost(win,editor)
       end
+      
   end 
-
- 
-  def on_newtb(win,editor)
+  
+  # dosya acikken yeni dosya acma icin dialog
+  def will_change_lost(win,editor)
       dialog = Gtk::MessageDialog.new(
       nil,
       Gtk::Dialog::MODAL,
@@ -83,11 +67,44 @@ class Utils
       Gtk::MessageDialog::BUTTONS_YES_NO,
       _("Tüm değişiklikler kaybedilecek. Devam etmek istiyor musunuz?"))
      if dialog.run == Gtk::Dialog::RESPONSE_YES
+          dialog.destroy
           editor.buffer.text = ""
+          open_new_file(win,editor)
      end   
-     dialog.destroy
   end
- 
+  
+  def open_new_file(win,editor)
+  dialog = Gtk::FileChooserDialog.new(_("Dosya Aç"), win, Gtk::FileChooser::ACTION_OPEN, nil, 
+        [Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL],
+        [Gtk::Stock::OPEN, Gtk::Dialog::RESPONSE_ACCEPT])
+        dialog.show
+        if dialog.run == Gtk::Dialog::RESPONSE_ACCEPT
+          file = dialog.filename
+          fm = FileMagic.new
+      	  # gzip dosyasi
+          if fm.file(file).scan(/gziP/i).length != 0
+      	      gz = Zlib::GzipReader.new(open(file)).read
+              editor.buffer.text = gz
+          # zip dosyasi
+       	  elsif fm.file(file).scan(/zip/i).length != 0
+       	      Zip::ZipFile.open(file) do |zip_file|
+       	      zip_file.each do |f|
+              editor.buffer.text = zip_file.read(f)
+                 end
+               end			
+          # herhangi bir text
+      	  else
+              content = ""
+              IO.foreach(file){|block|  content = content + "\n"+ block}
+              editor.buffer.text = content
+          end
+              dialog.destroy
+         
+       else
+          dialog.destroy
+       end
+  end
+
   def on_cuttb(editor)
       clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
       editor.buffer.cut_clipboard(clipboard, true)
@@ -102,7 +119,7 @@ class Utils
       clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
       editor.buffer.paste_clipboard(clipboard, nil, true)
   end
-  
+  # secilen etikete gitme 
   def label_find(find,editor)
       start = editor.buffer.start_iter
       first, last = start.forward_search(find, Gtk::TextIter::SEARCH_TEXT_ONLY, nil)
@@ -120,6 +137,7 @@ class Utils
       first = last = nil
   end
   
+  # html dosyasina donusturme  
   def create_html_file(editor,win)
       dialog = Gtk::FileChooserDialog.new(_("Kaydet"), win, Gtk::FileChooser::ACTION_SAVE, nil,
       [Gtk::Stock::CANCEL,Gtk::Dialog::RESPONSE_CANCEL],
