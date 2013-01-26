@@ -47,19 +47,26 @@ class Utils
           dialog.destroy
       end
   end
-  
+
+  def open_new_empty_file(win,editor)
+      if editor.buffer.text != ""
+          which_func = "open_new_empty_file"
+          will_change_lost(win,editor,which_func)
+      end
+  end
   # dosya acma
   def open_file(win,editor)
       if editor.buffer.text == ""
          open_new_file(win,editor)
       else
-         will_change_lost(win,editor)
+         which_func = "open_file"
+         will_change_lost(win,editor,which_func)
       end
       
   end 
   
   # dosya acikken yeni dosya acma icin dialog
-  def will_change_lost(win,editor)
+  def will_change_lost(win,editor,which_func)
       dialog = Gtk::MessageDialog.new(
       nil,
       Gtk::Dialog::MODAL,
@@ -69,7 +76,11 @@ class Utils
      if dialog.run == Gtk::Dialog::RESPONSE_YES
           dialog.destroy
           editor.buffer.text = ""
-          open_new_file(win,editor)
+          if which_func == "open_file"
+              open_new_file(win,editor)
+          end
+     else
+         dialog.destroy
      end   
   end
   
