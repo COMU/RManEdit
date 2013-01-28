@@ -56,9 +56,7 @@ class Utils
           return "degismis"
       end
   end
-  def man_view
   
-  end
   def open_new_empty_file(win,editor)
       # file name bossa hic bir sey yapmaz
       if @@filename != ""
@@ -78,6 +76,7 @@ class Utils
 
   # kaydedilmis bir dosyayi acma
   def open_file(win,editor,manview)
+      @manview = manview
       if @@filename != ""
          if read_file(editor) == "degismis"
              which_func = "open_file"
@@ -110,6 +109,29 @@ class Utils
      end   
   end
   
+  def manfile_view(content)
+      fm = FileMagic.new
+      if fm.file(@@filename).scan(/troff/i).length !=0
+          output = IO.popen("man2html #{@@filename}")
+          str = output.readlines
+          i = 0
+          content = ""
+          while i< str.length do
+              content = content + str[i]
+              i = i + 1
+          end
+          # man page icin textView
+          @manview.load_string(content,"text/html", "UTF-8", "file://home") 
+      elsif fm.file(file).scan(/gziP/i).length != 0
+      
+      elsif m.file(file).scan(/zip/i).length != 0
+      else
+          content = "<HTML><h2> #{NO_MAN_FILE}</h2></HTML>"
+          @manview.load_string(content,"text/html", "UTF-8", "file://home")
+      end
+     
+  end  
+  
   def open_new_file(win,editor)
         dialog = Gtk::FileChooserDialog.new(OPEN, win, Gtk::FileChooser::ACTION_OPEN, nil, 
         [Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL],
@@ -122,6 +144,7 @@ class Utils
       	  # gzip dosyasi
           if fm.file(file).scan(/gziP/i).length != 0
       	      gz = Zlib::GzipReader.new(open(file)).read
+              manfile_view(gz)
               editor.buffer.text = gz
           # zip dosyasi
        	  elsif fm.file(file).scan(/zip/i).length != 0
@@ -129,12 +152,14 @@ class Utils
        	      zip_file.each do |f|
               editor.buffer.text = zip_file.read(f)
                  end
-               end			
+               end
+              manfile_view(editor.buffer.text)			
           # herhangi bir text
       	  else
               content = ""
               IO.foreach(file){|block|  content = content + "\n"+ block}
               editor.buffer.text = content
+              manfile_view(content)
           end
               dialog.destroy
          

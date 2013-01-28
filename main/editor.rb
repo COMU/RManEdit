@@ -56,12 +56,14 @@ class Editor < Utils
       hpaned.set_size_request(900,-1)
       hpaned2 = Gtk::HPaned.new
       hpaned2.set_size_request(800,500)
-      hpaned.pack1(@treeview,true,true)
+      hpaned.pack1(@treeview,true,false)
       hpaned.pack2(hpaned2,true,true)
       swin.set_size_request(500,500)
       swin2.set_size_request(300,500)
       hpaned2.pack1(swin,true,true)
-      hpaned2.pack2(swin2,true,true)
+      hpaned2.pack2(swin2,true,false)
+      hpaned.set_position(30)
+      
       @win.set_size_request(900,500)
       @win.set_resizable(true)
       @hbox.pack_start(hpaned,true,true,0)
