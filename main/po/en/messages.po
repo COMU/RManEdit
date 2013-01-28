@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-01-26 17:24+0200\n"
-"PO-Revision-Date: 2013-01-26 17:24+0200\n"
+"POT-Creation-Date: 2013-01-28 13:19+0200\n"
+"PO-Revision-Date: 2013-01-28 13:19+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,37 +25,57 @@ msgid "Dosya"
 msgstr "File"
 
 #: messages.rb:9
+msgid "Yüklenmiş man dosyası yok"
+msgstr ""
+
+#: messages.rb:10
 msgid "Aç"
 msgstr "Open"
 
-#: messages.rb:10
+#: messages.rb:11
 msgid "Yeni"
 msgstr "New"
 
-#: messages.rb:11
-msgid "Kaydet"
-msgstr "Save "
-
 #: messages.rb:12
+msgid "Kaydet"
+msgstr "Save"
+
+#: messages.rb:13
 msgid "Farklı Kaydet"
 msgstr "Save as"
 
-#: messages.rb:13
+#: messages.rb:14
+msgid "Kes"
+msgstr "Cut"
+
+#: messages.rb:15
+msgid "Kopyala"
+msgstr "Copy"
+
+#: messages.rb:16
 msgid "Kaydedildi"
 msgstr "Saved"
 
-#: messages.rb:14
+#: messages.rb:17
+msgid "Man Dosyasını Görüntüle"
+msgstr "View Man File"
+
+#: messages.rb:18
 msgid "Tüm değişiklikler kaybedilecek. Devam etmek istiyor musunuz?"
 msgstr "Your changes will be lost. Do you want to continue?"
 
-#: messages.rb:15
+#: messages.rb:19
 msgid "Html dosyasına dönüştür"
 msgstr "Convert to html file"
 
-#: messages.rb:16
+#: messages.rb:20
 msgid "Bu etiketi girmemişsiniz."
 msgstr "You didn't enter this tag"
 
-#: messages.rb:17
+#: messages.rb:21
 msgid "Çıkış"
 msgstr "Exit"
+
+#: messages.rb:22
+msgid "Yapıştır"
+msgstr "Paste"

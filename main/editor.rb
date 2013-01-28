@@ -97,25 +97,38 @@ class Editor < Utils
   end
   def toolBar
 	toolbar = Gtk::Toolbar.new
-        toolbar.set_toolbar_style(Gtk::Toolbar::Style::ICONS)
+        toolbar.set_toolbar_style(Gtk::Toolbar::Style::BOTH)
+        toolbar.icon_size = 2
         newtb = Gtk::ToolButton.new(Gtk::Stock::NEW)
         opentb = Gtk::ToolButton.new(Gtk::Stock::OPEN)
         savetb = Gtk::ToolButton.new(Gtk::Stock::SAVE)
+        saveastb = Gtk::ToolButton.new(Gtk::Stock::SAVE_AS)
 	cuttb = Gtk::ToolButton.new(Gtk::Stock::CUT)
 	copytb = Gtk::ToolButton.new(Gtk::Stock::COPY)
 	pastetb = Gtk::ToolButton.new(Gtk::Stock::PASTE)
+        viewfile = Gtk::ToolButton.new(Gtk::Stock::PRINT_PREVIEW)
         sep = Gtk::SeparatorToolItem.new
         quittb = Gtk::ToolButton.new(Gtk::Stock::QUIT)
-
+        newtb.label = NEW
+        opentb.label = OPEN
+        savetb.label = SAVE
+        saveastb.label = SAVE_AS
+        cuttb.label = CUT
+        copytb.label = COPY
+        pastetb.label = PASTE
+        viewfile.label = VIEW_MAN_FILE
         toolbar.insert(0, newtb)
         toolbar.insert(1, opentb)
         toolbar.insert(2, savetb)
-	toolbar.insert(3, cuttb)
-	toolbar.insert(4, copytb)
-	toolbar.insert(5, pastetb)
-        toolbar.insert(6, sep)
-        toolbar.insert(7, quittb)
+        toolbar.insert(3,saveastb)
+	toolbar.insert(4, cuttb)
+	toolbar.insert(5, copytb)
+	toolbar.insert(6, pastetb)
+        toolbar.insert(7,viewfile)
+        toolbar.insert(8, sep)
+        toolbar.insert(9, quittb)
 	opentb.signal_connect("clicked"){o = Utils.new; o.open_file(@win,@editor)}
+        saveastb.signal_connect("activated"){o = Utils.new; o.save_as(@win,@editor)}
 	savetb.signal_connect("clicked"){o= Utils.new; o.save(@win,@editor)}
 	cuttb.signal_connect("clicked"){o = Utils.new; o.on_cuttb(@editor)}
 	copytb.signal_connect("clicked"){o = Utils.new; o.on_copytb(@editor)}
