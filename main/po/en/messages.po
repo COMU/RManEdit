@@ -58,7 +58,7 @@ msgstr "Saved"
 
 #: messages.rb:17
 msgid "Man Dosyasını Görüntüle"
-msgstr "View Man File"
+msgstr "Preview man file"
 
 #: messages.rb:18
 msgid "Tüm değişiklikler kaybedilecek. Devam etmek istiyor musunuz?"

@@ -20,7 +20,7 @@ CREATE_HTML_FILE = _("Html dosyasına dönüştür")
 NO_LABEL = _("Bu etiketi girmemişsiniz.")
 EXIT = _("Çıkış")
 PASTE = _("Yapıştır")
-
+UNSAVED = _("Görüntülemek için dosyayı kaydetmeniz gerekir")
 
 
 

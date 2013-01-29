@@ -19,25 +19,25 @@ class Editor < Utils
 	@win.signal_connect('destroy'){Gtk.main_quit}
 	@win.set_window_position(Gtk::Window::POS_CENTER)
 	@vbox = Gtk::VBox.new(false,2)
+        @editor = Gtk::TextView.new
 	menuBar
 	toolBar
-	win_contain
+        win_contain
 	@win.show_all()
   end
  
   def win_contain
       @hbox = Gtk::HBox.new(false,2)
-      @editor = Gtk::TextView.new
       swin = Gtk::ScrolledWindow.new
+      @manview = WebKit::WebView.new
+      @treeview = Gtk::TreeView.new
       swin.add(@editor)
       content = "<HTML><h2> #{NO_MAN_FILE}</h2></HTML>"
       # man page icin textView
-      @manview = WebKit::WebView.new
       @manview.load_string(content,"text/html", "UTF-8", "file://home") 
       # man goruntusu icin scrollWind
       swin2 = Gtk::ScrolledWindow.new
       swin2.add(@manview)
-      @treeview = Gtk::TreeView.new
       renderer = Gtk::CellRendererText.new 
       column   = Gtk::TreeViewColumn.new(CATEGORY, renderer,  :text => INDEX)
       @treeview.append_column(column)
@@ -69,6 +69,7 @@ class Editor < Utils
       @hbox.pack_start(hpaned,true,true,0)
       @vbox.pack_start(@hbox,true,true,0)
   end
+
   def menuBar      
      mb = Gtk::MenuBar.new
      filemenu = Gtk::Menu.new
@@ -87,7 +88,7 @@ class Editor < Utils
      filemenu.append(make_html)
      filemenu.append(exit_)
      mb.append(filemenuitem)
-     open.signal_connect("activate"){o=Utils.new; o.open_file(@win,@editor,@manview)}
+     open.signal_connect("activate"){o=Utils.new; o.open_file(@win,@editor)}
      new.signal_connect("activate"){o=Utils.new; o.open_new_empty_file(@win,@editor)}
      save.signal_connect("activate"){o=Utils.new; o.save(@win,@editor)}
      save_as.signal_connect("activate"){o=Utils.new; o.save_as(@win,@editor)}
@@ -106,7 +107,7 @@ class Editor < Utils
 	cuttb = Gtk::ToolButton.new(Gtk::Stock::CUT)
 	copytb = Gtk::ToolButton.new(Gtk::Stock::COPY)
 	pastetb = Gtk::ToolButton.new(Gtk::Stock::PASTE)
-        viewfile = Gtk::ToolButton.new(Gtk::Stock::PRINT_PREVIEW)
+        view_but = Gtk::ToolButton.new(Gtk::Stock::PRINT_PREVIEW)
         sep = Gtk::SeparatorToolItem.new
         quittb = Gtk::ToolButton.new(Gtk::Stock::QUIT)
         newtb.label = NEW
@@ -116,7 +117,7 @@ class Editor < Utils
         cuttb.label = CUT
         copytb.label = COPY
         pastetb.label = PASTE
-        viewfile.label = VIEW_MAN_FILE
+        view_but.label = VIEW_MAN_FILE
         toolbar.insert(0, newtb)
         toolbar.insert(1, opentb)
         toolbar.insert(2, savetb)
@@ -124,16 +125,22 @@ class Editor < Utils
 	toolbar.insert(4, cuttb)
 	toolbar.insert(5, copytb)
 	toolbar.insert(6, pastetb)
-        toolbar.insert(7,viewfile)
+        toolbar.insert(7,view_but)
         toolbar.insert(8, sep)
         toolbar.insert(9, quittb)
+	view_but.set_sensitive false       
+        # view_but sensitive
+        buf = Gtk::TextBuffer.new
+        @editor.set_buffer(buf) 
+        buf.signal_connect("changed"){o=Utils.new; o.buf_changed(buf,view_but)}
 	opentb.signal_connect("clicked"){o = Utils.new; o.open_file(@win,@editor)}
-        saveastb.signal_connect("activated"){o = Utils.new; o.save_as(@win,@editor)}
+        saveastb.signal_connect("clicked"){o = Utils.new; o.save_as(@win,@editor)}
 	savetb.signal_connect("clicked"){o= Utils.new; o.save(@win,@editor)}
 	cuttb.signal_connect("clicked"){o = Utils.new; o.on_cuttb(@editor)}
 	copytb.signal_connect("clicked"){o = Utils.new; o.on_copytb(@editor)}
 	pastetb.signal_connect("clicked"){o= Utils.new; o.on_pastetb(@editor)}
 	newtb.signal_connect("clicked"){o= Utils.new; o.open_new_empty_file(@win,@editor)}
+        view_but.signal_connect("clicked"){o = Utils.new; o.manfile_view(@win,@editor)}
 	quittb.signal_connect("clicked"){Gtk.main_quit}
 	@vbox.pack_start(toolbar,false,false,0)
 	@win.add(@vbox)

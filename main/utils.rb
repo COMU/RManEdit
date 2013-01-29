@@ -9,6 +9,7 @@ require 'gtk2'
 class Utils
   include GetText 
   @@filename = ""
+  @@saved = true
 
   def save_as(win,editor)
       @@filename = ""
@@ -39,11 +40,14 @@ class Utils
           else
               dialog.destroy
           end
-      # dosyanin ismi varsa onceden kaydedilmistir
+          @@saved = true
+      elsif @@saved
+          return
       else
         content = editor.buffer.text
         File.open(@@filename, "w") { |f| f <<  content }
         IO.popen("gzip #{@@filename}")
+        @@saved = true
       end
   end
   
@@ -57,39 +61,28 @@ class Utils
       end
   end
   
-  def open_new_empty_file(win,editor)
-      # file name bossa hic bir sey yapmaz
-      if @@filename != ""
-          if read_file(editor) == "degismis"
-              puts "degismis"
-              which_func = "open_new_empty_file"
-              will_change_lost(win,editor,which_func)
-          else
-              editor.buffer.text = ""
-              @@filename = ""
-          end
-       elsif editor.buffer.text != ""
-           which_func = "open_new_empty_file"
-           will_change_lost(win,editor,which_func)
-       end
+  def open_new_empty_file(win,editor) 
+      if not @@saved
+          which_func = "open_new_empty_file"
+          will_change_lost(win,editor,which_func)
+     else
+        editor.buffer.text = ""
+        @@saved = true
+    end
   end
 
   # kaydedilmis bir dosyayi acma
-  def open_file(win,editor,manview)
-      @manview = manview
-      if @@filename != ""
-         if read_file(editor) == "degismis"
-             which_func = "open_file"
-             will_change_lost(win,editor,which_func)
-         else
-             open_new_file(win,editor)
-        end
-     elsif editor.buffer.text != "" and @@filename == ""
-         which_func = "open_file"
-         will_change_lost(win,editor,which_func)
-     else
+  def open_file(win,editor) 
+      puts @@saved
+      if not @@saved
+          which_func = "open_file"
+          will_change_lost(win,editor,which_func)
+      else
           open_new_file(win,editor)
-     end
+          # kaydedilmis dosya acilinca buf degisir 
+          # buf tekrar true oldu
+          @@saved = true
+      end
   end 
   
   # dosya acikken yeni dosya acma icin dialog
@@ -101,50 +94,53 @@ class Utils
           dialog.destroy
           @@filename = ""
           editor.buffer.text = ""
+          @@saved = true
           if which_func == "open_file"
               open_new_file(win,editor)
+              # kayitli dosya acilinca bu degisir
+              # saved tekrar true olmasi gerekir
+              @@saved = true
           end
      else
          dialog.destroy
      end   
   end
   
-  def manfile_view(content)
-      fm = FileMagic.new
-      if fm.file(@@filename).scan(/troff/i).length !=0
-          output = IO.popen("man2html #{@@filename}")
-          str = output.readlines
-          i = 0
-          content = ""
-          while i< str.length do
-              content = content + str[i]
-              i = i + 1
+  def manfile_view(buf,viewfile)
+      if @@filename == ""
+	  msg = Gtk::MessageDialog.new(nil,Gtk::Dialog::DESTROY_WITH_PARENT,
+          Gtk::MessageDialog::INFO, Gtk::MessageDialog::BUTTONS_OK, UNSAVED)          
+          msg.show
+          if msg.run == Gtk::Dialog::RESPONSE_OK
+              msg.destroy
           end
-          # man page icin textView
-          @manview.load_string(content,"text/html", "UTF-8", "file://home") 
-      elsif fm.file(file).scan(/gziP/i).length != 0
-      
-      elsif m.file(file).scan(/zip/i).length != 0
-      else
-          content = "<HTML><h2> #{NO_MAN_FILE}</h2></HTML>"
-          @manview.load_string(content,"text/html", "UTF-8", "file://home")
+      else 
+          
       end
-     
-  end  
-  
+  end 
+
+  def buf_changed(buf,view_but)
+     @@saved = false
+     if buf.text == ""
+         view_but.set_sensitive(false)
+      else
+        view_but.set_sensitive(true)
+      end
+  end
+
   def open_new_file(win,editor)
         dialog = Gtk::FileChooserDialog.new(OPEN, win, Gtk::FileChooser::ACTION_OPEN, nil, 
         [Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL],
         [Gtk::Stock::OPEN, Gtk::Dialog::RESPONSE_ACCEPT])
         dialog.show
         if dialog.run == Gtk::Dialog::RESPONSE_ACCEPT
+          @@saved = true
           file = dialog.filename
           @@filename = file
           fm = FileMagic.new
       	  # gzip dosyasi
           if fm.file(file).scan(/gziP/i).length != 0
-      	      gz = Zlib::GzipReader.new(open(file)).read
-              manfile_view(gz)
+      	      gz = Zlib::GzipReader.new(open(file)).read 
               editor.buffer.text = gz
           # zip dosyasi
        	  elsif fm.file(file).scan(/zip/i).length != 0
@@ -153,13 +149,11 @@ class Utils
               editor.buffer.text = zip_file.read(f)
                  end
                end
-              manfile_view(editor.buffer.text)			
           # herhangi bir text
       	  else
               content = ""
               IO.foreach(file){|block|  content = content + "\n"+ block}
               editor.buffer.text = content
-              manfile_view(content)
           end
               dialog.destroy
          
