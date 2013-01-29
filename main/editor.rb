@@ -140,7 +140,7 @@ class Editor < Utils
 	copytb.signal_connect("clicked"){o = Utils.new; o.on_copytb(@editor)}
 	pastetb.signal_connect("clicked"){o= Utils.new; o.on_pastetb(@editor)}
 	newtb.signal_connect("clicked"){o= Utils.new; o.open_new_empty_file(@win,@editor)}
-        view_but.signal_connect("clicked"){o = Utils.new; o.manfile_view(@win,@editor)}
+        view_but.signal_connect("clicked"){o = Utils.new; o.preview(@win,@editor,@manview)}
 	quittb.signal_connect("clicked"){Gtk.main_quit}
 	@vbox.pack_start(toolbar,false,false,0)
 	@win.add(@vbox)

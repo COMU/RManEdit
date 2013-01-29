@@ -5,6 +5,7 @@ require 'zip/zip'
 require 'gettext'
 require 'rubygems'
 require 'gtk2'
+require 'tempfile'
 
 class Utils
   include GetText 
@@ -50,17 +51,7 @@ class Utils
         @@saved = true
       end
   end
-  
-  def read_file(editor)
-      @@ret = ""
-      File.open(@@filename){|f| @@ret = f.readlines.join }
-      if editor.buffer.text == @@ret
-          return "degismemis"
-      else
-          return "degismis"
-      end
-  end
-  
+ 
   def open_new_empty_file(win,editor) 
       if not @@saved
           which_func = "open_new_empty_file"
@@ -73,7 +64,6 @@ class Utils
 
   # kaydedilmis bir dosyayi acma
   def open_file(win,editor) 
-      puts @@saved
       if not @@saved
           which_func = "open_file"
           will_change_lost(win,editor,which_func)
@@ -104,19 +94,6 @@ class Utils
      else
          dialog.destroy
      end   
-  end
-  
-  def manfile_view(buf,viewfile)
-      if @@filename == ""
-	  msg = Gtk::MessageDialog.new(nil,Gtk::Dialog::DESTROY_WITH_PARENT,
-          Gtk::MessageDialog::INFO, Gtk::MessageDialog::BUTTONS_OK, UNSAVED)          
-          msg.show
-          if msg.run == Gtk::Dialog::RESPONSE_OK
-              msg.destroy
-          end
-      else 
-          
-      end
   end 
 
   def buf_changed(buf,view_but)
@@ -126,6 +103,35 @@ class Utils
       else
         view_but.set_sensitive(true)
       end
+  end
+  
+  def preview(win,editor,manview)
+      if @@filename == "" or @@saved == false
+        msg = Gtk::MessageDialog.new(nil, Gtk::Dialog::DESTROY_WITH_PARENT, 
+        Gtk::MessageDialog::INFO, Gtk::MessageDialog::BUTTONS_OK, UNSAVED)
+        msg.show_all()
+        if msg.run == Gtk::Dialog::RESPONSE_OK 
+            msg.destroy
+        end
+        return
+      end
+      # dosya kayitli ise
+      content = editor.buffer.text
+      file = Tempfile.new('foo')
+      file.write(content)
+      file.rewind
+      file.read
+      output = IO.popen("man2html #{file.path}")
+      str = output.readlines
+      i = 0
+      content = ""
+      while i< str.length do
+          content = content + str[i]
+          i = i + 1
+      end
+      manview.load_string(content,"text/html", "UTF-8", "file://home")   
+      file.close
+      file.unlink 
   end
 
   def open_new_file(win,editor)
