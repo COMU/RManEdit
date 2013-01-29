@@ -21,6 +21,8 @@ NO_LABEL = _("Bu etiketi girmemişsiniz.")
 EXIT = _("Çıkış")
 PASTE = _("Yapıştır")
 UNSAVED = _("Görüntülemek için dosyayı kaydetmeniz gerekir")
-
+ITALIK = _("İtalik")
+BOLD = _("Koyu")
+INDENT = _("Girinti")
 
 

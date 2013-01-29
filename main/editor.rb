@@ -20,6 +20,8 @@ class Editor < Utils
 	@win.set_window_position(Gtk::Window::POS_CENTER)
 	@vbox = Gtk::VBox.new(false,2)
         @editor = Gtk::TextView.new
+        @buf = Gtk::TextBuffer.new
+        @editor.set_buffer(@buf) 
 	menuBar
 	toolBar
         win_contain
@@ -69,7 +71,7 @@ class Editor < Utils
       @hbox.pack_start(hpaned,true,true,0)
       @vbox.pack_start(@hbox,true,true,0)
   end
-
+  
   def menuBar      
      mb = Gtk::MenuBar.new
      filemenu = Gtk::Menu.new
@@ -98,7 +100,7 @@ class Editor < Utils
   end
   def toolBar
 	toolbar = Gtk::Toolbar.new
-        toolbar.set_toolbar_style(Gtk::Toolbar::Style::BOTH)
+        toolbar.set_toolbar_style(Gtk::Toolbar::Style::ICONS)
         toolbar.icon_size = 2
         newtb = Gtk::ToolButton.new(Gtk::Stock::NEW)
         opentb = Gtk::ToolButton.new(Gtk::Stock::OPEN)
@@ -110,14 +112,15 @@ class Editor < Utils
         view_but = Gtk::ToolButton.new(Gtk::Stock::PRINT_PREVIEW)
         sep = Gtk::SeparatorToolItem.new
         quittb = Gtk::ToolButton.new(Gtk::Stock::QUIT)
-        newtb.label = NEW
-        opentb.label = OPEN
-        savetb.label = SAVE
-        saveastb.label = SAVE_AS
-        cuttb.label = CUT
-        copytb.label = COPY
-        pastetb.label = PASTE
-        view_but.label = VIEW_MAN_FILE
+        tip = Gtk::Tooltips.new
+        tip.set_tip(newtb,NEW,nil)
+        tip.set_tip(opentb, OPEN,nil)
+        tip.set_tip(savetb,SAVE,nil)
+        tip.set_tip(saveastb,SAVE_AS,nil)
+        tip.set_tip(cuttb, CUT,nil)
+        tip.set_tip(copytb,COPY,nil)
+        tip.set_tip(pastetb,PASTE,nil)
+        tip.set_tip(view_but, VIEW_MAN_FILE,nil)
         toolbar.insert(0, newtb)
         toolbar.insert(1, opentb)
         toolbar.insert(2, savetb)
@@ -130,9 +133,7 @@ class Editor < Utils
         toolbar.insert(9, quittb)
 	view_but.set_sensitive false       
         # view_but sensitive
-        buf = Gtk::TextBuffer.new
-        @editor.set_buffer(buf) 
-        buf.signal_connect("changed"){o=Utils.new; o.buf_changed(buf,view_but)}
+        @buf.signal_connect("changed"){o=Utils.new; o.buf_changed(@buf,view_but)}
 	opentb.signal_connect("clicked"){o = Utils.new; o.open_file(@win,@editor)}
         saveastb.signal_connect("clicked"){o = Utils.new; o.save_as(@win,@editor)}
 	savetb.signal_connect("clicked"){o= Utils.new; o.save(@win,@editor)}
@@ -143,9 +144,29 @@ class Editor < Utils
         view_but.signal_connect("clicked"){o = Utils.new; o.preview(@win,@editor,@manview)}
 	quittb.signal_connect("clicked"){Gtk.main_quit}
 	@vbox.pack_start(toolbar,false,false,0)
+        toolBarFont
 	@win.add(@vbox)
   end
-
+  
+  def toolBarFont
+      tbFont = Gtk::Toolbar.new
+      t1 = Gtk::Tooltips.new
+      tbFont.icon_size = 2
+      tbFont.set_toolbar_style(Gtk::Toolbar::Style::ICONS)
+      italik = Gtk::ToolButton.new(Gtk::Stock::ITALIC)
+      bold = Gtk::ToolButton.new(Gtk::Stock::BOLD)
+      indent = Gtk::ToolButton.new(Gtk::Stock::INDENT)
+      t1.set_tip(italik,ITALIK,nil)
+      t1.set_tip(bold,BOLD,nil)
+      t1.set_tip(indent,INDENT,nil)
+      tbFont.insert(0,italik)
+      tbFont.insert(1,bold)
+      tbFont.insert(2,indent)
+      italik.signal_connect("clicked"){@buf.insert_at_cursor(".I")}
+      bold.signal_connect("clicked"){@buf.insert_at_cursor(".B")}
+      indent.signal_connect("clicked"){@buf.insert_at_cursor(".RE")}
+      @vbox.pack_start(tbFont,false,false,0)
+  end
 end
 
 app = Editor.new
