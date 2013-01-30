@@ -13,7 +13,7 @@ class Editor < Utils
   attr_accessor :data
   def initialize
 	@win = Gtk::Window.new
-	@win.set_icon("uzgun_surat.jpg")
+	@win.set_icon("images/uzgun_surat.jpg")
 	@win.set_title("RManEdit")
 	@win.signal_connect('delete_event'){false}
 	@win.signal_connect('destroy'){Gtk.main_quit}
@@ -151,20 +151,72 @@ class Editor < Utils
   def toolBarFont
       tbFont = Gtk::Toolbar.new
       t1 = Gtk::Tooltips.new
-      tbFont.icon_size = 2
       tbFont.set_toolbar_style(Gtk::Toolbar::Style::ICONS)
       italik = Gtk::ToolButton.new(Gtk::Stock::ITALIC)
       bold = Gtk::ToolButton.new(Gtk::Stock::BOLD)
       indent = Gtk::ToolButton.new(Gtk::Stock::INDENT)
+      justify_left = Gtk::ToolButton.new(Gtk::Stock::JUSTIFY_LEFT)
+      br = Gtk::ToolButton.new(Gtk::Stock::JUMP_TO)
+      paragraph = Gtk::ToolButton.new(Gtk::Image.new("images/paragraph.png"))
+      comment_line = Gtk::ToolButton.new(Gtk::Image.new("images/comment_line.png"))
+      set_coloumn = Gtk::ToolButton.new(Gtk::Image.new("images/coloumns.png"))
+      start_indent_paragraph = Gtk::ToolButton.new(Gtk::Image.new("images/paragraph_indent.png"))
+      nofill = Gtk::ToolButton.new(Gtk::Image.new("images/nf.png"))
+      fill = Gtk::ToolButton.new(Gtk::Image.new("images/fi.png"))
+      hp = Gtk::ToolButton.new(Gtk::Image.new("images/hp.png"))
+      subhead = Gtk::ToolButton.new(Gtk::Image.new("images/subhead.png"))
+      italik.set_size_request(50,40)
+      bold.set_size_request(50,40)
+      indent.set_size_request(50,40)
+      justify_left.set_size_request(50,40)
+      br.set_size_request(50,40)
+      paragraph.set_size_request(50,40)
+      comment_line.set_size_request(50,40)
+      set_coloumn.set_size_request(50,40)
+      start_indent_paragraph.set_size_request(50,40)
+      nofill.set_size_request(50,40)
+      fill.set_size_request(50,40)
+      hp.set_size_request(50,40)
+      subhead.set_size_request(50,40)
       t1.set_tip(italik,ITALIK,nil)
       t1.set_tip(bold,BOLD,nil)
       t1.set_tip(indent,INDENT,nil)
+      t1.set_tip(justify_left,JUSTIFY_LEFT,nil)
+      t1.set_tip(br,BR,nil)
+      t1.set_tip(paragraph,PARAGRAPH,nil)
+      t1.set_tip(comment_line,COMMENT_LINE,nil)
+      t1.set_tip(set_coloumn,SET_COLOUMN,nil)
+      t1.set_tip(start_indent_paragraph,START_INDENT_PARAGRAPH,nil)
+      t1.set_tip(nofill,NOFILL,nil)
+      t1.set_tip(fill,FILL,nil)
+      t1.set_tip(hp,HP,nil)
+      t1.set_tip(subhead,SUBHEAD,nil)
       tbFont.insert(0,italik)
       tbFont.insert(1,bold)
       tbFont.insert(2,indent)
-      italik.signal_connect("clicked"){@buf.insert_at_cursor(".I")}
-      bold.signal_connect("clicked"){@buf.insert_at_cursor(".B")}
-      indent.signal_connect("clicked"){@buf.insert_at_cursor(".RE")}
+      tbFont.insert(3,justify_left)
+      tbFont.insert(4,br)
+      tbFont.insert(5,paragraph)
+      tbFont.insert(6,comment_line)
+      tbFont.insert(7,set_coloumn)
+      tbFont.insert(8,start_indent_paragraph)
+      tbFont.insert(9,nofill)
+      tbFont.insert(10,fill)
+      tbFont.insert(11,hp)
+      tbFont.insert(12,subhead)
+      italik.signal_connect("clicked"){@buf.insert_at_cursor(".I ")}
+      bold.signal_connect("clicked"){@buf.insert_at_cursor(".B ")}
+      indent.signal_connect("clicked"){@buf.insert_at_cursor(".RE ")}
+      justify_left.signal_connect("clicked"){@buf.insert_at_cursor(".SH ")}
+      br.signal_connect("clicked"){@buf.insert_at_cursor(".br\n")}
+      paragraph.signal_connect("clicked"){@buf.insert_at_cursor(".P ")}
+      comment_line.signal_connect("clicked"){@buf.insert_at_cursor(".\\\" ")}
+      set_coloumn.signal_connect("clicked"){@buf.insert_at_cursor(".TP\n")}
+      start_indent_paragraph.signal_connect("clicked"){@buf.insert_at_cursor(".IP ")}
+      nofill.signal_connect("clicked"){@buf.insert_at_cursor(".nf ")}
+      fill.signal_connect("clicked"){@buf.insert_at_cursor(".fi ")}
+      hp.signal_connect("clicked"){@buf.insert_at_cursor(".HP ")}
+      subhead.signal_connect("clicked"){@buf.insert_at_cursor(".SS ")}
       @vbox.pack_start(tbFont,false,false,0)
   end
 end
