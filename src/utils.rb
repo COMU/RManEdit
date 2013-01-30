@@ -28,26 +28,29 @@ class Utils
             file = dialog.filename
             @@filename = file
             content = editor.buffer.text
-              File.open(file, "w") { |f| f <<  content }
-              IO.popen("gzip #{@@filename}")
-              msg = Gtk::MessageDialog.new(dialog,
-              Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
-              Gtk::MessageDialog::BUTTONS_OK, SAVED)
-              msg.show_all()
-              if msg.run == Gtk::Dialog::RESPONSE_OK
-                  msg.destroy
-                  dialog.destroy
-              end
-          else
+            File.open(file, "w") { |f| f <<  content }
+            IO.popen("gzip #{@@filename}")
+            msg = Gtk::MessageDialog.new(dialog,
+            Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
+            Gtk::MessageDialog::BUTTONS_OK, SAVED)
+            msg.show_all()
+            if msg.run == Gtk::Dialog::RESPONSE_OK
+              msg.destroy
               dialog.destroy
+            end
+          else
+            dialog.destroy
           end
           @@saved = true
       elsif @@saved
           return
       else
         content = editor.buffer.text
-        File.open(@@filename, "w") { |f| f <<  content }
-        IO.popen("gzip #{@@filename}")
+        File.open(@@filename, 'w') do |f|
+        gz = Zlib::GzipWriter.new(f)
+        gz.write(content)
+        gz.close
+        end
         @@saved = true
       end
   end
