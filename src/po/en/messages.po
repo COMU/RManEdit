@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-01-28 13:19+0200\n"
-"PO-Revision-Date: 2013-01-28 13:19+0200\n"
+"POT-Creation-Date: 2013-01-31 00:38+0200\n"
+"PO-Revision-Date: 2013-01-31 00:38+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgstr "File"
 
 #: messages.rb:9
 msgid "Yüklenmiş man dosyası yok"
-msgstr ""
+msgstr "Man file is not installed"
 
 #: messages.rb:10
 msgid "Aç"
@@ -58,11 +58,11 @@ msgstr "Saved"
 
 #: messages.rb:17
 msgid "Man Dosyasını Görüntüle"
-msgstr "Preview man file"
+msgstr "View man file"
 
 #: messages.rb:18
 msgid "Tüm değişiklikler kaybedilecek. Devam etmek istiyor musunuz?"
-msgstr "Your changes will be lost. Do you want to continue?"
+msgstr "Your changes will lost. Do you want continue?"
 
 #: messages.rb:19
 msgid "Html dosyasına dönüştür"
@@ -70,7 +70,7 @@ msgstr "Convert to html file"
 
 #: messages.rb:20
 msgid "Bu etiketi girmemişsiniz."
-msgstr "You didn't enter this tag"
+msgstr "You didn't this tag"
 
 #: messages.rb:21
 msgid "Çıkış"
@@ -79,3 +79,71 @@ msgstr "Exit"
 #: messages.rb:22
 msgid "Yapıştır"
 msgstr "Paste"
+
+#: messages.rb:23
+msgid "Görüntülemek için dosyayı kaydetmeniz gerekir"
+msgstr "If you want to view file, you must save it"
+
+#: messages.rb:24
+msgid "İtalik\n .I"
+msgstr "Italic"
+
+#: messages.rb:25
+msgid "Koyu\n .B"
+msgstr "Bold"
+
+#: messages.rb:26
+msgid "Girinti\n .RE"
+msgstr "Indent"
+
+#: messages.rb:27
+msgid "Bölüm başlığı ve sola dayalı yazma\n .SH"
+msgstr "Subhed and justify left"
+
+#: messages.rb:28
+msgid "Alt satıra geç\n .br"
+msgstr "Jump to the bottom line"
+
+#: messages.rb:29
+msgid "Paragraf\n .P"
+msgstr "Paragraph"
+
+#: messages.rb:30
+msgid "Yorum satiri\n .\\\" "
+msgstr "Comment line"
+
+#: messages.rb:31
+msgid "Sütunlu yaz\n .TP"
+msgstr "Seperate to coloumn"
+
+#: messages.rb:32
+msgid "Paragrafa girinti ile başla\n .IP"
+msgstr "Start indent on paragraph"
+
+#: messages.rb:33
+msgid "Nofill\n .nf"
+msgstr "Nofill"
+
+#: messages.rb:34
+msgid "Fill\n .fi"
+msgstr "Fill\n .fi"
+
+#: messages.rb:35
+msgid "Satırdan sonraki ilk girinti\n .HP"
+msgstr "Indent the first line of"
+
+#: messages.rb:36
+msgid "Alt başlık \n .SS"
+msgstr "Subhead"
+
+#: messages.rb:37
+msgid "Html dosyasına dönüştürülmek istenen dosya bir man dosyası değil"
+msgstr ""
+
+#: messages.rb:38
+msgid "Lütfen açmak için bir man dosyası seçiniz"
+msgstr ""
+
+#: messages.rb:39
+msgid "Görüntülemek istediğiniz dosyanız henüz man dosyası formatında değil"
+msgstr ""
