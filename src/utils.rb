@@ -124,6 +124,18 @@ class Utils
       file.write(content)
       file.rewind
       file.read
+      fm = FileMagic.new
+      if fm.file(file.path).scan(/troff/i).length == 0
+        msg = Gtk::MessageDialog.new(nil, Gtk::Dialog::DESTROY_WITH_PARENT,
+        Gtk::MessageDialog::INFO, Gtk::MessageDialog::BUTTONS_OK, PREVIEW_MAN_FILE)
+        msg.show_all()
+        if msg.run == Gtk::Dialog::RESPONSE_OK
+            file.close
+            file.unlink
+            msg.destroy
+        end
+        return
+      end
       output = IO.popen("man2html #{file.path}")
       str = output.readlines
       i = 0
@@ -171,7 +183,7 @@ class Utils
          end
        rescue
          msg = Gtk::MessageDialog.new(nil, Gtk::Dialog::DESTROY_WITH_PARENT,
-         Gtk::MessageDialog::INFO, Gtk::MessageDialog::BUTTONS_OK, "Açmak için yanlış bir dosya seçtiniz")
+         Gtk::MessageDialog::INFO, Gtk::MessageDialog::BUTTONS_OK, OPEN_MAN_FILE_ERROR)
          msg.show_all()
          if msg.run == Gtk::Dialog::RESPONSE_OK
            msg.destroy
@@ -229,7 +241,7 @@ class Utils
             File.delete(file)
             msg = Gtk::MessageDialog.new(dialog,
             Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
-            Gtk::MessageDialog::BUTTONS_OK, "Html dosyasına dönüştürülmek istenen dosya bir man dosyası değil")
+            Gtk::MessageDialog::BUTTONS_OK, CREATE_MAN_FILE_ERROR)
             msg.show_all()
             if msg.run == Gtk::Dialog::RESPONSE_OK
                   msg.destroy
