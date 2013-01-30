@@ -221,6 +221,19 @@ class Utils
           content = editor.buffer.text
           File.open(file, "w") { |f| f <<  content }
           # ayni textin htmlye donusturulmesi
+          fm = FileMagic.new
+          if fm.file(file).scan(/troff/i).length == 0
+            File.delete(file)
+            msg = Gtk::MessageDialog.new(dialog,
+            Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
+            Gtk::MessageDialog::BUTTONS_OK, "Html dosyasına dönüştürülmek istenen dosya bir man dosyası değil")
+            msg.show_all()
+            if msg.run == Gtk::Dialog::RESPONSE_OK
+                  msg.destroy
+                  dialog.destroy
+                  return
+            end
+          end
           output = IO.popen("man2html #{file}")
           str = output.readlines
           i = 0
@@ -229,16 +242,15 @@ class Utils
               content = content + str[i]
               i = i + 1
           end
-          
           File.open(file, "w") { |f| f <<  content }
           msg = Gtk::MessageDialog.new(dialog,
-              Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
-              Gtk::MessageDialog::BUTTONS_OK, SAVED)
-              msg.show_all()
-              if msg.run == Gtk::Dialog::RESPONSE_OK
-                  msg.destroy
-                  dialog.destroy
-              end
+          Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
+          Gtk::MessageDialog::BUTTONS_OK, SAVED)
+          msg.show_all()
+          if msg.run == Gtk::Dialog::RESPONSE_OK
+              msg.destroy
+              dialog.destroy
+          end
       else
           dialog.destroy
       end
