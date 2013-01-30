@@ -139,32 +139,41 @@ class Utils
         [Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL],
         [Gtk::Stock::OPEN, Gtk::Dialog::RESPONSE_ACCEPT])
         dialog.show
-        if dialog.run == Gtk::Dialog::RESPONSE_ACCEPT
-          @@saved = true
-          file = dialog.filename
-          @@filename = file
-          fm = FileMagic.new
-      	  # gzip dosyasi
-          if fm.file(file).scan(/gziP/i).length != 0
+        begin
+          if dialog.run == Gtk::Dialog::RESPONSE_ACCEPT
+            @@saved = true
+            file = dialog.filename
+            @@filename = file
+            fm = FileMagic.new
+            # gzip dosyasi
+            if fm.file(file).scan(/gziP/i).length != 0
       	      gz = Zlib::GzipReader.new(open(file)).read 
               editor.buffer.text = gz
-          # zip dosyasi
-       	  elsif fm.file(file).scan(/zip/i).length != 0
+            # zip dosyasi
+       	    elsif fm.file(file).scan(/zip/i).length != 0
        	      Zip::ZipFile.open(file) do |zip_file|
        	      zip_file.each do |f|
               editor.buffer.text = zip_file.read(f)
-                 end
-               end
-          # herhangi bir text
-      	  else
+                end
+              end
+            # herhangi bir text
+      	    else
               content = ""
               IO.foreach(file){|block|  content = content + "\n"+ block}
               editor.buffer.text = content
-          end
-              dialog.destroy
-         
-       else
-          dialog.destroy
+            end
+              dialog.destroy         
+         else
+           dialog.destroy
+         end
+       rescue
+         msg = Gtk::MessageDialog.new(nil, Gtk::Dialog::DESTROY_WITH_PARENT,
+         Gtk::MessageDialog::INFO, Gtk::MessageDialog::BUTTONS_OK, "Açmak için yanlış bir dosya seçtiniz")
+         msg.show_all()
+         if msg.run == Gtk::Dialog::RESPONSE_OK
+           msg.destroy
+           dialog.destroy
+         end
        end
   end
 
