@@ -3,7 +3,7 @@ require 'gettext'
 require 'rubygems'
 include GetText
 bindtextdomain("messages", :path => "locale")
-GetText.set_locale_all("en")
+GetText.set_locale_all("tr")
 CATEGORY = _("Bölümler")
 FILE = _("Dosya")
 NO_MAN_FILE = _("Yüklenmiş man dosyası yok")
@@ -37,3 +37,9 @@ SUBHEAD = _("Alt başlık \n .SS")
 CREATE_MAN_FILE_ERROR = _("Html dosyasına dönüştürülmek istenen dosya bir man dosyası değil")
 OPEN_MAN_FILE_ERROR = _("Lütfen açmak için bir man dosyası seçiniz")
 PREVIEW_MAN_FILE = _("Görüntülemek istediğiniz dosyanız henüz man dosyası formatında değil")
+SETTINGS = _("Ayarlar")
+LANGUAGES = _("Dil Seçenekleri")
+ENGLISH = _("İngilizce")
+TURKISH = _("Türkçe")
+GERMAN = _("Almanca")
+

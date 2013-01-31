@@ -90,12 +90,29 @@ class Editor < Utils
      filemenu.append(make_html)
      filemenu.append(exit_)
      mb.append(filemenuitem)
+     # setting menu
+     settingmenu = Gtk::Menu.new
+     settingmenuitem = Gtk::MenuItem.new(SETTINGS)
+     settingmenuitem.set_submenu(settingmenu)
+     mb.append(settingmenuitem)
+     imenu = Gtk::Menu.new
+     lang = Gtk::MenuItem.new(LANGUAGES)
+     lang.set_submenu(imenu)
+     en = Gtk::MenuItem.new(ENGLISH)
+     tr = Gtk::MenuItem.new(TURKISH)
+     de = Gtk::MenuItem.new(GERMAN)
+     imenu.append(tr)
+     imenu.append(en)
+     imenu.append(de) 
+     settingmenu.append(lang)
      open.signal_connect("activate"){o=Utils.new; o.open_file(@win,@editor)}
      new.signal_connect("activate"){o=Utils.new; o.open_new_empty_file(@win,@editor)}
      save.signal_connect("activate"){o=Utils.new; o.save(@win,@editor)}
      save_as.signal_connect("activate"){o=Utils.new; o.save_as(@win,@editor)}
      exit_.signal_connect("activate"){Gtk.main_quit}
      make_html.signal_connect("activate"){o=Utils.new; o.create_html_file(@editor,@win)}
+     en.signal_connect("activate"){GetText.set_locale_all("en");bindtextdomain("messages", :path => "locale");@win.show_all}
+     tr.signal_connect("activate"){GetText.set_locale_all("tr");@win.show_all}
      @vbox.pack_start(mb,false,false,0) 
   end
   def toolBar

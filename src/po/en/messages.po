@@ -147,3 +147,23 @@ msgstr ""
 #: messages.rb:39
 msgid "Görüntülemek istediğiniz dosyanız henüz man dosyası formatında değil"
 msgstr ""
+
+#: messages.rb:40
+msgid "Ayarlar"
+msgstr "Settings"
+
+#: messages.rb:41
+msgid "Dil Seçenekleri"
+msgstr "Languages"
+
+#: messages.rb:42
+msgid "İngilizce"
+msgstr "English"
+
+#: messages.rb:43
+msgid "Türkçe"
+msgstr "Turkish"
+
+#: messages.rb:44
+msgid "Almanca"
+msgstr "German"
