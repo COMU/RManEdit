@@ -15,7 +15,6 @@ class Utils
   
   def lang_choice(win,lang)
       if not @@saved
-        puts lang
         dialog = Gtk::MessageDialog.new(win, Gtk::Dialog::MODAL,
         Gtk::MessageDialog::QUESTION,Gtk::MessageDialog::BUTTONS_YES_NO,
         RESTART)

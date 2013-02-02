@@ -22,119 +22,119 @@ msgstr "Category"
 
 #: messages.rb:9
 msgid "Dosya"
-msgstr ""
+msgstr "File"
 
 #: messages.rb:10
 msgid "Yüklenmiş man dosyası yok"
-msgstr ""
+msgstr "Man file is not installed"
 
 #: messages.rb:11
 msgid "Aç"
-msgstr ""
+msgstr "Open"
 
 #: messages.rb:12
 msgid "Yeni"
-msgstr ""
+msgstr "New"
 
 #: messages.rb:13
 msgid "Kaydet"
-msgstr ""
+msgstr "Save"
 
 #: messages.rb:14
 msgid "Farklı Kaydet"
-msgstr ""
+msgstr "Save as"
 
 #: messages.rb:15
 msgid "Kes"
-msgstr ""
+msgstr "Cut"
 
 #: messages.rb:16
 msgid "Kopyala"
-msgstr ""
+msgstr "Copy"
 
 #: messages.rb:17
 msgid "Kaydedildi"
-msgstr ""
+msgstr "Saved"
 
 #: messages.rb:18
 msgid "Man Dosyasını Görüntüle"
-msgstr ""
+msgstr "Preview man file"
 
 #: messages.rb:19
 msgid "Değişiklikleriniz kaybedilecek. Devam etmek istiyor musunuz?"
-msgstr ""
+msgstr "Your changes will lost. Do you want continue?"
 
 #: messages.rb:20
 msgid "Html dosyasına dönüştür"
-msgstr ""
+msgstr "Convert to html file"
 
 #: messages.rb:21
 msgid "Bu etiketi girmemişsiniz."
-msgstr ""
+msgstr "You didn't this tag"
 
 #: messages.rb:22
 msgid "Çıkış"
-msgstr ""
+msgstr "Exit"
 
 #: messages.rb:23
 msgid "Yapıştır"
-msgstr ""
+msgstr "Paste"
 
 #: messages.rb:24
 msgid "Görüntülemek için dosyayı kaydetmeniz gerekir"
-msgstr ""
+msgstr "If you want to view file, you must save it"
 
 #: messages.rb:25
 msgid "İtalik\n .I"
-msgstr ""
+msgstr "Italic\n .I"
 
 #: messages.rb:26
 msgid "Koyu\n .B"
-msgstr ""
+msgstr "Bold\n .B"
 
 #: messages.rb:27
 msgid "Girinti\n .RE"
-msgstr ""
+msgstr "Indent\n .RE "
 
 #: messages.rb:28
 msgid "Bölüm başlığı ve sola dayalı yazma\n .SH"
-msgstr ""
+msgstr "Subhead and justify left"
 
 #: messages.rb:29
 msgid "Alt satıra geç\n .br"
-msgstr ""
+msgstr "Jump to the bottom line"
 
 #: messages.rb:30
 msgid "Paragraf\n .P"
-msgstr ""
+msgstr "Paragraph\n .P"
 
 #: messages.rb:31
 msgid "Yorum satiri\n .\\\" "
-msgstr ""
+msgstr "Comment line\n .\\\" "
 
 #: messages.rb:32
 msgid "Sütunlu yaz\n .TP"
-msgstr ""
+msgstr "Seperate to coloumns"
 
 #: messages.rb:33
 msgid "Paragrafa girinti ile başla\n .IP"
-msgstr ""
+msgstr "Start indent on paragraph"
 
 #: messages.rb:34
 msgid "Nofill\n .nf"
-msgstr ""
+msgstr "Nofill\n .nf"
 
 #: messages.rb:35
 msgid "Fill\n .fi"
-msgstr ""
+msgstr "Fill\n .fi"
 
 #: messages.rb:36
 msgid "Satırdan sonraki ilk girinti\n .HP"
-msgstr ""
+msgstr "Indent the first line of"
 
 #: messages.rb:37
 msgid "Alt başlık \n .SS"
-msgstr ""
+msgstr "Subhead"
 
 #: messages.rb:38
 msgid "Html dosyasına dönüştürülmek istenen dosya bir man dosyası değil"
@@ -150,24 +150,24 @@ msgstr ""
 
 #: messages.rb:41
 msgid "Ayarlar"
-msgstr ""
+msgstr "Settings"
 
 #: messages.rb:42
 msgid "Dil Seçenekleri"
-msgstr ""
+msgstr "Languages"
 
 #: messages.rb:43
 msgid "İngilizce"
-msgstr ""
+msgstr "English"
 
 #: messages.rb:44
 msgid "Türkçe"
-msgstr ""
+msgstr "Turkish"
 
 #: messages.rb:45
 msgid "Almanca"
-msgstr ""
+msgstr "Germany"
 
 #: messages.rb:46
 msgid "Program yeniden başlatılacağı için değişiklikleriniz kaybedilecek."
-msgstr ""
+msgstr "Program restart and your changes will be lost"
