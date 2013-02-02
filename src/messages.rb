@@ -1,9 +1,10 @@
 #encoding: UTF-8
 require 'gettext'
 require 'rubygems'
+require './lang'
 include GetText
 bindtextdomain("messages", :path => "locale")
-GetText.set_locale_all("tr")
+GetText.set_locale_all(LANGUAGE)
 CATEGORY = _("Bölümler")
 FILE = _("Dosya")
 NO_MAN_FILE = _("Yüklenmiş man dosyası yok")
@@ -15,7 +16,7 @@ CUT = _("Kes")
 COPY = _("Kopyala")
 SAVED = _("Kaydedildi")
 VIEW_MAN_FILE = _("Man Dosyasını Görüntüle")
-CHANGE_WILL_LOST = _("Tüm değişiklikler kaybedilecek. Devam etmek istiyor musunuz?")
+CHANGE_WILL_LOST = _("Değişiklikleriniz kaybedilecek. Devam etmek istiyor musunuz?")
 CREATE_HTML_FILE = _("Html dosyasına dönüştür")
 NO_LABEL = _("Bu etiketi girmemişsiniz.")
 EXIT = _("Çıkış")
@@ -42,4 +43,4 @@ LANGUAGES = _("Dil Seçenekleri")
 ENGLISH = _("İngilizce")
 TURKISH = _("Türkçe")
 GERMAN = _("Almanca")
-
+RESTART = _("Program yeniden başlatılacağı için değişiklikleriniz kaybedilecek.")

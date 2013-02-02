@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-01-31 00:38+0200\n"
-"PO-Revision-Date: 2013-01-31 00:38+0200\n"
+"POT-Creation-Date: 2013-02-02 10:32+0200\n"
+"PO-Revision-Date: 2013-02-02 10:32+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,154 +16,158 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: messages.rb:7
+#: messages.rb:8
 msgid "Bölümler"
 msgstr "Category"
 
-#: messages.rb:8
-msgid "Dosya"
-msgstr "File"
-
 #: messages.rb:9
-msgid "Yüklenmiş man dosyası yok"
-msgstr "Man file is not installed"
+msgid "Dosya"
+msgstr ""
 
 #: messages.rb:10
-msgid "Aç"
-msgstr "Open"
+msgid "Yüklenmiş man dosyası yok"
+msgstr ""
 
 #: messages.rb:11
-msgid "Yeni"
-msgstr "New"
+msgid "Aç"
+msgstr ""
 
 #: messages.rb:12
-msgid "Kaydet"
-msgstr "Save"
+msgid "Yeni"
+msgstr ""
 
 #: messages.rb:13
-msgid "Farklı Kaydet"
-msgstr "Save as"
+msgid "Kaydet"
+msgstr ""
 
 #: messages.rb:14
-msgid "Kes"
-msgstr "Cut"
+msgid "Farklı Kaydet"
+msgstr ""
 
 #: messages.rb:15
-msgid "Kopyala"
-msgstr "Copy"
+msgid "Kes"
+msgstr ""
 
 #: messages.rb:16
-msgid "Kaydedildi"
-msgstr "Saved"
+msgid "Kopyala"
+msgstr ""
 
 #: messages.rb:17
-msgid "Man Dosyasını Görüntüle"
-msgstr "View man file"
+msgid "Kaydedildi"
+msgstr ""
 
 #: messages.rb:18
-msgid "Tüm değişiklikler kaybedilecek. Devam etmek istiyor musunuz?"
-msgstr "Your changes will lost. Do you want continue?"
+msgid "Man Dosyasını Görüntüle"
+msgstr ""
 
 #: messages.rb:19
-msgid "Html dosyasına dönüştür"
-msgstr "Convert to html file"
+msgid "Değişiklikleriniz kaybedilecek. Devam etmek istiyor musunuz?"
+msgstr ""
 
 #: messages.rb:20
-msgid "Bu etiketi girmemişsiniz."
-msgstr "You didn't this tag"
+msgid "Html dosyasına dönüştür"
+msgstr ""
 
 #: messages.rb:21
-msgid "Çıkış"
-msgstr "Exit"
+msgid "Bu etiketi girmemişsiniz."
+msgstr ""
 
 #: messages.rb:22
-msgid "Yapıştır"
-msgstr "Paste"
+msgid "Çıkış"
+msgstr ""
 
 #: messages.rb:23
-msgid "Görüntülemek için dosyayı kaydetmeniz gerekir"
-msgstr "If you want to view file, you must save it"
+msgid "Yapıştır"
+msgstr ""
 
 #: messages.rb:24
-msgid "İtalik\n .I"
-msgstr "Italic"
+msgid "Görüntülemek için dosyayı kaydetmeniz gerekir"
+msgstr ""
 
 #: messages.rb:25
-msgid "Koyu\n .B"
-msgstr "Bold"
+msgid "İtalik\n .I"
+msgstr ""
 
 #: messages.rb:26
-msgid "Girinti\n .RE"
-msgstr "Indent"
+msgid "Koyu\n .B"
+msgstr ""
 
 #: messages.rb:27
-msgid "Bölüm başlığı ve sola dayalı yazma\n .SH"
-msgstr "Subhed and justify left"
+msgid "Girinti\n .RE"
+msgstr ""
 
 #: messages.rb:28
-msgid "Alt satıra geç\n .br"
-msgstr "Jump to the bottom line"
+msgid "Bölüm başlığı ve sola dayalı yazma\n .SH"
+msgstr ""
 
 #: messages.rb:29
-msgid "Paragraf\n .P"
-msgstr "Paragraph"
+msgid "Alt satıra geç\n .br"
+msgstr ""
 
 #: messages.rb:30
-msgid "Yorum satiri\n .\\\" "
-msgstr "Comment line"
+msgid "Paragraf\n .P"
+msgstr ""
 
 #: messages.rb:31
-msgid "Sütunlu yaz\n .TP"
-msgstr "Seperate to coloumn"
+msgid "Yorum satiri\n .\\\" "
+msgstr ""
 
 #: messages.rb:32
-msgid "Paragrafa girinti ile başla\n .IP"
-msgstr "Start indent on paragraph"
+msgid "Sütunlu yaz\n .TP"
+msgstr ""
 
 #: messages.rb:33
-msgid "Nofill\n .nf"
-msgstr "Nofill"
+msgid "Paragrafa girinti ile başla\n .IP"
+msgstr ""
 
 #: messages.rb:34
-msgid "Fill\n .fi"
-msgstr "Fill\n .fi"
+msgid "Nofill\n .nf"
+msgstr ""
 
 #: messages.rb:35
-msgid "Satırdan sonraki ilk girinti\n .HP"
-msgstr "Indent the first line of"
+msgid "Fill\n .fi"
+msgstr ""
 
 #: messages.rb:36
-msgid "Alt başlık \n .SS"
-msgstr "Subhead"
+msgid "Satırdan sonraki ilk girinti\n .HP"
+msgstr ""
 
 #: messages.rb:37
-msgid "Html dosyasına dönüştürülmek istenen dosya bir man dosyası değil"
+msgid "Alt başlık \n .SS"
 msgstr ""
 
 #: messages.rb:38
-msgid "Lütfen açmak için bir man dosyası seçiniz"
+msgid "Html dosyasına dönüştürülmek istenen dosya bir man dosyası değil"
 msgstr ""
 
 #: messages.rb:39
-msgid "Görüntülemek istediğiniz dosyanız henüz man dosyası formatında değil"
+msgid "Lütfen açmak için bir man dosyası seçiniz"
 msgstr ""
 
 #: messages.rb:40
-msgid "Ayarlar"
-msgstr "Settings"
+msgid "Görüntülemek istediğiniz dosyanız henüz man dosyası formatında değil"
+msgstr ""
 
 #: messages.rb:41
-msgid "Dil Seçenekleri"
-msgstr "Languages"
+msgid "Ayarlar"
+msgstr ""
 
 #: messages.rb:42
-msgid "İngilizce"
-msgstr "English"
+msgid "Dil Seçenekleri"
+msgstr ""
 
 #: messages.rb:43
-msgid "Türkçe"
-msgstr "Turkish"
+msgid "İngilizce"
+msgstr ""
 
 #: messages.rb:44
+msgid "Türkçe"
+msgstr ""
+
+#: messages.rb:45
 msgid "Almanca"
-msgstr "German"
+msgstr ""
+
+#: messages.rb:46
+msgid "Program yeniden başlatılacağı için değişiklikleriniz kaybedilecek."
+msgstr ""

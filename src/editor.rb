@@ -5,7 +5,8 @@ require 'filemagic'
 require 'zlib'
 require 'zip/zip'
 require './utils'
-require './messages'
+require './lang'
+load 'messages.rb'
 require 'rubygems'
 
 class Editor < Utils
@@ -111,8 +112,8 @@ class Editor < Utils
      save_as.signal_connect("activate"){o=Utils.new; o.save_as(@win,@editor)}
      exit_.signal_connect("activate"){Gtk.main_quit}
      make_html.signal_connect("activate"){o=Utils.new; o.create_html_file(@editor,@win)}
-     en.signal_connect("activate"){GetText.set_locale_all("en");bindtextdomain("messages", :path => "locale");@win.show_all}
-     tr.signal_connect("activate"){GetText.set_locale_all("tr");@win.show_all}
+     en.signal_connect("activate"){o=Utils.new;o.lang_choice(@win,"en")}
+     tr.signal_connect("activate"){o=Utils.new;o.lang_choice(@win,"tr")}
      @vbox.pack_start(mb,false,false,0) 
   end
   def toolBar

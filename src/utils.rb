@@ -6,11 +6,37 @@ require 'gettext'
 require 'rubygems'
 require 'gtk2'
 require 'tempfile'
+require './lang'
 
 class Utils
   include GetText 
   @@filename = ""
   @@saved = true
+  
+  def lang_choice(win,lang)
+      if not @@saved
+        puts lang
+        dialog = Gtk::MessageDialog.new(win, Gtk::Dialog::MODAL,
+        Gtk::MessageDialog::QUESTION,Gtk::MessageDialog::BUTTONS_YES_NO,
+        RESTART)
+        if dialog.run == Gtk::Dialog::RESPONSE_YES
+          dialog.destroy
+          f = File.open("lang.rb","w")
+          f.write("LANGUAGE=\"#{lang}\"")
+          f.close
+          IO.popen("ruby editor.rb")
+          Gtk.main_quit
+        else
+          dialog.destroy
+        end
+      else
+          f = File.open("lang.rb","w")
+          f.write("LANGUAGE=\"#{lang}\"")
+          f.close
+          IO.popen("ruby editor.rb")
+          Gtk.main_quit 
+      end
+  end
 
   def save_as(win,editor)
       @@filename = ""
