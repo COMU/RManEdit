@@ -59,6 +59,10 @@ sudo yum install file-libs <br>
 sudo yum install webkitgtk-devel<br>
 sudo yum install file-devel<br>
 sudo yum install fcgi-devel<br></pre>
+<strong>Kurulum tamamlandıktan sonra dil dosyalarının hazırlanması için RManEdit/src dizini altındayken:<br>
+mkdir -p locale/en/LC_MESSAGES/<br>
+rmsgfmt po/en/messages.po -o locale/en/LC_MESSAGES/messages.mo<br>
+Uygulamanın çalışır halini görebilmek için gene aynı dizin altında "ruby editor.rb"<br></strong>
       </section>
       <footer>
         <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
