@@ -25,3 +25,8 @@ sudo yum install file-libs
 sudo yum install webkitgtk-devel
 sudo yum install file-devel
 sudo yum install fcgi-devel
+
+Kurulum tamamlandıktan sonra dil dosyalarının hazırlanması için RManEdit/src dizini altındayken:
+mkdir -p locale/en/LC_MESSAGES/
+rmsgfmt po/en/messages.po -o locale/en/LC_MESSAGES/messages.mo
+Uygulamanın çalışır halini görebilmek için gene aynı dizin altında "ruby editor.rb"
