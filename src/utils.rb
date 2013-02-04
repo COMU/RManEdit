@@ -278,9 +278,11 @@ class Utils
           output = IO.popen("man2html #{file}")
           str = output.readlines
           i = 5
-          content = str[1]+str[2]+str[3]+"<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"></HEAD><BODY>"
+          content = str[1]+str[2]+str[3]+"<meta http-equiv=\"Content-Type\" 
+          content=\"text/html;charset=UTF-8\"></HEAD><BODY>"
           while i< str.length do
             content = content + str[i]
+            puts content
             i = i + 1
           end
           File.open(file, "w") { |f| f <<  content }
@@ -296,5 +298,17 @@ class Utils
           dialog.destroy
       end
   end
-
+  def app_about
+    w = Gtk::Window.new
+    layout = Gtk::Layout.new
+    info = Gtk::Label.new(APP_INFO)
+    b = Gtk::Button.new
+    l = Gtk::Label.new(OK)
+    w.set_default_size(330,300)
+    b.add(l)
+    layout.put(info,10,30)
+    layout.put(b,250,240) 
+    w.add(layout)
+    w.show_all
+  end
 end

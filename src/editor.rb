@@ -106,6 +106,14 @@ class Editor < Utils
      imenu.append(en)
      imenu.append(de) 
      settingmenu.append(lang)
+     # about
+     aboutmenu = Gtk::Menu.new
+     aboutmenuitem = Gtk::MenuItem.new(ABOUT)
+     aboutmenuitem.set_submenu(aboutmenu)
+     app_about = Gtk::MenuItem.new(APP_ABOUT)
+     aboutmenu.append(app_about)
+     mb.append(aboutmenuitem)
+
      open.signal_connect("activate"){o=Utils.new; o.open_file(@win,@editor)}
      new.signal_connect("activate"){o=Utils.new; o.open_new_empty_file(@win,@editor)}
      save.signal_connect("activate"){o=Utils.new; o.save(@win,@editor)}
@@ -114,6 +122,7 @@ class Editor < Utils
      make_html.signal_connect("activate"){o=Utils.new; o.create_html_file(@editor,@win)}
      en.signal_connect("activate"){o=Utils.new;o.lang_choice(@win,"en")}
      tr.signal_connect("activate"){o=Utils.new;o.lang_choice(@win,"tr")}
+     app_about.signal_connect("activate"){o=Utils.new; o.app_about}
      @vbox.pack_start(mb,false,false,0) 
   end
   def toolBar
