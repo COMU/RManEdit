@@ -163,10 +163,11 @@ class Utils
       end
       output = IO.popen("man2html #{file.path}")
       str = output.readlines
-      i = 0
-      content = ""
+      i = 5
+      content = str[1]+str[2]+str[3]+"<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"></HEAD><BODY>"
       while i< str.length do
           content = content + str[i]
+          puts content
           i = i + 1
       end
       manview.load_string(content,"text/html", "UTF-8", "file://home")   
@@ -276,11 +277,11 @@ class Utils
           end
           output = IO.popen("man2html #{file}")
           str = output.readlines
-          i = 0
-          content = ""
+          i = 5
+          content = str[1]+str[2]+str[3]+"<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"></HEAD><BODY>"
           while i< str.length do
-              content = content + str[i]
-              i = i + 1
+            content = content + str[i]
+            i = i + 1
           end
           File.open(file, "w") { |f| f <<  content }
           msg = Gtk::MessageDialog.new(dialog,
