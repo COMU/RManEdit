@@ -1,3 +1,4 @@
+#!/usr/bin/ruby
 #encoding: UTF-8
 require 'gtk2'
 require 'webkit'

@@ -313,4 +313,7 @@ class Utils
     w.show_all
     b.signal_connect("clicked"){w.destroy}
   end
+  def help
+    
+  end
 end
