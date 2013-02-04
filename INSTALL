@@ -3,18 +3,15 @@ KURULUM
 Debian Tabanlı Sistemler İçin Kurulum:
 sudo apt-get install ruby1.9.1-dev
 sudo apt-get install ruby-gtk2
-sudo gem install gtk2
-sudo apt-get install ruby-filesystem  
 sudo apt-get install libmagic-dev 
-sudo gem install ruby-filemagic 
-sudo apt-get install libwebkit-dev
-sudo apt-get install libwebkitgtk-dev 
-sudo apt-get install libwebkitgtk-3.0-dev 
-sudo apt-get install libghc-webkit-dev
-sudo gem install -v 0.0.5 gtk-webkit-ruby
-sudo gem install rubyzip
+sudo apt-get install libwebkitgtk-3.0-dev
 sudo apt-get install ruby-gettext
 sudo apt-get install man2html
+sudo apt-get install libghc-webkit-dev
+sudo gem install gtk2
+sudo gem install ruby-filemagic
+sudo gem install -v 0.0.5 gtk-webkit-ruby
+
 
 RPM Paket Yöneticisine Sahip Dağıtımlar İçin Kurulum:
 sudo yum install ruby-devel
