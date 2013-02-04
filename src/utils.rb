@@ -304,6 +304,7 @@ class Utils
     info = Gtk::Label.new(APP_INFO)
     b = Gtk::Button.new
     l = Gtk::Label.new(OK)
+    w.set_tile(APP_ABOUT)
     w.set_default_size(330,300)
     b.add(l)
     layout.put(info,10,30)
