@@ -6,6 +6,7 @@ require 'gettext'
 require 'rubygems'
 require 'gtk2'
 require 'tempfile'
+require 'webkit'
 require './lang'
 
 class Utils
@@ -314,6 +315,15 @@ class Utils
     b.signal_connect("clicked"){w.destroy}
   end
   def help
-    
+    w = Gtk::Window.new
+    w.show_all
+    swin = Gtk::ScrolledWindow.new
+    webview = WebKit::WebView.new
+    w.set_title(HELP)
+    w.set_size_request(500,500)
+    webview.load_string(HELP_CONTENT,"text/html", "UTF-8", "file://home")
+    swin.add(webview)
+    w.add(swin)
+    w.show_all
   end
 end

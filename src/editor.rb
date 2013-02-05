@@ -36,7 +36,7 @@ class Editor < Utils
       @manview = WebKit::WebView.new
       @treeview = Gtk::TreeView.new
       swin.add(@editor)
-      content = "<HTML><h2> #{NO_MAN_FILE}</h2></HTML>"
+      content = "<html><head><h2> #{NO_MAN_FILE}</h2></head></HTML>"
       # man page icin textView
       @manview.load_string(content,"text/html", "UTF-8", "file://home") 
       # man goruntusu icin scrollWind
@@ -113,6 +113,9 @@ class Editor < Utils
      aboutmenuitem.set_submenu(aboutmenu)
      app_about = Gtk::MenuItem.new(APP_ABOUT)
      aboutmenu.append(app_about)
+     # help 
+     helpmenuitem = Gtk::MenuItem.new(HELP)
+     aboutmenu.append(helpmenuitem)     
      mb.append(aboutmenuitem)
 
      open.signal_connect("activate"){o=Utils.new; o.open_file(@win,@editor)}
@@ -124,6 +127,7 @@ class Editor < Utils
      en.signal_connect("activate"){o=Utils.new;o.lang_choice(@win,"en")}
      tr.signal_connect("activate"){o=Utils.new;o.lang_choice(@win,"tr")}
      app_about.signal_connect("activate"){o=Utils.new; o.app_about}
+     helpmenuitem.signal_connect("activate"){o=Utils.new; o.help}
      @vbox.pack_start(mb,false,false,0) 
   end
   def toolBar
