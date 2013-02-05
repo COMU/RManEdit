@@ -38,12 +38,15 @@ class Utils
       end
   end
 
-  def save_as(win,editor)
-      @@filename = ""
-      save(win,editor)   
+  def save_as(win,editor,temp)
+      save(win,editor,temp)   
   end
 
-  def save(win,editor)
+  def save(win,editor,temp)
+      if temp == "save_as"
+        temp = @@filename
+        @@filename = ""
+      end
       # daha once hic kaydedilmemis
       if @@filename == ""
           dialog = Gtk::FileChooserDialog.new(SAVE, win, Gtk::FileChooser::ACTION_SAVE, nil,
@@ -65,6 +68,9 @@ class Utils
               dialog.destroy
             end
           else
+            if temp != ""
+              @@filename = temp
+            end
             dialog.destroy
           end
           @@saved = true
@@ -88,6 +94,7 @@ class Utils
      else
         editor.buffer.text = ""
         @@saved = true
+        @@filename = ""
     end
   end
 
@@ -168,7 +175,6 @@ class Utils
       content = str[1]+str[2]+str[3]+"<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"></HEAD><BODY>"
       while i< str.length do
           content = content + str[i]
-          puts content
           i = i + 1
       end
       manview.load_string(content,"text/html", "UTF-8", "file://home")   
@@ -283,7 +289,6 @@ class Utils
           content=\"text/html;charset=UTF-8\"></HEAD><BODY>"
           while i< str.length do
             content = content + str[i]
-            puts content
             i = i + 1
           end
           File.open(file, "w") { |f| f <<  content }

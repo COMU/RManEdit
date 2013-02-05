@@ -39,8 +39,8 @@ class Editor < Utils
       content = "<html><head><h2> #{NO_MAN_FILE}</h2></head></HTML>"
       # man page icin textView
       @manview.load_string(content,"text/html", "UTF-8", "file://home") 
-      # man goruntusu icin scrollWind
-      swin2 = Gtk::ScrolledWindow.new
+      # man goruntusu icin scrollWind 
+      swin2 = Gtk::ScrolledWindow.new()
       swin2.add(@manview)
       renderer = Gtk::CellRendererText.new 
       column   = Gtk::TreeViewColumn.new(CATEGORY, renderer,  :text => INDEX)
@@ -120,8 +120,8 @@ class Editor < Utils
 
      open.signal_connect("activate"){o=Utils.new; o.open_file(@win,@editor)}
      new.signal_connect("activate"){o=Utils.new; o.open_new_empty_file(@win,@editor)}
-     save.signal_connect("activate"){o=Utils.new; o.save(@win,@editor)}
-     save_as.signal_connect("activate"){o=Utils.new; o.save_as(@win,@editor)}
+     save.signal_connect("activate"){o=Utils.new; o.save(@win,@editor,"")}
+     save_as.signal_connect("activate"){o=Utils.new; o.save_as(@win,@editor,"save_as")}
      exit_.signal_connect("activate"){Gtk.main_quit}
      make_html.signal_connect("activate"){o=Utils.new; o.create_html_file(@editor,@win)}
      en.signal_connect("activate"){o=Utils.new;o.lang_choice(@win,"en")}
@@ -167,8 +167,8 @@ class Editor < Utils
         # view_but sensitive
         @buf.signal_connect("changed"){o=Utils.new; o.buf_changed(@buf,view_but)}
 	opentb.signal_connect("clicked"){o = Utils.new; o.open_file(@win,@editor)}
-        saveastb.signal_connect("clicked"){o = Utils.new; o.save_as(@win,@editor)}
-	savetb.signal_connect("clicked"){o= Utils.new; o.save(@win,@editor)}
+        saveastb.signal_connect("clicked"){o = Utils.new; o.save_as(@win,@editor,"save_as")}
+	savetb.signal_connect("clicked"){o= Utils.new; o.save(@win,@editor,"")}
 	cuttb.signal_connect("clicked"){o = Utils.new; o.on_cuttb(@editor)}
 	copytb.signal_connect("clicked"){o = Utils.new; o.on_copytb(@editor)}
 	pastetb.signal_connect("clicked"){o= Utils.new; o.on_pastetb(@editor)}
