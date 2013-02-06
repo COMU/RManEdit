@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-02-02 10:32+0200\n"
-"PO-Revision-Date: 2013-02-02 10:32+0200\n"
+"POT-Creation-Date: 2013-02-06 02:50+0200\n"
+"PO-Revision-Date: 2013-02-06 02:50+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -58,11 +58,11 @@ msgstr "Saved"
 
 #: messages.rb:18
 msgid "Man Dosyasını Görüntüle"
-msgstr "Preview man file"
+msgstr "Preview man page"
 
 #: messages.rb:19
 msgid "Değişiklikleriniz kaybedilecek. Devam etmek istiyor musunuz?"
-msgstr "Your changes will lost. Do you want continue?"
+msgstr "Your changes will be lost. Do you want to continue?"
 
 #: messages.rb:20
 msgid "Html dosyasına dönüştür"
@@ -74,7 +74,7 @@ msgstr "You didn't this tag"
 
 #: messages.rb:22
 msgid "Çıkış"
-msgstr "Exit"
+msgstr "Quit"
 
 #: messages.rb:23
 msgid "Yapıştır"
@@ -94,15 +94,15 @@ msgstr "Bold\n .B"
 
 #: messages.rb:27
 msgid "Girinti\n .RE"
-msgstr "Indent\n .RE "
+msgstr "Indent\n .RE"
 
 #: messages.rb:28
 msgid "Bölüm başlığı ve sola dayalı yazma\n .SH"
-msgstr "Subhead and justify left"
+msgstr "Subhead and justify left\n .SH"
 
 #: messages.rb:29
 msgid "Alt satıra geç\n .br"
-msgstr "Jump to the bottom line"
+msgstr "Jump to the bottom line\n .br"
 
 #: messages.rb:30
 msgid "Paragraf\n .P"
@@ -110,15 +110,15 @@ msgstr "Paragraph\n .P"
 
 #: messages.rb:31
 msgid "Yorum satiri\n .\\\" "
-msgstr "Comment line\n .\\\" "
+msgstr "Comment line\n .\\\""
 
 #: messages.rb:32
 msgid "Sütunlu yaz\n .TP"
-msgstr "Seperate to coloumns"
+msgstr "Seperate to coloumns\n .TP"
 
 #: messages.rb:33
 msgid "Paragrafa girinti ile başla\n .IP"
-msgstr "Start indent on paragraph"
+msgstr "Start indent on paragraph\n .IP"
 
 #: messages.rb:34
 msgid "Nofill\n .nf"
@@ -130,23 +130,23 @@ msgstr "Fill\n .fi"
 
 #: messages.rb:36
 msgid "Satırdan sonraki ilk girinti\n .HP"
-msgstr "Indent the first line of"
+msgstr "First indent after line\n .HP"
 
 #: messages.rb:37
 msgid "Alt başlık \n .SS"
-msgstr "Subhead"
+msgstr "Subhead\n .SS"
 
 #: messages.rb:38
 msgid "Html dosyasına dönüştürülmek istenen dosya bir man dosyası değil"
-msgstr ""
+msgstr "You don't convert this file to Html file because of it is not a man file"
 
 #: messages.rb:39
 msgid "Lütfen açmak için bir man dosyası seçiniz"
-msgstr ""
+msgstr "Please select a man file to open"
 
 #: messages.rb:40
 msgid "Görüntülemek istediğiniz dosyanız henüz man dosyası formatında değil"
-msgstr ""
+msgstr "You don't preview because of  it is not a man file"
 
 #: messages.rb:41
 msgid "Ayarlar"
@@ -166,8 +166,41 @@ msgstr "Turkish"
 
 #: messages.rb:45
 msgid "Almanca"
-msgstr "Germany"
+msgstr "German"
 
 #: messages.rb:46
-msgid "Program yeniden başlatılacağı için değişiklikleriniz kaybedilecek."
-msgstr "Program restart and your changes will be lost"
+msgid "RManEdit yeniden başlatılacağı için değişiklikleriniz kaybedilecek."
+msgstr "Your changes will be lost because of RManEdit will start"
+
+#: messages.rb:47
+msgid "Hakkında"
+msgstr "About"
+
+#: messages.rb:48
+msgid "RManEdit Hakkında Açıklamalar"
+msgstr "About RManEdit"
+
+#: messages.rb:49
+msgid "RManEdit Creative Commons ile lisanlanmıştır.\nRManEdit yazarı: Ebru Akagündüz"
+msgstr "RManEdit licence is Creative Commons\n. Written by Ebru Akagündüz"
+
+#: messages.rb:50
+msgid "Tamam"
+msgstr "OK"
+
+#: messages.rb:51
+msgid "Yardım"
+msgstr "Help"
+
+#: messages.rb:52
+msgid "<!DOCTYPE html><html><head><h3>RManEdit</h3>\n Man sayfaları hazırlamak için bir metin editörüdür. Man sayfaları hazırlanırken koyu, italik, girintili yazma için belirli etiketler kullanılır. RManEdit ise bu etiketlerin kullanımı kolaylaştırıp, man sayfalarını daha hızlı bir şekilde hazırlamanızı sağlar.</head><br><body>\n</ul>\n<li>Çabuk bir şekilde man sayfası hazırlamayı sağlayan ilk özellik menü çubuğundaki simgelerdir. Alttaki menü çubuğunda italik, koyu, girinti, paragraf gibi etiketleri  içeren butonlar vardır. Bilgisayarınızın faresiyle bu simgelerin üzerine geldiğinizde açıklaması yazmaktadır.<br><p></li>\n<li><B>RManEdit</B> programında en sağ kısımda yazdığınız uygulamayı görüntülemeniz için bölüm vardır. Orta kısım man sayfalarının yazılacağı kısımdır. Sol kısımdaki etiketlere tıkladığınızda ise imleç man sayfanızdaki <b>NAME, SYNOPSIS</b> gibi alanlara gider.<p></li>\n<li>Menü çubuğunda <I>Dosya-> Html dosyasına dönüştür</I> kısmı kaydettiğiniz man dosyasını dosyasını html dosyasına çevirir.</li></ul></body>\n</html>"
+
+msgstr "<!DOCTYPE html><html><head><h3>RManEdit</h3>\n RmanEdit is a editor for man page preparing. Specified tags like italic, bold, indetion is used for man pages.
+RmanEdit facilitates to use the tags and you can make man pages quickly.</head><br><body>\n</ul>\n<li>First feature which make man pages quickly are icons at menu bar.
+There are buttons that includes tags like paragraph,indentation,italic,bold etc. in menu bar at downside.
+Description of icons appear when you move on buttons your mouse cursor<br><p></li>\n<li>
+There is a section on right of program interface. In this section, you can view your aplication.
+You can write man pages on middle section. There are tags on left section
+Cursor is moves when you click tags like <b>NAME, SYNOPSIS</b> on left section.<p></li>\n<li>
+convert to html file button on the menu bar converts your man files to html files
+At menu bar <I>File->Convert to html file</I> converts to html file your man file."

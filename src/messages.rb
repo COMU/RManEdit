@@ -53,6 +53,6 @@ HELP_CONTENT = _("<!DOCTYPE html><html><head><h3>RManEdit</h3>
  Man sayfaları hazırlamak için bir metin editörüdür. Man sayfaları hazırlanırken koyu, italik, girintili yazma için belirli etiketler kullanılır. RManEdit ise bu etiketlerin kullanımı kolaylaştırıp, man sayfalarını daha hızlı bir şekilde hazırlamanızı sağlar.</head><br><body>
 </ul>
 <li>Çabuk bir şekilde man sayfası hazırlamayı sağlayan ilk özellik menü çubuğundaki simgelerdir. Alttaki menü çubuğunda italik, koyu, girinti, paragraf gibi etiketleri  içeren butonlar vardır. Bilgisayarınızın faresiyle bu simgelerin üzerine geldiğinizde açıklaması yazmaktadır.<br><p></li>
-<li><B>RManEdit</B> programında en sağ kısımda yazdığınız uygulamayı görüntülemeniz için bölüm vardır. Orta kısım man sayfalarının yazılacağı kısımdır. Sol kısım ise kullanmış olduğunuz <b>NAME, SYNOPSIS</b> gibi etiketlere tıkladığınızda man sayfasında bu kısmı içeren alana gider.<p></li>
-<li>Menü çubuğunda Dosya-> Html dosyasına dönüştür kısmı kaydettiğiniz man dosyasını dosyasını html dosyasına çevirir.</li></ul></body>
+<li><B>RManEdit</B> programında en sağ kısımda yazdığınız uygulamayı görüntülemeniz için bölüm vardır. Orta kısım man sayfalarının yazılacağı kısımdır. Sol kısımdaki etiketlere tıkladığınızda ise imleç man sayfanızdaki <b>NAME, SYNOPSIS</b> gibi alanlara gider.<p></li>
+<li>Menü çubuğunda <I>Dosya-> Html dosyasına dönüştür</I> kısmı kaydettiğiniz man dosyasını dosyasını html dosyasına çevirir.</li></ul></body>
 </html>")
