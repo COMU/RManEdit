@@ -1,9 +1,11 @@
+# -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
-  s.name        = 'rmanedit'
+  s.name        = 'RManEdit'
   s.version     = '1.0.0'
-  s.summary     = "Unix man page editor"
-  s.authors     = ["Ebru Akagunduz"]
+  s.summary     = "Neccessary gems for RManEdit"
+  s.description = "UNIX Manual Page Editor with Ruby & GTK"
+  s.authors     = ["Ebru Akagündüz"]
   s.email       = 'ebru.akagunduz@gmail.com'
-  s.files       = []
+  s.files = ['lib/utils.rb', 'lib/messages.rb', 'lib/lang.rb']
   s.require_paths = ["lib"]
 end
