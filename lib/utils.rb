@@ -7,7 +7,6 @@ require 'rubygems'
 require 'gtk2'
 require 'tempfile'
 require 'webkit'
-require 'lang'
 
 class Utils
   include GetText 
@@ -22,19 +21,20 @@ class Utils
         _("Your changes will be lost because of RManEdit will start"))
         if dialog.run == Gtk::Dialog::RESPONSE_YES
           dialog.destroy
-          f = File.open("lang.rb","w")
+          f = File.open("/home/#{ENV["USER"]}/.config/rmanedit/lang.rb","w")
           f.write("LANGUAGE=\"#{lang}\"")
           f.close
-          IO.popen("ruby editor.rb")
+          IO.popen("rmanedit")
           Gtk.main_quit
         else
           dialog.destroy
         end
       else
-          f = File.open("lang.rb","w")
+          
+          f = File.open("/home/#{ENV["USER"]}/.config/rmanedit/lang.rb","w")
           f.write("LANGUAGE=\"#{lang}\"")
           f.close
-          IO.popen("ruby editor.rb")
+          IO.popen("rmanedit")
           Gtk.main_quit 
       end
   end
@@ -327,8 +327,8 @@ class Utils
     webview = WebKit::WebView.new
     w.set_title(_("Help"))
     w.set_size_request(500,500)
-    HELP_CONTENT = _("<!DOCTYPE html><html><head><h3>RManEdit</h3>\n RmanEdit is a editor for man page preparing. Specified tags like italic, bold, indetion is used for man pages. RmanEdit facilitates to use the tags and you can make man pages quickly.</head><br><body>\n</ul>\n<li>First feature which make man pages quickly are icons at menu bar. There are buttons that includes tags like paragraph,indentation,italic,bold etc. in menu bar at downside. Description of icons appear when you move on buttons your mouse cursor.<br><p></li>\n<li>There is a section on right of program interface. In this section, you can view your aplication. You can write man pages on middle section. There are tags on left section. Cursor is moves when you click tags like <b>NAME, SYNOPSIS</b> on left section.<p></li>\n<li> At menu bar <I>File->Convert to html file</I> converts to html file your man file.")
-    webview.load_string(HELP_CONTENT,"text/html", "UTF-8", "file://home")
+    help_content = _("<!DOCTYPE html><html><head><h3>RManEdit</h3>\n RmanEdit is a editor for man page preparing. Specified tags like italic, bold, indetion is used for man pages. RmanEdit facilitates to use the tags and you can make man pages quickly.</head><br><body>\n</ul>\n<li>First feature which make man pages quickly are icons at menu bar. There are buttons that includes tags like paragraph,indentation,italic,bold etc. in menu bar at downside. Description of icons appear when you move on buttons your mouse cursor.<br><p></li>\n<li>There is a section on right of program interface. In this section, you can view your aplication. You can write man pages on middle section. There are tags on left section. Cursor is moves when you click tags like <b>NAME, SYNOPSIS</b> on left section.<p></li>\n<li> At menu bar <I>File->Convert to html file</I> converts to html file your man file.")
+    webview.load_string(help_content,"text/html", "UTF-8", "file://home")
     swin.add(webview)
     w.add(swin)
     w.show_all

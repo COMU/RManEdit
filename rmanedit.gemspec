@@ -6,6 +6,6 @@ Gem::Specification.new do |s|
   s.description = "UNIX Manual Page Editor with Ruby & GTK"
   s.authors     = ["Ebru Akagündüz"]
   s.email       = 'ebru.akagunduz@gmail.com'
-  s.files = ['lib/utils.rb', 'lib/messages.rb', 'lib/lang.rb']
+  s.files = ['lib/utils.rb']
   s.require_paths = ["lib"]
 end

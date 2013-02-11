@@ -6,14 +6,13 @@ require 'filemagic'
 require 'zlib'
 require 'zip/zip'
 require 'utils'
-require 'lang'
-require 'messages'
+require '~/.config/rmanedit/lang'
 require 'rubygems'
 
 class Editor < Utils
   include GetText
   bindtextdomain("rmanedit_translation")
-  GetText.set_locale_all("tr")
+  GetText.set_locale_all(LANGUAGE)
   INDEX = 0
   attr_accessor :data
   def initialize
@@ -148,7 +147,7 @@ class Editor < Utils
         view_but = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/preview3.png"))
         view_but.set_size_request(60,40)
         tip = Gtk::Tooltips.new
-        tip.set_tip(newtb,NEW,nil)
+        tip.set_tip(newtb,_("New"),nil)
         tip.set_tip(opentb, _("Open"),nil)
         tip.set_tip(savetb,_("Save"),nil)
         tip.set_tip(saveastb,_("Save as"),nil)
