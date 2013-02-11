@@ -29,8 +29,7 @@ class Utils
         else
           dialog.destroy
         end
-      else
-          
+      else 
           f = File.open("/home/#{ENV["USER"]}/.config/rmanedit/lang.rb","w")
           f.write("LANGUAGE=\"#{lang}\"")
           f.close

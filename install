@@ -2,3 +2,5 @@
 `sudo chmod +x rmanedit`
 `sudo cp rmanedit /usr/bin/rmanedit`
 `sudo cp -r images /usr/share/pixmaps/`
+`mkdir ~/.config/rmanedit`
+`cp lang.rb ~/.config/rmanedit`
