@@ -10,7 +10,7 @@ require 'webkit'
 
 class Utils
   include GetText 
-  bindtextdomain("rmanedit_translation")
+  bindtextdomain("rmanedit")
   @@filename = ""
   @@saved = true
   

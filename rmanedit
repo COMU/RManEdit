@@ -11,7 +11,7 @@ require 'rubygems'
 
 class Editor < Utils
   include GetText
-  bindtextdomain("rmanedit_translation")
+  bindtextdomain("rmanedit")
   GetText.set_locale_all(LANGUAGE)
   INDEX = 0
   attr_accessor :data
