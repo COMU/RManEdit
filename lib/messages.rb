@@ -1,9 +1,9 @@
-#encoding: UTF-8
+i#encoding: UTF-8
 require 'gettext'
 require 'rubygems'
 require 'lang'
 include GetText
-bindtextdomain("messages", :path => "locale")
+GetText.bindtextdomain("messages","locale")
 GetText.set_locale_all(LANGUAGE)
 CATEGORY = _("Bölümler")
 FILE = _("Dosya")

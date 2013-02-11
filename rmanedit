@@ -8,9 +8,6 @@ require 'zip/zip'
 require 'utils'
 require 'lang'
 require 'messages'
-#require './utils'
-#require './lang'
-#load 'messages.rb'
 require 'rubygems'
 
 class Editor < Utils
