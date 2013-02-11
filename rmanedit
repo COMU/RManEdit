@@ -145,9 +145,7 @@ class Editor < Utils
 	cuttb = Gtk::ToolButton.new(Gtk::Stock::CUT)
 	copytb = Gtk::ToolButton.new(Gtk::Stock::COPY)
 	pastetb = Gtk::ToolButton.new(Gtk::Stock::PASTE)
-        view_but = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/preview.png"))
-        sep = Gtk::SeparatorToolItem.new
-        quittb = Gtk::ToolButton.new(Gtk::Stock::QUIT)
+        view_but = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/preview3.png"))
         view_but.set_size_request(60,40)
         tip = Gtk::Tooltips.new
         tip.set_tip(newtb,NEW,nil)
@@ -166,8 +164,6 @@ class Editor < Utils
 	toolbar.insert(5, copytb)
 	toolbar.insert(6, pastetb)
         toolbar.insert(7,view_but)
-        toolbar.insert(8, sep)
-        toolbar.insert(9, quittb)
 	view_but.set_sensitive false       
         # view_but sensitive
         @buf.signal_connect("changed"){o=Utils.new; o.buf_changed(@buf,view_but)}
@@ -179,7 +175,6 @@ class Editor < Utils
 	pastetb.signal_connect("clicked"){o= Utils.new; o.on_pastetb(@editor)}
 	newtb.signal_connect("clicked"){o= Utils.new; o.open_new_empty_file(@win,@editor)}
         view_but.signal_connect("clicked"){o = Utils.new; o.preview(@win,@editor,@manview)}
-	quittb.signal_connect("clicked"){Gtk.main_quit}
 	@vbox.pack_start(toolbar,false,false,0)
         toolBarFont
 	@win.add(@vbox)
