@@ -1,1 +1,2 @@
-LANGUAGE="en"
+LANGUAGE= ENV['LANG'].split("_").first
+

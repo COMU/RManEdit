@@ -1,6 +1,19 @@
 #!/usr/bin/env ruby
 `sudo chmod +x rmanedit`
 `sudo cp rmanedit /usr/bin/rmanedit`
-`sudo cp -r images /usr/share/pixmaps/`
+if not File::directory("/usr/share/pixmaps/images")
+`sudo mkdir /usr/share/pixmaps/images`
+end
+arr = `ls images`.split("\n")
+i = 0
+while i < arr.length
+`sudo cp #{arr[i]} /usr/share/images`
+end
+if not File::directory?("~/.config/rmanedit")
 `mkdir ~/.config/rmanedit`
+end
 `cp lang.rb ~/.config/rmanedit`
+if not File::directory?( "/usr/local/share/locale/tr/LC_MESSAGES" ) 
+  `mkdir -p /usr/local/share/locale/tr/LC_MESSAGES`
+end
+`sudo rmsgfmt po/tr/rmanedit_translation.po -o /usr/local/share/locale/tr/LC_MESSAGES/rmanedit_translation.mo`
