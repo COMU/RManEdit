@@ -3,8 +3,8 @@ require 'gettext'
 require 'rubygems'
 require 'lang'
 include GetText
-GetText.bindtextdomain("messages","locale")
-GetText.set_locale_all(LANGUAGE)
+bindtextdomain("messages")
+GetText.set_locale_all("tr")
 CATEGORY = _("Bölümler")
 FILE = _("Dosya")
 NO_MAN_FILE = _("Yüklenmiş man dosyası yok")
@@ -49,6 +49,7 @@ APP_ABOUT = _("RManEdit Hakkında Açıklamalar")
 APP_INFO = _("RManEdit Creative Commons ile lisanlanmıştır.\nRManEdit yazarı: Ebru Akagündüz")
 OK = _("Tamam")
 HELP = _("Yardım")
+=begin
 HELP_CONTENT = _("<!DOCTYPE html><html><head><h3>RManEdit</h3>
  Man sayfaları hazırlamak için bir metin editörüdür. Man sayfaları hazırlanırken koyu, italik, girintili yazma için belirli etiketler kullanılır. RManEdit ise bu etiketlerin kullanımı kolaylaştırıp, man sayfalarını daha hızlı bir şekilde hazırlamanızı sağlar.</head><br><body>
 </ul>
@@ -56,3 +57,4 @@ HELP_CONTENT = _("<!DOCTYPE html><html><head><h3>RManEdit</h3>
 <li><B>RManEdit</B> programında en sağ kısımda yazdığınız uygulamayı görüntülemeniz için bölüm vardır. Orta kısım man sayfalarının yazılacağı kısımdır. Sol kısımdaki etiketlere tıkladığınızda ise imleç man sayfanızdaki <b>NAME, SYNOPSIS</b> gibi alanlara gider.<p></li>
 <li>Menü çubuğunda <I>Dosya-> Html dosyasına dönüştür</I> kısmı kaydettiğiniz man dosyasını dosyasını html dosyasına çevirir.</li></ul></body>
 </html>")
+=end
