@@ -211,6 +211,10 @@ class Utils
               win.set_title(relative_filename[1]+ " ~ RManEdit")
             # zip dosyasi
        	    elsif fm.file(file).scan(/zip/i).length != 0
+              relative_filename=@@filename.split(dialog.current_folder)
+              relative_filename = relative_filename[1].split(".zip")
+              relative_filename = relative_filename[0].split("/")
+              win.set_title(relative_filename[1]+ " ~ RManEdit")
        	      Zip::ZipFile.open(file) do |zip_file|
        	      zip_file.each do |f|
               editor.buffer.text = zip_file.read(f)
@@ -218,6 +222,9 @@ class Utils
               end
             # herhangi bir text
       	    else
+              relative_filename=@@filename.split(dialog.current_folder)
+              relative_filename = relative_filename[1].split("/")
+              win.set_title(relative_filename[1] " ~ RManEdit")
               content = ""
               IO.foreach(file){|block|  content = content + "\n"+ block}
               editor.buffer.text = content
@@ -339,7 +346,7 @@ class Utils
     webview = WebKit::WebView.new
     w.set_title(_("Help"))
     w.set_size_request(500,500)
-    w.window_position = Gtk::Window::POS_CENTER
+    w.window_position = Gtk::Window::POS_CENTER_ALWAYS
     help_content = _("<!DOCTYPE html><html><head><h3>RManEdit</h3>\n RmanEdit is a editor for man page preparing. Specified tags like italic, bold, indetion is used for man pages. RmanEdit facilitates to use the tags and you can make man pages quickly.</head><br><body>\n</ul>\n<li>First feature which make man pages quickly are icons at menu bar. There are buttons that includes tags like paragraph, indentation, italic, bold etc. in menu bar at downside. Description of icons appear when you move on buttons your mouse cursor.<br><p></li>\n<li>There is a section on right of program interface. In this section, you can view your aplication. You can write man pages on middle section. There are tags on left section. Cursor is moves when you click tags like <b>NAME, SYNOPSIS</b> on left section.<p></li>\n<li> At menu bar <I>File->Convert to html file</I> converts to html file your man file.")
     webview.load_string(help_content,"text/html", "UTF-8", "file://home")
     swin.add(webview)
