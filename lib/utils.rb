@@ -101,6 +101,7 @@ class Utils
         editor.buffer.text = ""
         @@saved = true
         @@filename = ""
+        win.set_title("RManEdit")
     end
   end
 
@@ -125,6 +126,7 @@ class Utils
      if dialog.run == Gtk::Dialog::RESPONSE_YES
           dialog.destroy
           @@filename = ""
+          win.set_title("RManEdit")
           editor.buffer.text = ""
           @@saved = true
           if which_func == "open_file"
@@ -203,6 +205,10 @@ class Utils
             if fm.file(file).scan(/gziP/i).length != 0
       	      gz = Zlib::GzipReader.new(open(file)).read 
               editor.buffer.text = gz
+              relative_filename=@@filename.split(dialog.current_folder)
+              relative_filename = relative_filename[1].split(".gz")
+              relative_filename = relative_filename[0].split("/")
+              win.set_title(relative_filename[1]+ " ~ RManEdit")
             # zip dosyasi
        	    elsif fm.file(file).scan(/zip/i).length != 0
        	      Zip::ZipFile.open(file) do |zip_file|
@@ -313,11 +319,12 @@ class Utils
   def app_about
     w = Gtk::Window.new
     layout = Gtk::Layout.new
-    info = Gtk::Label.new(_("RManEdit licence is Creative Commons\n. Written by Ebru Akagündüz"))
+    info = Gtk::Label.new(_("RManEdit licence is Creative Commons.\n Written by Ebru Akagündüz"))
     b = Gtk::Button.new
     l = Gtk::Label.new(_("OK"))
     w.set_title(_("About RManEdit"))
     w.set_default_size(330,300)
+    w.window_position = Gtk::Window::POS_CENTER
     b.add(l)
     layout.put(info,10,30)
     layout.put(b,250,240) 
@@ -332,7 +339,8 @@ class Utils
     webview = WebKit::WebView.new
     w.set_title(_("Help"))
     w.set_size_request(500,500)
-    help_content = _("<!DOCTYPE html><html><head><h3>RManEdit</h3>\n RmanEdit is a editor for man page preparing. Specified tags like italic, bold, indetion is used for man pages. RmanEdit facilitates to use the tags and you can make man pages quickly.</head><br><body>\n</ul>\n<li>First feature which make man pages quickly are icons at menu bar. There are buttons that includes tags like paragraph,indentation,italic,bold etc. in menu bar at downside. Description of icons appear when you move on buttons your mouse cursor.<br><p></li>\n<li>There is a section on right of program interface. In this section, you can view your aplication. You can write man pages on middle section. There are tags on left section. Cursor is moves when you click tags like <b>NAME, SYNOPSIS</b> on left section.<p></li>\n<li> At menu bar <I>File->Convert to html file</I> converts to html file your man file.")
+    w.window_position = Gtk::Window::POS_CENTER
+    help_content = _("<!DOCTYPE html><html><head><h3>RManEdit</h3>\n RmanEdit is a editor for man page preparing. Specified tags like italic, bold, indetion is used for man pages. RmanEdit facilitates to use the tags and you can make man pages quickly.</head><br><body>\n</ul>\n<li>First feature which make man pages quickly are icons at menu bar. There are buttons that includes tags like paragraph, indentation, italic, bold etc. in menu bar at downside. Description of icons appear when you move on buttons your mouse cursor.<br><p></li>\n<li>There is a section on right of program interface. In this section, you can view your aplication. You can write man pages on middle section. There are tags on left section. Cursor is moves when you click tags like <b>NAME, SYNOPSIS</b> on left section.<p></li>\n<li> At menu bar <I>File->Convert to html file</I> converts to html file your man file.")
     webview.load_string(help_content,"text/html", "UTF-8", "file://home")
     swin.add(webview)
     w.add(swin)
