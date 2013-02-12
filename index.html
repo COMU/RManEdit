@@ -39,14 +39,21 @@ Gereksinimler
 <strong>Debian Tabanlı Sistemler İçin</strong></p>
 
 <pre>
-Gereksinimler:
-Debian Tabanlı Sistemler İçin Gerekli Paketler:<br>
 sudo apt-get install ruby1.9.1-dev ruby-gtk2 libmagic-dev libwebkitgtk-3.0-dev ruby-gettext man2html libghc-webkit-dev<br>
 sudo gem install gtk2<br>
 sudo gem install ruby-filemagic<br>
 sudo gem install -v 0.0.5 gtk-webkit-ruby<br></pre>
 
-<p><br></p>
+<p><strong>Rpm Paket Yöneticisine Sahip Sistemler İçin</strong></p>
+
+<pre></pre>
+
+<pre>
+gem build rmanedit.gemspec<br>
+sudo gem install RManEdit-1.0.0.gem<br>
+sudo chmod +x install 
+sudo ./install
+</pre>
       </section>
       <footer>
         <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
