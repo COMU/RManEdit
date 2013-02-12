@@ -168,7 +168,7 @@ class Utils
       fm = FileMagic.new
       if fm.file(file.path).scan(/troff/i).length == 0
         msg = Gtk::MessageDialog.new(nil, Gtk::Dialog::DESTROY_WITH_PARENT,
-        Gtk::MessageDialog::INFO, Gtk::MessageDialog::BUTTONS_OK, _("You don't preview because of  it is not a man file"))
+        Gtk::MessageDialog::INFO, Gtk::MessageDialog::BUTTONS_OK, _("It is not a man file"))
         msg.show_all()
         if msg.run == Gtk::Dialog::RESPONSE_OK
             file.close
@@ -269,7 +269,7 @@ class Utils
           editor.buffer.select_range(first, last)
       else
           dialogue = Gtk::MessageDialog.new(nil, Gtk::Dialog::MODAL, Gtk::MessageDialog::INFO, 
-          Gtk::MessageDialog::BUTTONS_OK, _("You didn't this tag"))
+          Gtk::MessageDialog::BUTTONS_OK, _("No such tag"))
          dialogue.run
          dialogue.destroy
       end
@@ -293,7 +293,7 @@ class Utils
             File.delete(file)
             msg = Gtk::MessageDialog.new(dialog,
             Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
-            Gtk::MessageDialog::BUTTONS_OK, _("You don't convert this file to Html file because of it is not a man file"))
+            Gtk::MessageDialog::BUTTONS_OK, _("It is not a man file"))
             msg.show_all()
             if msg.run == Gtk::Dialog::RESPONSE_OK
                   msg.destroy
