@@ -1,13 +1,14 @@
 #!/usr/bin/env ruby
-`sudo chmod +x rmanedit`
-`sudo cp rmanedit /usr/bin/rmanedit`
-`sudo cp -r images /usr/share/pixmaps`
+`chmod +x rmanedit`
+`cp rmanedit /usr/bin/rmanedit`
+`cp -r images /usr/share/pixmaps`
 if not File::directory?("~/.config/rmanedit")
 `mkdir ~/.config/rmanedit`
 end
 `cp lang.rb ~/.config/rmanedit`
-`sudo chown #{ENV['USER']} ~/.config/rmanedit/lang.rb`
+`chown #{ENV['USER']} ~/.config/rmanedit/lang.rb`
+puts ENV['USER']
 if not File::directory?( "/usr/local/share/locale/tr/LC_MESSAGES" ) 
-  `sudo mkdir -p /usr/local/share/locale/tr/LC_MESSAGES`
+  `mkdir -p /usr/local/share/locale/tr/LC_MESSAGES`
 end
-`sudo rmsgfmt po/tr/rmanedit.po -o /usr/local/share/locale/tr/LC_MESSAGES/rmanedit.mo`
+`rmsgfmt po/tr/rmanedit.po -o /usr/local/share/locale/tr/LC_MESSAGES/rmanedit.mo`
