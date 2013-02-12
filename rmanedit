@@ -17,7 +17,7 @@ class Editor < Utils
   attr_accessor :data
   def initialize
 	@win = Gtk::Window.new
-	@win.set_icon("/usr/share/pixmaps/images/logo.png")
+	@win.set_icon("/usr/share/pixmaps/images/logo.jpg")
 	@win.set_title("RManEdit")
 	@win.signal_connect('delete_event'){false}
 	@win.signal_connect('destroy'){Gtk.main_quit}

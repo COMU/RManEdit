@@ -158,7 +158,7 @@ msgstr "RManEdit yeniden başlatılacağı için değişiklikleriniz kaybedilece
 
 #: utils.rb:65 utils.rb:298
 msgid "Saved"
-msgstr "Kaydet"
+msgstr "Kaydedildi"
 
 #: utils.rb:119
 msgid "Your changes will be lost. Do you want to continue?"

@@ -54,15 +54,20 @@ class Utils
           [Gtk::Stock::SAVE, Gtk::Dialog::RESPONSE_APPLY ])
           dialog.show_all()
           if dialog.run  == Gtk::Dialog::RESPONSE_APPLY
-            file = dialog.filename
-            @@filename = file
+            # dosyanin tam yolu
+            @@filename = dialog.filename
             content = editor.buffer.text
-            File.open(file, "w") { |f| f <<  content }
+            File.open(@@filename, "w") { |f| f <<  content }
             IO.popen("gzip #{@@filename}")
+            # ikinci kez yazma için gz uzantisida eklenmesi
             @@filename = @@filename + ".gz"
             msg = Gtk::MessageDialog.new(dialog,
             Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
             Gtk::MessageDialog::BUTTONS_OK, _("Saved"))
+            relative_filename=@@filename.split(dialog.current_folder)
+            relative_filename = relative_filename[1].split(".gz")
+            relative_filename = relative_filename[0].split("/") 
+            win.set_title(relative_filename[1]+ " ~ RManEdit")
             msg.show_all()
             if msg.run == Gtk::Dialog::RESPONSE_OK
               msg.destroy
