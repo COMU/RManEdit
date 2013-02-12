@@ -17,5 +17,5 @@ Paketler kurulduktan sonra gerekli işlemler:
 gem build rmanedit.gemspec
 sudo gem install RManEdit-1.0.0.gem
 sudo chmod +x install
-sudo ./install
+./install
 Şimdi terminalden "rmanedit" dediğimizde uygulama çalışacaktır.

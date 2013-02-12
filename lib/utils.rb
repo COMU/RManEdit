@@ -59,6 +59,7 @@ class Utils
             content = editor.buffer.text
             File.open(file, "w") { |f| f <<  content }
             IO.popen("gzip #{@@filename}")
+            @@filename = @@filename + ".gz"
             msg = Gtk::MessageDialog.new(dialog,
             Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
             Gtk::MessageDialog::BUTTONS_OK, _("Saved"))
