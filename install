@@ -6,6 +6,7 @@ if not File::directory?("~/.config/rmanedit")
 `mkdir ~/.config/rmanedit`
 end
 `cp lang.rb ~/.config/rmanedit`
+`sudo chown #{ENV['USER']} ~/.config/rmanedit/lang.rb`
 if not File::directory?( "/usr/local/share/locale/tr/LC_MESSAGES" ) 
   `sudo mkdir -p /usr/local/share/locale/tr/LC_MESSAGES`
 end
