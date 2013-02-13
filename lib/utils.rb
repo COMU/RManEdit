@@ -52,15 +52,19 @@ class Utils
           dialog = Gtk::FileChooserDialog.new(_("Save"), win, Gtk::FileChooser::ACTION_SAVE, nil,
           [Gtk::Stock::CANCEL,Gtk::Dialog::RESPONSE_CANCEL],
           [Gtk::Stock::SAVE, Gtk::Dialog::RESPONSE_APPLY ])
+          dialog.set_do_overwrite_confirmation(true)
           dialog.show_all()
           if dialog.run  == Gtk::Dialog::RESPONSE_APPLY
             # dosyanin tam yolu
             @@filename = dialog.filename
             content = editor.buffer.text
-            File.open(@@filename, "w") { |f| f <<  content }
-            IO.popen("gzip #{@@filename}")
-            # ikinci kez yazma için gz uzantisida eklenmesi
+            # ikinci kez yazma için gz uzantisi eklenmesi
             @@filename = @@filename + ".gz"
+            File.open(@@filename, 'w') do |f|
+            gz = Zlib::GzipWriter.new(f)
+            gz.write(content)
+            gz.close
+            end
             msg = Gtk::MessageDialog.new(dialog,
             Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
             Gtk::MessageDialog::BUTTONS_OK, _("Saved"))
