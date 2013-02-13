@@ -64,10 +64,9 @@ class Utils
             msg = Gtk::MessageDialog.new(dialog,
             Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
             Gtk::MessageDialog::BUTTONS_OK, _("Saved"))
-            relative_filename=@@filename.split(dialog.current_folder)
-            relative_filename = relative_filename[1].split(".gz")
-            relative_filename = relative_filename[0].split("/") 
-            win.set_title(relative_filename[1]+ " ~ RManEdit")
+            relative_filename = @@filename.split('/')
+            relative_filename = relative_filename[relative_filename.length-1]
+            win.set_title(relative_filename+ " ~ RManEdit")
             msg.show_all()
             if msg.run == Gtk::Dialog::RESPONSE_OK
               msg.destroy
@@ -200,21 +199,17 @@ class Utils
             @@saved = true
             file = dialog.filename
             @@filename = file
+            relative_filename = @@filename.split('/')
+            relative_filename = relative_filename[relative_filename.length-1]
             fm = FileMagic.new
             # gzip dosyasi
             if fm.file(file).scan(/gziP/i).length != 0
       	      gz = Zlib::GzipReader.new(open(file)).read 
               editor.buffer.text = gz
-              relative_filename=@@filename.split(dialog.current_folder)
-              relative_filename = relative_filename[1].split(".gz")
-              relative_filename = relative_filename[0].split("/")
-              win.set_title(relative_filename[1]+ " ~ RManEdit")
+              win.set_title(relative_filename+ " ~ RManEdit")
             # zip dosyasi
        	    elsif fm.file(file).scan(/zip/i).length != 0
-              relative_filename=@@filename.split(dialog.current_folder)
-              relative_filename = relative_filename[1].split(".zip")
-              relative_filename = relative_filename[0].split("/")
-              win.set_title(relative_filename[1]+ " ~ RManEdit")
+              win.set_title(relative_filename+ " ~ RManEdit")
        	      Zip::ZipFile.open(file) do |zip_file|
        	      zip_file.each do |f|
               editor.buffer.text = zip_file.read(f)
@@ -222,9 +217,7 @@ class Utils
               end
             # herhangi bir text
       	    else
-              relative_filename=@@filename.split(dialog.current_folder)
-              relative_filename = relative_filename[1].split("/")
-              win.set_title(relative_filename[1] " ~ RManEdit")
+              win.set_title(relative_filename+ " ~ RManEdit")
               content = ""
               IO.foreach(file){|block|  content = content + "\n"+ block}
               editor.buffer.text = content
