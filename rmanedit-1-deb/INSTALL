@@ -1,0 +1,21 @@
+RManEdit Gtk kütüphanesi kullanılarak Ruby ile yazılmış, man sayfası hazırlamak için bir editördür.
+KURULUM
+Gereksinimler:
+Debian Tabanlı Sistemler İçin Gerekli Paketler:
+sudo apt-get install ruby1.9.1-dev ruby-gtk2 libmagic-dev libwebkitgtk-3.0-dev ruby-gettext man2html libghc-webkit-dev
+sudo gem install gtk2
+sudo gem install ruby-filemagic
+sudo gem install -v 0.0.5 gtk-webkit-ruby
+
+
+RPM Paket Yöneticisine Sahip Dağıtımlar İçin Gerekli Paketler:
+sudo yum install ruby-devel rubygem-gtk2-devel.i686
+sudo gem install rubyzip
+sudo yum install man2html file-libs webkitgtk-devel file-devel fcgi-devel
+
+Paketler kurulduktan sonra gerekli işlemler:
+gem build rmanedit.gemspec
+sudo gem install RManEdit-1.0.0.gem
+sudo chmod +x install
+./install
+Şimdi terminalden "rmanedit" dediğimizde uygulama çalışacaktır.
