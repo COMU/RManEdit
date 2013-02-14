@@ -146,7 +146,7 @@ msgstr "Fill\n .fi"
 
 #: rmanedit:223
 msgid "First indent after line\n .HP"
-msgstr "atırdan sonraki ilk girinti\n .HP"
+msgstr "Satırdan sonraki ilk girinti\n .HP"
 
 #: rmanedit:224
 msgid "Subhead\n .SS"
@@ -166,7 +166,7 @@ msgstr "Değişiklikleriniz kaybolacak. Devam etmek ister misiniz?"
 
 #: lib/utils.rb:158
 msgid "If you want to view file, you must save it"
-msgstr "Dosyayı görüntülemek istiyorsanız, kaydetmelisini"
+msgstr "Dosyayı görüntülemek istiyorsanız, kaydetmelisiniz"
 
 #: lib/utils.rb:174 lib/utils.rb:293
 msgid "It is not a man file"
@@ -182,7 +182,7 @@ msgstr "Böyle bir etiket yok"
 
 #: lib/utils.rb:326
 msgid "RManEdit licence is Creative Commons.\n Written by Ebru Akagündüz"
-msgstr "RManeEdit Creative Commons ile lisanslanmıştır\n. Ebru Akagündüz tarafından geliştirilmektedi"
+msgstr "RManeEdit Creative Commons ile lisanslanmıştır\n. Ebru Akagündüz tarafından geliştirilmektedir"
 
 #: lib/utils.rb:328
 msgid "OK"

@@ -37,16 +37,19 @@ class Editor < Utils
       swin = Gtk::ScrolledWindow.new
       @manview = WebKit::WebView.new
       @treeview = Gtk::TreeView.new
+      swin2 = Gtk::ScrolledWindow.new
+      hpaned = Gtk::HPaned.new
+      hpaned2 = Gtk::HPaned.new
+      @renderer = Gtk::CellRendererText.new
+      column   = Gtk::TreeViewColumn.new(_("Category"), @renderer,  :text => INDEX)
       swin.add(@editor)
       no_man_file = _("Man file is not installed")
       content = "<html><head><h2> #{no_man_file}</h2></head></HTML>"
       # man page icin textView
       @manview.load_string(content,"text/html", "UTF-8", "file://home") 
       # man goruntusu icin scrollWind 
-      swin2 = Gtk::ScrolledWindow.new()
       swin2.add(@manview)
-      renderer = Gtk::CellRendererText.new 
-      column   = Gtk::TreeViewColumn.new(_("Category"), renderer,  :text => INDEX)
+      @treeview.sensitive=false
       @treeview.append_column(column)
       list = Array.new
       list = ["NAME", "SYNOPSIS","AVAILABILITY","DESCRIPTION","OPTIONS","EXAMPLES","NOTES",
@@ -58,10 +61,8 @@ class Editor < Utils
           end
       @treeview.model = store
       @treeview.signal_connect("cursor-changed"){selection = @treeview.selection; 
-      iter = selection.selected; o = Utils.new; o.label_find(iter[0],@editor)}
-      hpaned = Gtk::HPaned.new    
-      hpaned.set_size_request(900,-1)
-      hpaned2 = Gtk::HPaned.new
+      iter = selection.selected; o = Utils.new; o.label_find(iter[0],@editor)}    
+      hpaned.set_size_request(900,-1) 
       hpaned2.set_size_request(800,500)
       hpaned.pack1(@treeview,true,false)
       hpaned.pack2(hpaned2,true,true)
@@ -165,7 +166,7 @@ class Editor < Utils
         toolbar.insert(7,view_but)
 	view_but.set_sensitive false       
         # view_but sensitive
-        @buf.signal_connect("changed"){o=Utils.new; o.buf_changed(@buf,view_but)}
+        @buf.signal_connect("changed"){o=Utils.new; o.buf_changed(@buf,view_but,@treeview,@renderer)}
 	opentb.signal_connect("clicked"){o = Utils.new; o.open_file(@win,@editor)}
         saveastb.signal_connect("clicked"){o = Utils.new; o.save_as(@win,@editor,"save_as")}
 	savetb.signal_connect("clicked"){o= Utils.new; o.save(@win,@editor,"")}

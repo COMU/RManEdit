@@ -143,12 +143,19 @@ class Utils
      end   
   end 
 
-  def buf_changed(buf,view_but)
+  def buf_changed(buf,view_but,treeview,renderer)
      @@saved = false
      if buf.text == ""
          view_but.set_sensitive(false)
+         selection = treeview.selection
+         iter = selection.selected
+         if iter != nil
+            selection.unselect_iter(iter)
+         end
+         treeview.sensitive=false
       else
         view_but.set_sensitive(true)
+        treeview.sensitive=true
       end
   end
   
