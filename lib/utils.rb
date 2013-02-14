@@ -248,20 +248,6 @@ class Utils
        end
   end
 
-  def on_cuttb(editor)
-      clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
-      editor.buffer.cut_clipboard(clipboard, true)
-  end
-
-  def on_copytb(editor)
-      clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
-      editor.buffer.copy_clipboard(clipboard)
-  end
-  
-  def on_pastetb(editor)
-      clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
-      editor.buffer.paste_clipboard(clipboard, nil, true)
-  end
   # secilen etikete gitme 
   def label_find(find,editor)
       start = editor.buffer.start_iter
@@ -358,3 +344,24 @@ class Utils
     w.show_all
   end
 end
+
+class TextManiplation
+
+  def cut_text(editor)
+      clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
+      editor.buffer.cut_clipboard(clipboard, true)
+  end
+
+  def copy_text(editor)
+      clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
+      editor.buffer.copy_clipboard(clipboard)
+  end
+  
+  def paste_text(editor)
+      clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
+      editor.buffer.paste_clipboard(clipboard, nil, true)
+  end
+
+end
+
+

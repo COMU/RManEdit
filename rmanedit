@@ -96,6 +96,17 @@ class Editor < Utils
      filemenu.append(make_html)
      filemenu.append(exit_)
      mb.append(filemenuitem)
+     # edit menu
+     editmenu = Gtk::Menu.new
+     editmenuitem = Gtk::MenuItem.new(_("Edit"))
+     editmenuitem.set_submenu(editmenu)
+     copy = Gtk::MenuItem.new(_("Copy"))
+     cut = Gtk::MenuItem.new(_("Cut"))
+     paste = Gtk::MenuItem.new(_("Paste"))
+     editmenu.append(copy)
+     editmenu.append(paste)
+     editmenu.append(cut)
+     mb.append(editmenuitem)    
      # setting menu
      settingmenu = Gtk::Menu.new
      settingmenuitem = Gtk::MenuItem.new(_("Settings"))
@@ -121,17 +132,23 @@ class Editor < Utils
      helpmenuitem = Gtk::MenuItem.new(_("Help"))
      aboutmenu.append(helpmenuitem)     
      mb.append(aboutmenuitem)
-
+     # file
      open.signal_connect("activate"){o=Utils.new; o.open_file(@win,@editor)}
      new.signal_connect("activate"){o=Utils.new; o.open_new_empty_file(@win,@editor)}
      save.signal_connect("activate"){o=Utils.new; o.save(@win,@editor,"")}
      save_as.signal_connect("activate"){o=Utils.new; o.save_as(@win,@editor,"save_as")}
      exit_.signal_connect("activate"){Gtk.main_quit}
      make_html.signal_connect("activate"){o=Utils.new; o.create_html_file(@editor,@win)}
+     # settings
      en.signal_connect("activate"){o=Utils.new;o.lang_choice(@win,"en")}
      tr.signal_connect("activate"){o=Utils.new;o.lang_choice(@win,"tr")}
+     # about
      app_about.signal_connect("activate"){o=Utils.new; o.app_about}
      helpmenuitem.signal_connect("activate"){o=Utils.new; o.help}
+     # edit
+     copy.signal_connect("activate"){o=TextManiplation.new; o.copy_text(@editor)}
+     paste.signal_connect("activate"){o=TextManiplation.new; o.paste_text(@editor)}
+     cut.signal_connect("activate"){o=TextManiplation.new; o.cut_text(@editor)}
      @vbox.pack_start(mb,false,false,0) 
   end
   def toolBar
@@ -166,13 +183,13 @@ class Editor < Utils
         toolbar.insert(7,view_but)
 	view_but.set_sensitive false       
         # view_but sensitive
-        @buf.signal_connect("changed"){o=Utils.new; o.buf_changed(@buf,view_but,@treeview,@renderer)}
+        @buf.signal_connect("changed"){o = Utils.new; o.buf_changed(@buf,view_but,@treeview,@renderer)}
 	opentb.signal_connect("clicked"){o = Utils.new; o.open_file(@win,@editor)}
         saveastb.signal_connect("clicked"){o = Utils.new; o.save_as(@win,@editor,"save_as")}
-	savetb.signal_connect("clicked"){o= Utils.new; o.save(@win,@editor,"")}
-	cuttb.signal_connect("clicked"){o = Utils.new; o.on_cuttb(@editor)}
-	copytb.signal_connect("clicked"){o = Utils.new; o.on_copytb(@editor)}
-	pastetb.signal_connect("clicked"){o= Utils.new; o.on_pastetb(@editor)}
+	savetb.signal_connect("clicked"){o = Utils.new; o.save(@win,@editor,"")}
+	cuttb.signal_connect("clicked"){o = TextManiplation.new; o.cut_text(@editor)}
+	copytb.signal_connect("clicked"){o = TextManiplation.new; o.copy_text(@editor)}
+	pastetb.signal_connect("clicked"){o= TextManiplation.new; o.paste_text(@editor)}
 	newtb.signal_connect("clicked"){o= Utils.new; o.open_new_empty_file(@win,@editor)}
         view_but.signal_connect("clicked"){o = Utils.new; o.preview(@win,@editor,@manview)}
 	@vbox.pack_start(toolbar,false,false,0)

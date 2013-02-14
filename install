@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 if not File::directory?("~/.config/rmanedit")
-`mkdir ~/.config/rmanedit`
+ `mkdir ~/.config/rmanedit`
 end
 `cp lang.rb ~/.config/rmanedit`
 `sudo chmod +x rmanedit`
