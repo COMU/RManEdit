@@ -313,6 +313,7 @@ class Utils
           dialog.destroy
       end
   end
+
   def app_about
     w = Gtk::Window.new
     layout = Gtk::Layout.new
@@ -329,20 +330,39 @@ class Utils
     w.show_all
     b.signal_connect("clicked"){w.destroy}
   end
+
   def help
     w = Gtk::Window.new
-    w.show_all
-    swin = Gtk::ScrolledWindow.new
-    webview = WebKit::WebView.new
+    layout = Gtk::Layout.new    
+    btn = Gtk::Button.new(_("OK"))
+    font = Pango::FontDescription.new("Sans Bold 10")
     w.set_title(_("Help"))
-    w.set_size_request(500,500)
+    w.set_size_request(750,400)
     w.window_position = Gtk::Window::POS_CENTER_ALWAYS
-    help_content = _("<!DOCTYPE html><html><head><h3>RManEdit</h3>\n RmanEdit is a editor for man page preparing. Specified tags like italic, bold, indetion is used for man pages. RmanEdit facilitates to use the tags and you can make man pages quickly.</head><br><body>\n</ul>\n<li>First feature which make man pages quickly are icons at menu bar. There are buttons that includes tags like paragraph, indentation, italic, bold etc. in menu bar at downside. Description of icons appear when you move on buttons your mouse cursor.<br><p></li>\n<li>There is a section on right of program interface. In this section, you can view your aplication. You can write man pages on middle section. There are tags on left section. Cursor is moves when you click tags like <b>NAME, SYNOPSIS</b> on left section.<p></li>\n<li> At menu bar <I>File->Convert to html file</I> converts to html file your man file.")
-    webview.load_string(help_content,"text/html", "UTF-8", "file://home")
-    swin.add(webview)
-    w.add(swin)
+    help_content = """
+    RManEdit
+    RmanEdit is a editor for man page preparing. Specified tags like italic, bold, indetion 
+    is used for man pages. RmanEdit facilitates to use the tags and you can make
+    man pages quickly.
+
+    First feature which make man pages quickly are icons at menu bar. There are buttons 
+    that includes tags like paragraph, indentation, italic, bold etc. in menu bar at downside. 
+    Description of icons appear when you move on buttons your mouse cursor.
+
+    There is a section on right of program interface. In this section, you can view your 
+    aplication. You can write man pages on middle section. There are tags on left section.
+    Cursor is moves when you click tags like NAME, SYNOPSIS on left section.
+ 
+    At menu bar File->Convert to html file converts to html file your man file."""
+    l = Gtk::Label.new(help_content)
+    l.modify_font(font)
+    layout.put(l,10,30)
+    layout.put(btn,600,350)
+    w.add(layout)
+    btn.signal_connect("clicked"){w.destroy}
     w.show_all
   end
+
 end
 
 class TextManiplation
