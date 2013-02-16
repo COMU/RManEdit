@@ -28,19 +28,21 @@ class Editor
   INDEX = 0
   attr_accessor :data
   def initialize
-	@win = Gtk::Window.new
-        @editor = Gtk::TextView.new
-        @tab = Gtk::Notebook.new
-        # birden fazla yerde kullanildigindan burada tanimlandi
-        @treeview = Gtk::TreeView.new
-        @renderer = Gtk::CellRendererText.new
-	@win.set_icon("/usr/share/pixmaps/images/logo.jpg")
-	@win.set_title("RManEdit")
-	@win.signal_connect('delete_event'){false}
-	@win.signal_connect('destroy'){Gtk.main_quit}
-	@win.set_window_position(Gtk::Window::POS_CENTER)
-        win_contain
-	@win.show_all()
+    @win = Gtk::Window.new
+    @editor = Gtk::TextView.new
+    @tab = Gtk::Notebook.new
+    # birden fazla yerde kullanildigindan burada tanimlandi
+    @treeview = Gtk::TreeView.new
+    @renderer = Gtk::CellRendererText.new
+    @win.set_icon("/usr/share/pixmaps/images/logo.jpg")
+    @win.set_size_request(900,500)
+    @win.set_resizable(true)
+    @win.set_title("RManEdit")
+    @win.signal_connect('delete_event'){false}
+    @win.signal_connect('destroy'){Gtk.main_quit}
+    @win.set_window_position(Gtk::Window::POS_CENTER)
+    win_contain
+    @win.show_all()
   end
   
   def treeView_create
@@ -68,26 +70,29 @@ class Editor
     @manview.load_string(content,"text/html", "UTF-8", "file://home")
     # man goruntusu icin scrollWind 
     swinman_view.add(@manview)
+    swinman_view.set_size_request(300,500)
+    return swinman_view
   end
 
   def win_contain
-      @vbox = Gtk::VBox.new(false,2)
-      @hbox = Gtk::HBox.new(false,2)
+      @vbox = Gtk::VBox.new(false, 2)
+      @hbox = Gtk::HBox.new(false, 2)
       hpaned = Gtk::HPaned.new
       hpaned2 = Gtk::HPaned.new
-      hpaned.set_size_request(900,-1) 
-      hpaned2.set_size_request(800,500)
-      @win.set_size_request(900,500)
+      hpaned.set_size_request(900, -1) 
+      hpaned2.set_size_request(800, 500)
+      @win.set_size_request(900, 500)
       @win.set_resizable(true)
-      @vbox.pack_start(menuBar,false,false,0)
-      @vbox.pack_start(toolBar,false,false,0)
-      @vbox.pack_start(toolBarFont,false,false,0)
-      @vbox.pack_start(@hbox,false,false,0)
-      @hbox.pack_start(hpaned,false,false,0)
+      @vbox.pack_start(menuBar, false, false, 0)
+      @vbox.pack_start(toolBar, false, false, 0)
+      @vbox.pack_start(toolBarFont, false, false, 0)
+      @vbox.pack_start(@hbox, false, false, 0)
+      @hbox.pack_start(hpaned ,false, false, 0)
       treeView_create
-      hpaned.pack1(@treeview,true,false)
-      hpaned.pack2(hpaned2,true,true)
-      hpaned2.pack1(create_tabs,true,true)
+      hpaned.pack1(@treeview, true, false)
+      hpaned.pack2(hpaned2, true, true)
+      hpaned2.pack1(create_tabs, true, true)
+      hpaned2.pack2(man_view, true, false)
       @win.add(@vbox)
       @win.show_all
      
@@ -176,7 +181,7 @@ class Editor
      save.signal_connect("activate"){o=Utils.new; o.save(@tab, false)}
      save_as.signal_connect("activate"){o=Utils.new; o.save_as(@tab, true)}
      exit_.signal_connect("activate"){Gtk.main_quit}
-     make_html.signal_connect("activate"){o=Utils.new; o.create_html_file(@editor,@win)}
+     make_html.signal_connect("activate"){o=Utils.new; o.create_html_file(@tab)}
      new_tab.signal_connect("activate"){create_tabs;@win.show_all}
      # settings
      en.signal_connect("activate"){o=Utils.new;o.lang_choice(@win,"en")}
@@ -223,8 +228,6 @@ class Editor
 	toolbar.insert(6, pastetb)
         toolbar.insert(7,@view_but)
 	@view_but.set_sensitive false       
-        # view_but sensitive
-#        @buf.signal_connect("changed"){o = Utils.new; o.buf_changed(@buf,view_but,@treeview,@renderer)}
 	opentb.signal_connect("clicked"){o = Utils.new; o.open_file(@tab)}
         saveastb.signal_connect("clicked"){o = Utils.new; o.save_as(@tab, true)}
 	savetb.signal_connect("clicked"){o = Utils.new; o.save(@tab, false)}
@@ -232,7 +235,7 @@ class Editor
 	copytb.signal_connect("clicked"){o = TextManiplation.new; o.copy_text(@tab)}
 	pastetb.signal_connect("clicked"){o= TextManiplation.new; o.paste_text(@tab)}
 	newtb.signal_connect("clicked"){o= Utils.new; o.open_new_empty_file(@tab)}
-        @view_but.signal_connect("clicked"){o = Utils.new; o.preview(@win,@editor,@manview)}
+        @view_but.signal_connect("clicked"){o = Utils.new; o.preview(@tab, @manview)}
         return toolbar
   end
   

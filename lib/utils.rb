@@ -135,7 +135,6 @@ class Utils
   end 
 
   def view_sensitive(text, treeview, view_but)
-
     if text == ""
       view_but.set_sensitive(false)
       selection = treeview.selection
@@ -166,19 +165,20 @@ class Utils
       end
   end
   
-  def preview(win,editor,manview)
-      if @@filename == "" or @@saved == false
-        msg = Gtk::MessageDialog.new(nil, Gtk::Dialog::DESTROY_WITH_PARENT, 
-        Gtk::MessageDialog::INFO, Gtk::MessageDialog::BUTTONS_OK,
-        _("If you want to view file, you must save it"))
-        msg.show_all()
-        if msg.run == Gtk::Dialog::RESPONSE_OK 
-            msg.destroy
-        end
+  def preview(tab, manview)
+    current_page = tab.get_nth_page(tab.page)
+    if @@filename == "" or current_page.saved == false
+      msg = Gtk::MessageDialog.new(nil, Gtk::Dialog::DESTROY_WITH_PARENT, 
+      Gtk::MessageDialog::INFO, Gtk::MessageDialog::BUTTONS_OK,
+      _("If you want to view file, you must save it"))
+      msg.show_all()
+      if msg.run == Gtk::Dialog::RESPONSE_OK 
+        msg.destroy
+      end
         return
       end
       # dosya kayitli ise
-      content = editor.buffer.text
+      content = current_page.buffer.text
       file = Tempfile.new('foo')
       file.write(content)
       file.rewind
@@ -276,48 +276,50 @@ class Utils
   end
   
   # html dosyasina donusturme  
-  def create_html_file(editor,win)
-      dialog = Gtk::FileChooserDialog.new(_("Save"), win, Gtk::FileChooser::ACTION_SAVE, nil,
-      [Gtk::Stock::CANCEL,Gtk::Dialog::RESPONSE_CANCEL],
-      [ Gtk::Stock::SAVE, Gtk::Dialog::RESPONSE_APPLY ])
-      dialog.show_all() 
-      if dialog.run  == Gtk::Dialog::RESPONSE_APPLY
-          file = dialog.filename
-          # yandaki textin bir dosya icine atilmasi
-          content = editor.buffer.text
-          File.open(file, "w") { |f| f <<  content }
-          # ayni textin htmlye donusturulmesi
-          fm = FileMagic.new
-          if fm.file(file).scan(/troff/i).length == 0
-            File.delete(file)
-            msg = Gtk::MessageDialog.new(dialog,
-            Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
-            Gtk::MessageDialog::BUTTONS_OK, _("It is not a man file"))
-            msg.show_all()
-            if msg.run == Gtk::Dialog::RESPONSE_OK
-                  msg.destroy
-                  dialog.destroy
-                  return
-            end
-          end
-          output = IO.popen("man2html #{file}")
-          str = output.readlines
-          i = 5
-          content = str[1]+str[2]+str[3]+"<meta http-equiv=\"Content-Type\" 
-          content=\"text/html;charset=UTF-8\"></HEAD><BODY>"
-          while i< str.length do
-            content = content + str[i]
-            i = i + 1
-          end
-          File.open(file, "w") { |f| f <<  content }
-          msg = Gtk::MessageDialog.new(dialog,
-          Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
-          Gtk::MessageDialog::BUTTONS_OK, _("Saved"))
-          msg.show_all()
-          if msg.run == Gtk::Dialog::RESPONSE_OK
-              msg.destroy
-              dialog.destroy
-          end
+  def create_html_file(tab)
+    dialog = Gtk::FileChooserDialog.new(_("Save"), nil,
+    Gtk::FileChooser::ACTION_SAVE, nil,
+    [Gtk::Stock::CANCEL,Gtk::Dialog::RESPONSE_CANCEL],
+    [Gtk::Stock::SAVE, Gtk::Dialog::RESPONSE_APPLY])
+    dialog.show_all() 
+    if dialog.run  == Gtk::Dialog::RESPONSE_APPLY
+      file = dialog.filename
+      # yandaki textin bir dosya icine atilmasi
+      current_page = tab.get_nth_page(tab.page)
+      content = current_page.buffer.text
+      File.open(file, "w") { |f| f <<  content }
+      # ayni textin htmlye donusturulmesi
+      fm = FileMagic.new
+      if fm.file(file).scan(/troff/i).length == 0
+        File.delete(file)
+        msg = Gtk::MessageDialog.new(dialog,
+        Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
+        Gtk::MessageDialog::BUTTONS_OK, _("It is not a man file"))
+        msg.show_all()
+        if msg.run == Gtk::Dialog::RESPONSE_OK
+          msg.destroy
+          dialog.destroy
+          return
+        end
+      end
+      output = IO.popen("man2html #{file}")
+      str = output.readlines
+      i = 5
+      content = str[1]+str[2]+str[3]+"<meta http-equiv=\"Content-Type\" 
+      content=\"text/html;charset=UTF-8\"></HEAD><BODY>"
+      while i< str.length do
+        content = content + str[i]
+        i = i + 1
+      end
+      File.open(file, "w") { |f| f <<  content }
+      msg = Gtk::MessageDialog.new(dialog,
+      Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
+      Gtk::MessageDialog::BUTTONS_OK, _("Saved"))
+      msg.show_all()
+      if msg.run == Gtk::Dialog::RESPONSE_OK
+        msg.destroy
+        dialog.destroy
+      end
       else
           dialog.destroy
       end
