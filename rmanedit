@@ -169,7 +169,7 @@ class Editor
      # file
      open.signal_connect("activate"){o=Utils.new; o.open_file(@tab)}
      new.signal_connect("activate"){o=Utils.new; o.open_new_empty_file(@tab)}
-     save.signal_connect("activate"){o=Utils.new; o.save(@win,@editor,"")}
+     save.signal_connect("activate"){o=Utils.new; o.save(@tab)}
      save_as.signal_connect("activate"){o=Utils.new; o.save_as(@win,@editor,"save_as")}
      exit_.signal_connect("activate"){Gtk.main_quit}
      make_html.signal_connect("activate"){o=Utils.new; o.create_html_file(@editor,@win)}
@@ -227,7 +227,7 @@ class Editor
 	cuttb.signal_connect("clicked"){o = TextManiplation.new; o.cut_text(@editor)}
 	copytb.signal_connect("clicked"){o = TextManiplation.new; o.copy_text(@editor)}
 	pastetb.signal_connect("clicked"){o= TextManiplation.new; o.paste_text(@editor)}
-	newtb.signal_connect("clicked"){o= Utils.new; o.open_new_empty_file(@win,@editor)}
+	newtb.signal_connect("clicked"){o= Utils.new; o.open_new_empty_file(@tab)}
         view_but.signal_connect("clicked"){o = Utils.new; o.preview(@win,@editor,@manview)}
         return toolbar
   end

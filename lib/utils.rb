@@ -45,60 +45,50 @@ class Utils
       save(win,editor,temp)   
   end
 
-  def save(win,editor,temp)
-      if temp == "save_as"
-        temp = @@filename
-        @@filename = ""
-      end
-      # daha once hic kaydedilmemis
-      if @@filename == ""
-          dialog = Gtk::FileChooserDialog.new(_("Save"), win, Gtk::FileChooser::ACTION_SAVE, nil,
-          [Gtk::Stock::CANCEL,Gtk::Dialog::RESPONSE_CANCEL],
-          [Gtk::Stock::SAVE, Gtk::Dialog::RESPONSE_APPLY ])
-          dialog.set_do_overwrite_confirmation(true)
-          dialog.show_all()
-          if dialog.run  == Gtk::Dialog::RESPONSE_APPLY
-            # dosyanin tam yolu
-            @@filename = dialog.filename
-            content = editor.buffer.text
-            # ikinci kez yazma için gz uzantisi eklenmesi
-            @@filename = @@filename + ".gz"
-            File.open(@@filename, 'w') do |f|
-            gz = Zlib::GzipWriter.new(f)
-            gz.write(content)
-            gz.close
-            end
-            msg = Gtk::MessageDialog.new(dialog,
-            Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
-            Gtk::MessageDialog::BUTTONS_OK, _("Saved"))
-            relative_filename = @@filename.split('/')
-            relative_filename = relative_filename[relative_filename.length-1]
-            win.set_title(relative_filename+ " ~ RManEdit")
-            msg.show_all()
-            if msg.run == Gtk::Dialog::RESPONSE_OK
-              msg.destroy
-              dialog.destroy
-            end
-          else
-            if temp != ""
-              @@filename = temp
-            end
-            dialog.destroy
-          end
-          @@saved = true
-      elsif @@saved
-          return
-      else
-        content = editor.buffer.text
+  def save(tab)
+
+    if @@filename == ""
+      dialog = Gtk::FileChooserDialog.new(_("Save"), nil, 
+      Gtk::FileChooser::ACTION_SAVE, nil,
+      [Gtk::Stock::CANCEL,Gtk::Dialog::RESPONSE_CANCEL],
+      [Gtk::Stock::SAVE, Gtk::Dialog::RESPONSE_APPLY ])
+      dialog.set_do_overwrite_confirmation(true)
+      dialog.show_all()
+      if dialog.run  == Gtk::Dialog::RESPONSE_APPLY
+        # dosyanin tam yolu
+        @@filename = dialog.filename
+        current_page = tab.get_nth_page(tab.page)
+        content = current_page.buffer.text
+        # ikinci kez yazma için gz uzantisi eklenmesi
+        @@filename = @@filename + ".gz"
         File.open(@@filename, 'w') do |f|
         gz = Zlib::GzipWriter.new(f)
         gz.write(content)
         gz.close
         end
-        @@saved = true
+        msg = Gtk::MessageDialog.new(dialog,
+        Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
+        Gtk::MessageDialog::BUTTONS_OK, _("Saved"))
+        filename = @@filename.split('/')
+        filename = filename[filename.length-1]
+        tab.set_tab_label(current_page, Gtk::Label.new(filename))
+        msg.show_all()
+        if msg.run == Gtk::Dialog::RESPONSE_OK
+          msg.destroy
+          dialog.destroy
+        end
+    else
+      content = current_page.buffer.text
+      File.open(@@filename, 'w') do |f|
+      gz = Zlib::GzipWriter.new(f)
+      gz.write(content)
+      gz.close
       end
+        current_page.saved = true
+      end
+    end
   end
- 
+
   def open_new_empty_file(tab) 
       current_page = tab.get_nth_page(tab.page)
       if not current_page.saved
