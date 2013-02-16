@@ -87,8 +87,8 @@ class Editor < Utils
     pagenum = (@tab.n_pages+1).to_s
     @tab.append_page(editor,Gtk::Label.new("tab "+pagenum))
     @tab.signal_connect("switch-page") do |a,b,current_page|
-       @buf = Gtk::TextBuffer.new
-       @tab.get_nth_page(current_page).set_buffer(@buf);
+      # @buf = Gtk::TextBuffer.new
+      # @tab.get_nth_page(current_page).set_buffer(@buf);
     end 
     return @tab
   end
@@ -275,19 +275,19 @@ class Editor < Utils
       tbFont.insert(10,fill)
       tbFont.insert(11,hp)
       tbFont.insert(12,subhead)
-      italik.signal_connect("clicked"){@buf.insert_at_cursor(".I")}
-      bold.signal_connect("clicked"){ @buf.insert_at_cursor(".B ")}
-      indent.signal_connect("clicked"){@buf.insert_at_cursor(".RE ")}
-      justify_left.signal_connect("clicked"){@buf.insert_at_cursor(".SH ")}
-      br.signal_connect("clicked"){@buf.insert_at_cursor(".br\n")}
-      paragraph.signal_connect("clicked"){@buf.insert_at_cursor(".P ")}
-      comment_line.signal_connect("clicked"){@buf.insert_at_cursor(".\\\" ")}
-      set_coloumn.signal_connect("clicked"){@buf.insert_at_cursor(".TP\n")}
-      start_indent_paragraph.signal_connect("clicked"){@buf.insert_at_cursor(".IP ")}
-      nofill.signal_connect("clicked"){@buf.insert_at_cursor(".nf ")}
-      fill.signal_connect("clicked"){@buf.insert_at_cursor(".fi ")}
-      hp.signal_connect("clicked"){@buf.insert_at_cursor(".HP ")}
-      subhead.signal_connect("clicked"){@buf.insert_at_cursor(".SS ")}
+      italik.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".I")}
+      bold.signal_connect("clicked"){ @tab.get_nth_page(@tab.page).insert_at_cursor(".B ")}
+      indent.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".RE ")}
+      justify_left.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".SH ")}
+      br.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".br\n")}
+      paragraph.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".P ")}
+      comment_line.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".\\\" ")}
+      set_coloumn.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".TP\n")}
+      start_indent_paragraph.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".IP ")}
+      nofill.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".nf ")}
+      fill.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".fi ")}
+      hp.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".HP ")}
+      subhead.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".SS ")}
       return tbFont
   end
 end
