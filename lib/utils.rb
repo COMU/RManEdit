@@ -162,7 +162,8 @@ class Utils
   def preview(win,editor,manview)
       if @@filename == "" or @@saved == false
         msg = Gtk::MessageDialog.new(nil, Gtk::Dialog::DESTROY_WITH_PARENT, 
-        Gtk::MessageDialog::INFO, Gtk::MessageDialog::BUTTONS_OK, _("If you want to view file, you must save it"))
+        Gtk::MessageDialog::INFO, Gtk::MessageDialog::BUTTONS_OK,
+        _("If you want to view file, you must save it"))
         msg.show_all()
         if msg.run == Gtk::Dialog::RESPONSE_OK 
             msg.destroy
@@ -190,7 +191,8 @@ class Utils
       output = IO.popen("man2html #{file.path}")
       str = output.readlines
       i = 5
-      content = str[1]+str[2]+str[3]+"<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"></HEAD><BODY>"
+      content = str[1]+str[2]+str[3]
+      content += "<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"></HEAD><BODY>"
       while i< str.length do
           content = content + str[i]
           i = i + 1
@@ -255,7 +257,7 @@ class Utils
       if (first)    
           mark = editor.buffer.create_mark(nil, first, false)
           editor.scroll_mark_onscreen(mark)
-          editor.buffer.delete_mark(mark)
+      #    editor.buffer.delete_mark(mark)
           editor.buffer.select_range(first, last)
       else
           dialogue = Gtk::MessageDialog.new(nil, Gtk::Dialog::MODAL, Gtk::MessageDialog::INFO, 
@@ -317,7 +319,9 @@ class Utils
   def app_about
     w = Gtk::Window.new
     layout = Gtk::Layout.new
-    info = Gtk::Label.new(_("RManEdit licence is Creative Commons.\n Written by Ebru Akagündüz"))
+    info = Gtk::Label.new(_("""
+    RManEdit licence is Creative Commons.
+    Written by Ebru Akagündüz"))
     b = Gtk::Button.new
     l = Gtk::Label.new(_("OK"))
     w.set_title(_("About RManEdit"))
@@ -339,7 +343,7 @@ class Utils
     w.set_title(_("Help"))
     w.set_size_request(750,400)
     w.window_position = Gtk::Window::POS_CENTER_ALWAYS
-    help_content = """
+    help_content = _("""
     RManEdit
     RmanEdit is a editor for man page preparing. Specified tags like italic, bold, indetion 
     is used for man pages. RmanEdit facilitates to use the tags and you can make
@@ -353,7 +357,7 @@ class Utils
     aplication. You can write man pages on middle section. There are tags on left section.
     Cursor is moves when you click tags like NAME, SYNOPSIS on left section.
  
-    At menu bar File->Convert to html file converts to html file your man file."""
+    At menu bar File->Convert to html file converts to html file your man file.""")
     l = Gtk::Label.new(help_content)
     l.modify_font(font)
     layout.put(l,10,30)
@@ -381,7 +385,19 @@ class TextManiplation
       clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
       editor.buffer.paste_clipboard(clipboard, nil, true)
   end
+ 
+  def find_text(editor)
+  editor.buffer.create_tag("highlight", {"background" => "#f8d60d", "foreground" => "red"})
+  start = editor.buffer.start_iter
+  first, last = start.forward_search("text", Gtk::TextIter::SEARCH_TEXT_ONLY, nil)
+  count = 0
+  while (first)
+    start.forward_char
+    first, last = start.forward_search("text", Gtk::TextIter::SEARCH_TEXT_ONLY, nil)
+    start = first
+    editor.buffer.apply_tag("highlight", first, last)
+    count += 1
+  end
+  end
 
 end
-
-
