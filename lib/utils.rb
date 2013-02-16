@@ -12,8 +12,11 @@ class Utils
   include GetText 
   bindtextdomain("rmanedit")
   @@filename = ""
-  @@saved = true
-  
+ 
+  def text_changed(tab)
+    tab.get_nth_page(tab.page).saved = false
+  end 
+ 
   def lang_choice(win,lang)
       if not @@saved
         dialog = Gtk::MessageDialog.new(win, Gtk::Dialog::MODAL,
@@ -96,12 +99,12 @@ class Utils
       end
   end
  
-  def open_new_empty_file(win,editor) 
+  def open_new_empty_file(win,tab) 
       if not @@saved
           which_func = "open_new_empty_file"
           will_change_lost(win,editor,which_func)
      else
-        editor.buffer.text = ""
+        @tab.get_nth_page(@tab.page).buffer.text = ""
         @@saved = true
         @@filename = ""
         win.set_title("RManEdit")
@@ -109,38 +112,33 @@ class Utils
   end
 
   # kaydedilmis bir dosyayi acma
-  def open_file(win,editor) 
-      if not @@saved
-          which_func = "open_file"
-          will_change_lost(win,editor,which_func)
+  def open_file(tab) 
+    saved = tab.get_nth_page(tab.page).saved 
+      if not saved
+        which_func = "open_file"
+        will_change_lost(tab, which_func)
       else
-          open_new_file(win,editor)
-          # kaydedilmis dosya acilinca buf degisir 
-          # buf tekrar true oldu
-          @@saved = true
+        open_new_file(tab)
+        tab.get_nth_page(tab.page).saved = true
       end
   end 
   
   # dosya acikken yeni dosya acma icin dialog
-  def will_change_lost(win,editor,which_func)
-      dialog = Gtk::MessageDialog.new(win, Gtk::Dialog::MODAL,
+  def will_change_lost(tab, which_func)
+      dialog = Gtk::MessageDialog.new(nil, Gtk::Dialog::MODAL,
       Gtk::MessageDialog::QUESTION,Gtk::MessageDialog::BUTTONS_YES_NO,
       _("Your changes will be lost. Do you want to continue?"))
      if dialog.run == Gtk::Dialog::RESPONSE_YES
-          dialog.destroy
           @@filename = ""
-          win.set_title("RManEdit")
-          editor.buffer.text = ""
-          @@saved = true
+          buf = tab.get_nth_page(tab.page).buffer
+          buf.text = ""
+          tab.get_nth_page(tab.page).saved = true
           if which_func == "open_file"
-              open_new_file(win,editor)
-              # kayitli dosya acilinca bu degisir
-              # saved tekrar true olmasi gerekir
-              @@saved = true
+              open_new_file(tab)
+              tab.get_nth_page(tab.page).saved = true
           end
-     else
-         dialog.destroy
      end   
+    dialog.destroy
   end 
 
   def buf_changed(buf,view_but,treeview,renderer)
@@ -202,52 +200,52 @@ class Utils
       file.unlink 
   end
 
-  def open_new_file(win,editor)
-        dialog = Gtk::FileChooserDialog.new(_("Open"), win, Gtk::FileChooser::ACTION_OPEN, nil, 
-        [Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL],
-        [Gtk::Stock::OPEN, Gtk::Dialog::RESPONSE_ACCEPT])
-        dialog.show
-        begin
-          if dialog.run == Gtk::Dialog::RESPONSE_ACCEPT
-            @@saved = true
-            file = dialog.filename
-            @@filename = file
-            relative_filename = @@filename.split('/')
-            relative_filename = relative_filename[relative_filename.length-1]
-            fm = FileMagic.new
-            # gzip dosyasi
-            if fm.file(file).scan(/gziP/i).length != 0
-      	      gz = Zlib::GzipReader.new(open(file)).read 
-              editor.buffer.text = gz
-              win.set_title(relative_filename+ " ~ RManEdit")
-            # zip dosyasi
-       	    elsif fm.file(file).scan(/zip/i).length != 0
-              win.set_title(relative_filename+ " ~ RManEdit")
-       	      Zip::ZipFile.open(file) do |zip_file|
-       	      zip_file.each do |f|
-              editor.buffer.text = zip_file.read(f)
-                end
-              end
-            # herhangi bir text
-      	    else
-              win.set_title(relative_filename+ " ~ RManEdit")
-              content = ""
-              IO.foreach(file){|block|  content = content + "\n"+ block}
-              editor.buffer.text = content
+  def open_new_file(tab)
+    dialog = Gtk::FileChooserDialog.new(_("Open"), nil, 
+    Gtk::FileChooser::ACTION_OPEN, nil, 
+    [Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL],
+    [Gtk::Stock::OPEN, Gtk::Dialog::RESPONSE_ACCEPT])
+    dialog.show
+    begin
+      if dialog.run == Gtk::Dialog::RESPONSE_ACCEPT
+        tab.get_nth_page(tab.page).saved = true
+        @@filename = dialog.filename
+        fm = FileMagic.new
+        # gzip dosyasi
+        if fm.file(@@filename).scan(/gziP/i).length != 0
+          gz = Zlib::GzipReader.new(open(@@filename)).read 
+          tab.get_nth_page(tab.page).buffer.text = gz
+        # zip dosyasi
+        elsif fm.file(@@filename).scan(/zip/i).length != 0
+       	  Zip::ZipFile.open(@@filename) do |zip_file|
+       	  zip_file.each do |f|
+          tab.get_nth_page(tab.page).buffer.text = zip_file.read(f)
             end
-              dialog.destroy         
-         else
-           dialog.destroy
-         end
-       rescue
-         msg = Gtk::MessageDialog.new(nil, Gtk::Dialog::DESTROY_WITH_PARENT,
-         Gtk::MessageDialog::INFO, Gtk::MessageDialog::BUTTONS_OK, _("Please select a man file to open"))
-         msg.show_all()
-         if msg.run == Gtk::Dialog::RESPONSE_OK
-           msg.destroy
-           dialog.destroy
-         end
-       end
+          end
+        # herhangi bir text
+        else
+          content = ""
+          IO.foreach(@@filename){|block|  content = content + "\n"+ block}
+          tab.get_nth_page(tab.page).buffer.text = content
+        end
+      # sekme isminin acik olan dosyanin adini almasi
+      filename = @@filename.split('/')
+      filename = filename[filename.length-1]
+      child = tab.get_nth_page(tab.page)
+      tab.set_tab_label(child, Gtk::Label.new(filename))
+      end
+    dialog.destroy
+    rescue
+      msg = Gtk::MessageDialog.new(nil, Gtk::Dialog::DESTROY_WITH_PARENT,
+      Gtk::MessageDialog::INFO, Gtk::MessageDialog::BUTTONS_OK, 
+      _("Please select a man file to open"))
+      msg.show_all()
+      if msg.run == Gtk::Dialog::RESPONSE_OK
+        msg.destroy
+        dialog.destroy
+        open_new_file(tab)
+      end
+    end
   end
 
   # secilen etikete gitme 

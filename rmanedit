@@ -9,7 +9,19 @@ require 'utils'
 require '~/.config/rmanedit/lang'
 require 'rubygems'
 
-class Editor < Utils
+class Textview < Gtk::TextView
+
+  attr_accessor :saved
+
+  def initialize
+    super
+    # dosya kayit durumu
+    @saved = true
+  end
+
+end
+
+class Editor 
   include GetText
   bindtextdomain("rmanedit")
   GetText.set_locale_all(LANGUAGE)
@@ -82,13 +94,14 @@ class Editor < Utils
   end
  
   def create_tabs
-    editor = Gtk::TextView.new 
+    editor = Textview.new
     # toplam sayfa sayisi
     pagenum = (@tab.n_pages+1).to_s
-    @tab.append_page(editor,Gtk::Label.new("tab "+pagenum))
+    @tab.append_page(editor,Gtk::Label.new("Untitled Document"+pagenum))
     @tab.signal_connect("switch-page") do |a,b,current_page|
-      # @buf = Gtk::TextBuffer.new
-      # @tab.get_nth_page(current_page).set_buffer(@buf);
+      # o anki buffer
+      buf = @tab.get_nth_page(current_page).buffer
+      buf.signal_connect("changed"){o=Utils.new; o.text_changed(@tab);}
     end 
     return @tab
   end
@@ -154,7 +167,7 @@ class Editor < Utils
      aboutmenu.append(helpmenuitem)     
      mb.append(aboutmenuitem)
      # file
-     open.signal_connect("activate"){o=Utils.new; o.open_file(@win,@editor)}
+     open.signal_connect("activate"){o=Utils.new; o.open_file(@tab)}
      new.signal_connect("activate"){o=Utils.new; o.open_new_empty_file(@win,@editor)}
      save.signal_connect("activate"){o=Utils.new; o.save(@win,@editor,"")}
      save_as.signal_connect("activate"){o=Utils.new; o.save_as(@win,@editor,"save_as")}
@@ -208,7 +221,7 @@ class Editor < Utils
 	view_but.set_sensitive false       
         # view_but sensitive
 #        @buf.signal_connect("changed"){o = Utils.new; o.buf_changed(@buf,view_but,@treeview,@renderer)}
-	opentb.signal_connect("clicked"){o = Utils.new; o.open_file(@win,@editor)}
+	opentb.signal_connect("clicked"){o = Utils.new; o.open_file(@tab)}
         saveastb.signal_connect("clicked"){o = Utils.new; o.save_as(@win,@editor,"save_as")}
 	savetb.signal_connect("clicked"){o = Utils.new; o.save(@win,@editor,"")}
 	cuttb.signal_connect("clicked"){o = TextManiplation.new; o.cut_text(@editor)}
