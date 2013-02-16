@@ -18,15 +18,16 @@ class Textview < Gtk::TextView
     # dosya kayit durumu
     @saved = true
   end
-
 end
 
 class Editor 
+
   include GetText
   bindtextdomain("rmanedit")
   GetText.set_locale_all(LANGUAGE)
   INDEX = 0
   attr_accessor :data
+
   def initialize
     @win = Gtk::Window.new
     @editor = Gtk::TextView.new
@@ -94,8 +95,7 @@ class Editor
       hpaned2.pack1(create_tabs, true, true)
       hpaned2.pack2(man_view, true, false)
       @win.add(@vbox)
-      @win.show_all
-     
+      @win.show_all     
   end
  
   def create_tabs
@@ -121,7 +121,8 @@ class Editor
       return
     end
     dialog = Gtk::MessageDialog.new(nil, Gtk::Dialog::MODAL,
-    Gtk::MessageDialog::QUESTION,Gtk::MessageDialog::BUTTONS_YES_NO,
+    Gtk::MessageDialog::QUESTION,
+    Gtk::MessageDialog::BUTTONS_YES_NO,
     _("Your changes will be lost. Do you want to continue?"))
     if dialog.run == Gtk::Dialog::RESPONSE_YES
       @tab.remove_page(@tab.page)
@@ -192,141 +193,154 @@ class Editor
      aboutmenu.append(helpmenuitem)     
      mb.append(aboutmenuitem)
      # file
-     open.signal_connect("activate"){o=Utils.new; o.open_file(@tab)}
-     new.signal_connect("activate"){o=Utils.new; o.open_new_empty_file(@tab)}
-     save.signal_connect("activate"){o=Utils.new; o.save(@tab, false)}
-     save_as.signal_connect("activate"){o=Utils.new; o.save_as(@tab, true)}
+     open.signal_connect("activate"){o=Utils.new; 
+     o.open_file(@tab)}
+     new.signal_connect("activate"){o=Utils.new; 
+     o.open_new_empty_file(@tab)}
+     save.signal_connect("activate"){o=Utils.new; 
+     o.save(@tab, false)}
+     save_as.signal_connect("activate"){o=Utils.new; 
+     o.save_as(@tab, true)}
      exit_.signal_connect("activate"){Gtk.main_quit}
-     make_html.signal_connect("activate"){o=Utils.new; o.create_html_file(@tab)}
-     new_tab.signal_connect("activate"){create_tabs; @win.show_all}
+     make_html.signal_connect("activate"){o=Utils.new; 
+     o.create_html_file(@tab)}
+     new_tab.signal_connect("activate"){create_tabs; 
+     @win.show_all}
      removetab.signal_connect("activate"){remove_tab}
      # settings
-     en.signal_connect("activate"){o=Utils.new;o.lang_choice(@win,"en")}
-     tr.signal_connect("activate"){o=Utils.new;o.lang_choice(@win,"tr")}
+     en.signal_connect("activate"){o=Utils.new; 
+     o.lang_choice(@win,"en")}
+     tr.signal_connect("activate"){o=Utils.new;
+     o.lang_choice(@win,"tr")}
      # about
      app_about.signal_connect("activate"){o=Utils.new; o.app_about}
      helpmenuitem.signal_connect("activate"){o=Utils.new; o.help}
      # edit
-     copy.signal_connect("activate"){o=TextManiplation.new; o.copy_text(@tab)}
-     paste.signal_connect("activate"){o=TextManiplation.new; o.paste_text(@tab)}
-     cut.signal_connect("activate"){o=TextManiplation.new; o.cut_text(@tab)}
-     find.signal_connect("activate"){o=TextManiplation.new; o.find_text(@tab)} 
+     copy.signal_connect("activate"){o=TextManiplation.new; 
+     o.copy_text(@tab)}
+     paste.signal_connect("activate"){o=TextManiplation.new; 
+     o.paste_text(@tab)}
+     cut.signal_connect("activate"){o=TextManiplation.new; 
+     o.cut_text(@tab)}
+     find.signal_connect("activate"){o=TextManiplation.new; 
+     o.find_text(@tab)} 
      return mb
   end
+
   # dosya islemleri icin
   def toolBar
-	toolbar = Gtk::Toolbar.new
-        toolbar.set_toolbar_style(Gtk::Toolbar::Style::ICONS)
-        toolbar.icon_size = 3
-        newtb = Gtk::ToolButton.new(Gtk::Stock::NEW)
-        opentb = Gtk::ToolButton.new(Gtk::Stock::OPEN)
-        savetb = Gtk::ToolButton.new(Gtk::Stock::SAVE)
-        saveastb = Gtk::ToolButton.new(Gtk::Stock::SAVE_AS)
-	cuttb = Gtk::ToolButton.new(Gtk::Stock::CUT)
-	copytb = Gtk::ToolButton.new(Gtk::Stock::COPY)
-	pastetb = Gtk::ToolButton.new(Gtk::Stock::PASTE)
-        @view_but = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/preview3.png"))
-        @view_but.set_size_request(60,40)
-        tip = Gtk::Tooltips.new
-        tip.set_tip(newtb,_("New"),nil)
-        tip.set_tip(opentb, _("Open"),nil)
-        tip.set_tip(savetb,_("Save"),nil)
-        tip.set_tip(saveastb,_("Save as"),nil)
-        tip.set_tip(cuttb, _("Cut"),nil)
-        tip.set_tip(copytb,_("Copy"),nil)
-        tip.set_tip(pastetb,_("Paste"),nil)
-        tip.set_tip(@view_but, _("Preview"),nil)
-        toolbar.insert(0, newtb)
-        toolbar.insert(1, opentb)
-        toolbar.insert(2, savetb)
-        toolbar.insert(3,saveastb)
-	toolbar.insert(4, cuttb)
-	toolbar.insert(5, copytb)
-	toolbar.insert(6, pastetb)
-        toolbar.insert(7,@view_but)
-	@view_but.set_sensitive false       
-	opentb.signal_connect("clicked"){o = Utils.new; o.open_file(@tab)}
-        saveastb.signal_connect("clicked"){o = Utils.new; o.save_as(@tab, true)}
-	savetb.signal_connect("clicked"){o = Utils.new; o.save(@tab, false)}
-	cuttb.signal_connect("clicked"){o = TextManiplation.new; o.cut_text(@tab)}
-	copytb.signal_connect("clicked"){o = TextManiplation.new; o.copy_text(@tab)}
-	pastetb.signal_connect("clicked"){o= TextManiplation.new; o.paste_text(@tab)}
-	newtb.signal_connect("clicked"){o= Utils.new; o.open_new_empty_file(@tab)}
-        @view_but.signal_connect("clicked"){o = Utils.new; o.preview(@tab, @manview)}
-        return toolbar
+    toolbar = Gtk::Toolbar.new
+    toolbar.set_toolbar_style(Gtk::Toolbar::Style::ICONS)
+    toolbar.icon_size = 3
+    newtb = Gtk::ToolButton.new(Gtk::Stock::NEW)
+    opentb = Gtk::ToolButton.new(Gtk::Stock::OPEN)
+    savetb = Gtk::ToolButton.new(Gtk::Stock::SAVE)
+    saveastb = Gtk::ToolButton.new(Gtk::Stock::SAVE_AS)
+    cuttb = Gtk::ToolButton.new(Gtk::Stock::CUT)
+    copytb = Gtk::ToolButton.new(Gtk::Stock::COPY)
+    pastetb = Gtk::ToolButton.new(Gtk::Stock::PASTE)
+    @view_but = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/preview3.png"))
+    @view_but.set_size_request(60,40)
+    tip = Gtk::Tooltips.new
+    tip.set_tip(newtb,_("New"),nil)
+    tip.set_tip(opentb, _("Open"),nil)
+    tip.set_tip(savetb,_("Save"),nil)
+    tip.set_tip(saveastb,_("Save as"),nil)
+    tip.set_tip(cuttb, _("Cut"),nil)
+    tip.set_tip(copytb,_("Copy"),nil)
+    tip.set_tip(pastetb,_("Paste"),nil)
+    tip.set_tip(@view_but, _("Preview"),nil)
+    toolbar.insert(0, newtb)
+    toolbar.insert(1, opentb)
+    toolbar.insert(2, savetb)
+    toolbar.insert(3,saveastb)
+    toolbar.insert(4, cuttb)
+    toolbar.insert(5, copytb)
+    toolbar.insert(6, pastetb)
+    toolbar.insert(7,@view_but)
+    @view_but.set_sensitive false       
+    opentb.signal_connect("clicked"){o = Utils.new; o.open_file(@tab)}
+    saveastb.signal_connect("clicked"){o = Utils.new; o.save_as(@tab, true)}
+    savetb.signal_connect("clicked"){o = Utils.new; o.save(@tab, false)}
+    cuttb.signal_connect("clicked"){o = TextManiplation.new; o.cut_text(@tab)}
+    copytb.signal_connect("clicked"){o = TextManiplation.new; o.copy_text(@tab)}
+    pastetb.signal_connect("clicked"){o= TextManiplation.new; o.paste_text(@tab)}
+    newtb.signal_connect("clicked"){o= Utils.new; o.open_new_empty_file(@tab)}
+    @view_but.signal_connect("clicked"){o = Utils.new; o.preview(@tab, @manview)}
+    return toolbar
   end
   
   def toolBarFont
-      tbFont = Gtk::Toolbar.new
-      t1 = Gtk::Tooltips.new
-      tbFont.set_toolbar_style(Gtk::Toolbar::Style::ICONS)
-      italik = Gtk::ToolButton.new(Gtk::Stock::ITALIC)
-      bold = Gtk::ToolButton.new(Gtk::Stock::BOLD)
-      indent = Gtk::ToolButton.new(Gtk::Stock::INDENT)
-      justify_left = Gtk::ToolButton.new(Gtk::Stock::JUSTIFY_LEFT)
-      br = Gtk::ToolButton.new(Gtk::Stock::JUMP_TO)
-      paragraph = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/paragraph.png"))
-      comment_line = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/comment_line.png"))
-      set_coloumn = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/coloumns.png"))
-      start_indent_paragraph = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/paragraph_indent.png"))
-      nofill = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/nf.png"))
-      fill = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/fi.png"))
-      hp = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/hp.png"))
-      subhead = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/subhead.png"))
-      italik.set_size_request(50,40)
-      bold.set_size_request(50,40)
-      indent.set_size_request(50,40)
-      justify_left.set_size_request(50,40)
-      br.set_size_request(50,40)
-      paragraph.set_size_request(50,40)
-      comment_line.set_size_request(50,40)
-      set_coloumn.set_size_request(50,40)
-      start_indent_paragraph.set_size_request(50,40)
-      nofill.set_size_request(50,40)
-      fill.set_size_request(50,40)
-      hp.set_size_request(50,40)
-      subhead.set_size_request(50,40)
-      t1.set_tip(italik,_("Italic\n .I"),nil)
-      t1.set_tip(bold,_("Bold\n .B"),nil)
-      t1.set_tip(indent,_("Indention\n .RE"),nil)
-      t1.set_tip(justify_left,_("Subhead and justify left\n .SH"),nil)
-      t1.set_tip(br,_("Jump to the bottom line\n .br"),nil)
-      t1.set_tip(paragraph,_("Paragraph\n .P"),nil)
-      t1.set_tip(comment_line,_("Comment line\n .\\\""),nil)
-      t1.set_tip(set_coloumn,_("Seperate to coloumns\n .TP"),nil)
-      t1.set_tip(start_indent_paragraph,_("Start indent on paragraph\n .IP"),nil)
-      t1.set_tip(nofill,_("Nofill\n .nf"),nil)
-      t1.set_tip(fill,_("Fill\n .fi"),nil)
-      t1.set_tip(hp,_("First indent after line\n .HP"),nil)
-      t1.set_tip(subhead,_("Subhead\n .SS"),nil)
-      tbFont.insert(0,italik)
-      tbFont.insert(1,bold)
-      tbFont.insert(2,indent)
-      tbFont.insert(3,justify_left)
-      tbFont.insert(4,br)
-      tbFont.insert(5,paragraph)
-      tbFont.insert(6,comment_line)
-      tbFont.insert(7,set_coloumn)
-      tbFont.insert(8,start_indent_paragraph)
-      tbFont.insert(9,nofill)
-      tbFont.insert(10,fill)
-      tbFont.insert(11,hp)
-      tbFont.insert(12,subhead)
-      current_page = @tab.get_nth_page(@tab.page)
-      italik.signal_connect("clicked"){current_page.insert_at_cursor(".I")}
-      bold.signal_connect("clicked"){current_page.insert_at_cursor(".B ")}
-      indent.signal_connect("clicked"){current_page.insert_at_cursor(".RE ")}
-      justify_left.signal_connect("clicked"){current_page.insert_at_cursor(".SH ")}
-      br.signal_connect("clicked"){current_page.insert_at_cursor(".br\n")}
-      paragraph.signal_connect("clicked"){current_page.insert_at_cursor(".P ")}
-      comment_line.signal_connect("clicked"){current_page.insert_at_cursor(".\\\" ")}
-      set_coloumn.signal_connect("clicked"){current_page.insert_at_cursor(".TP\n")}
-      start_indent_paragraph.signal_connect("clicked"){current_page.insert_at_cursor(".IP ")}
-      nofill.signal_connect("clicked"){current_page.insert_at_cursor(".nf ")}
-      fill.signal_connect("clicked"){current_page.insert_at_cursor(".fi ")}
-      hp.signal_connect("clicked"){current_page.insert_at_cursor(".HP ")}
-      subhead.signal_connect("clicked"){current_page.insert_at_cursor(".SS ")}
-      return tbFont
+    tbFont = Gtk::Toolbar.new
+    t1 = Gtk::Tooltips.new
+    tbFont.set_toolbar_style(Gtk::Toolbar::Style::ICONS)
+    italik = Gtk::ToolButton.new(Gtk::Stock::ITALIC)
+    bold = Gtk::ToolButton.new(Gtk::Stock::BOLD)
+    indent = Gtk::ToolButton.new(Gtk::Stock::INDENT)
+    justify_left = Gtk::ToolButton.new(Gtk::Stock::JUSTIFY_LEFT)
+    br = Gtk::ToolButton.new(Gtk::Stock::JUMP_TO)
+    paragraph = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/paragraph.png"))
+    comment_line = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/comment_line.png"))
+    set_coloumn = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/coloumns.png"))
+    start_indent_paragraph = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/paragraph_indent.png"))
+    nofill = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/nf.png"))
+    fill = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/fi.png"))
+    hp = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/hp.png"))
+    subhead = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/subhead.png"))
+    italik.set_size_request(50,40)
+    bold.set_size_request(50,40)
+    indent.set_size_request(50,40)
+    justify_left.set_size_request(50,40)
+    br.set_size_request(50,40)
+    paragraph.set_size_request(50,40)
+    comment_line.set_size_request(50,40)
+    set_coloumn.set_size_request(50,40)
+    start_indent_paragraph.set_size_request(50,40)
+    nofill.set_size_request(50,40)
+    fill.set_size_request(50,40)
+    hp.set_size_request(50,40)
+    subhead.set_size_request(50,40)
+    t1.set_tip(italik,_("Italic\n .I"),nil)
+    t1.set_tip(bold,_("Bold\n .B"),nil)
+    t1.set_tip(indent,_("Indention\n .RE"),nil)
+    t1.set_tip(justify_left,_("Subhead and justify left\n .SH"),nil)
+    t1.set_tip(br,_("Jump to the bottom line\n .br"),nil)
+    t1.set_tip(paragraph,_("Paragraph\n .P"),nil)
+    t1.set_tip(comment_line,_("Comment line\n .\\\""),nil)
+    t1.set_tip(set_coloumn,_("Seperate to coloumns\n .TP"),nil)
+    t1.set_tip(start_indent_paragraph,_("Start indent on paragraph\n .IP"),nil)
+    t1.set_tip(nofill,_("Nofill\n .nf"),nil)
+    t1.set_tip(fill,_("Fill\n .fi"),nil)
+    t1.set_tip(hp,_("First indent after line\n .HP"),nil)
+    t1.set_tip(subhead,_("Subhead\n .SS"),nil)
+    tbFont.insert(0,italik)
+    tbFont.insert(1,bold)
+    tbFont.insert(2,indent)
+    tbFont.insert(3,justify_left)
+    tbFont.insert(4,br)
+    tbFont.insert(5,paragraph)
+    tbFont.insert(6,comment_line)
+    tbFont.insert(7,set_coloumn)
+    tbFont.insert(8,start_indent_paragraph)
+    tbFont.insert(9,nofill)
+    tbFont.insert(10,fill)
+    tbFont.insert(11,hp)
+    tbFont.insert(12,subhead)
+    current_page = @tab.get_nth_page(@tab.page)
+    italik.signal_connect("clicked"){current_page.insert_at_cursor(".I")}
+    bold.signal_connect("clicked"){current_page.insert_at_cursor(".B ")}
+    indent.signal_connect("clicked"){current_page.insert_at_cursor(".RE ")}
+    justify_left.signal_connect("clicked"){current_page.insert_at_cursor(".SH ")}
+    br.signal_connect("clicked"){current_page.insert_at_cursor(".br\n")}
+    paragraph.signal_connect("clicked"){current_page.insert_at_cursor(".P ")}
+    comment_line.signal_connect("clicked"){current_page.insert_at_cursor(".\\\" ")}
+    set_coloumn.signal_connect("clicked"){current_page.insert_at_cursor(".TP\n")}
+    start_indent_paragraph.signal_connect("clicked"){current_page.insert_at_cursor(".IP ")}
+    nofill.signal_connect("clicked"){current_page.insert_at_cursor(".nf ")}
+    fill.signal_connect("clicked"){current_page.insert_at_cursor(".fi ")}
+    hp.signal_connect("clicked"){current_page.insert_at_cursor(".HP ")}
+    subhead.signal_connect("clicked"){current_page.insert_at_cursor(".SS ")}
+    return tbFont
   end
 end
 

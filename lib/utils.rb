@@ -42,7 +42,7 @@ class Utils
   end
 
   def save_as(tab,saveas)
-      save(tab,saveas)   
+    save(tab,saveas)   
   end
 
   def save(tab,saveas)
@@ -88,16 +88,16 @@ class Utils
   end
 
   def open_new_empty_file(tab) 
-      current_page = tab.get_nth_page(tab.page)
-      if not current_page.saved
-        which_func = "open_new_empty_file"
-        will_change_lost(tab, which_func)
-     else
-       current_page.buffer.text = ""
-       current_page.saved = true
-       @@filename = ""
-       tab.set_tab_label(current_page,
-       Gtk::Label.new("Untitled Document " + tab.n_pages.to_s))
+    current_page = tab.get_nth_page(tab.page)
+    if not current_page.saved
+      which_func = "open_new_empty_file"
+      will_change_lost(tab, which_func)
+    else
+      current_page.buffer.text = ""
+      current_page.saved = true
+      @@filename = ""
+      tab.set_tab_label(current_page,
+      Gtk::Label.new("Untitled Document " + tab.n_pages.to_s))
     end
   end
 
@@ -115,8 +115,10 @@ class Utils
   
   # dosya acikken yeni dosya acma icin dialog
   def will_change_lost(tab, which_func)
+
     dialog = Gtk::MessageDialog.new(nil, Gtk::Dialog::MODAL,
-    Gtk::MessageDialog::QUESTION,Gtk::MessageDialog::BUTTONS_YES_NO,
+    Gtk::MessageDialog::QUESTION, 
+    Gtk::MessageDialog::BUTTONS_YES_NO,
     _("Your changes will be lost. Do you want to continue?"))
     if dialog.run == Gtk::Dialog::RESPONSE_YES
       @@filename = ""
@@ -149,27 +151,13 @@ class Utils
     end
   end
 
-  def buf_changed(buf,view_but,treeview,renderer)
-     @@saved = false
-     if buf.text == ""
-         view_but.set_sensitive(false)
-         selection = treeview.selection
-         iter = selection.selected
-         if iter != nil
-            selection.unselect_iter(iter)
-         end
-         treeview.sensitive=false
-      else
-        view_but.set_sensitive(true)
-        treeview.sensitive=true
-      end
-  end
-  
   def preview(tab, manview)
     current_page = tab.get_nth_page(tab.page)
     if @@filename == "" or current_page.saved == false
-      msg = Gtk::MessageDialog.new(nil, Gtk::Dialog::DESTROY_WITH_PARENT, 
-      Gtk::MessageDialog::INFO, Gtk::MessageDialog::BUTTONS_OK,
+      msg = Gtk::MessageDialog.new(nil,
+      Gtk::Dialog::DESTROY_WITH_PARENT, 
+      Gtk::MessageDialog::INFO, 
+      Gtk::MessageDialog::BUTTONS_OK,
       _("If you want to view file, you must save it"))
       msg.show_all()
       if msg.run == Gtk::Dialog::RESPONSE_OK 
@@ -185,8 +173,10 @@ class Utils
       file.read
       fm = FileMagic.new
       if fm.file(file.path).scan(/troff/i).length == 0
-        msg = Gtk::MessageDialog.new(nil, Gtk::Dialog::DESTROY_WITH_PARENT,
-        Gtk::MessageDialog::INFO, Gtk::MessageDialog::BUTTONS_OK, _("It is not a man file"))
+        msg = Gtk::MessageDialog.new(nil, 
+        Gtk::Dialog::DESTROY_WITH_PARENT,
+        Gtk::MessageDialog::INFO, Gtk::MessageDialog::BUTTONS_OK,
+        _("It is not a man file"))
         msg.show_all()
         if msg.run == Gtk::Dialog::RESPONSE_OK
             file.close
@@ -199,7 +189,8 @@ class Utils
       str = output.readlines
       i = 5
       content = str[1]+str[2]+str[3]
-      content += "<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\"></HEAD><BODY>"
+      content += "<meta http-equiv=\"Content-Type\"" 
+      content += "content=\"text/html;charset=UTF-8\"></HEAD><BODY>"
       while i< str.length do
           content = content + str[i]
           i = i + 1
@@ -245,8 +236,10 @@ class Utils
       end
     dialog.destroy
     rescue
-      msg = Gtk::MessageDialog.new(nil, Gtk::Dialog::DESTROY_WITH_PARENT,
-      Gtk::MessageDialog::INFO, Gtk::MessageDialog::BUTTONS_OK, 
+      msg = Gtk::MessageDialog.new(nil,
+      Gtk::Dialog::DESTROY_WITH_PARENT,
+      Gtk::MessageDialog::INFO, 
+      Gtk::MessageDialog::BUTTONS_OK, 
       _("Please select a man file to open"))
       msg.show_all()
       if msg.run == Gtk::Dialog::RESPONSE_OK
