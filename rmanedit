@@ -181,10 +181,10 @@ class Editor
      app_about.signal_connect("activate"){o=Utils.new; o.app_about}
      helpmenuitem.signal_connect("activate"){o=Utils.new; o.help}
      # edit
-     copy.signal_connect("activate"){o=TextManiplation.new; o.copy_text(@editor)}
-     paste.signal_connect("activate"){o=TextManiplation.new; o.paste_text(@editor)}
-     cut.signal_connect("activate"){o=TextManiplation.new; o.cut_text(@editor)}
-     find.signal_connect("activate"){o=TextManiplation.new; o.find_text(@editor)} 
+     copy.signal_connect("activate"){o=TextManiplation.new; o.copy_text(@tab)}
+     paste.signal_connect("activate"){o=TextManiplation.new; o.paste_text(@tab)}
+     cut.signal_connect("activate"){o=TextManiplation.new; o.cut_text(@tab)}
+     find.signal_connect("activate"){o=TextManiplation.new; o.find_text(@tab)} 
      return mb
   end
   # dosya islemleri icin
@@ -224,9 +224,9 @@ class Editor
 	opentb.signal_connect("clicked"){o = Utils.new; o.open_file(@tab)}
         saveastb.signal_connect("clicked"){o = Utils.new; o.save_as(@tab, true)}
 	savetb.signal_connect("clicked"){o = Utils.new; o.save(@tab, false)}
-	cuttb.signal_connect("clicked"){o = TextManiplation.new; o.cut_text(@editor)}
-	copytb.signal_connect("clicked"){o = TextManiplation.new; o.copy_text(@editor)}
-	pastetb.signal_connect("clicked"){o= TextManiplation.new; o.paste_text(@editor)}
+	cuttb.signal_connect("clicked"){o = TextManiplation.new; o.cut_text(@tab)}
+	copytb.signal_connect("clicked"){o = TextManiplation.new; o.copy_text(@tab)}
+	pastetb.signal_connect("clicked"){o= TextManiplation.new; o.paste_text(@tab)}
 	newtb.signal_connect("clicked"){o= Utils.new; o.open_new_empty_file(@tab)}
         view_but.signal_connect("clicked"){o = Utils.new; o.preview(@win,@editor,@manview)}
         return toolbar
@@ -288,19 +288,20 @@ class Editor
       tbFont.insert(10,fill)
       tbFont.insert(11,hp)
       tbFont.insert(12,subhead)
-      italik.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".I")}
-      bold.signal_connect("clicked"){ @tab.get_nth_page(@tab.page).insert_at_cursor(".B ")}
-      indent.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".RE ")}
-      justify_left.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".SH ")}
-      br.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".br\n")}
-      paragraph.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".P ")}
-      comment_line.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".\\\" ")}
-      set_coloumn.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".TP\n")}
-      start_indent_paragraph.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".IP ")}
-      nofill.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".nf ")}
-      fill.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".fi ")}
-      hp.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".HP ")}
-      subhead.signal_connect("clicked"){@tab.get_nth_page(@tab.page).insert_at_cursor(".SS ")}
+      current_page = @tab.get_nth_page(@tab.page)
+      italik.signal_connect("clicked"){current_page.insert_at_cursor(".I")}
+      bold.signal_connect("clicked"){current_page.insert_at_cursor(".B ")}
+      indent.signal_connect("clicked"){current_page.insert_at_cursor(".RE ")}
+      justify_left.signal_connect("clicked"){current_page.insert_at_cursor(".SH ")}
+      br.signal_connect("clicked"){current_page.insert_at_cursor(".br\n")}
+      paragraph.signal_connect("clicked"){current_page.insert_at_cursor(".P ")}
+      comment_line.signal_connect("clicked"){current_page.insert_at_cursor(".\\\" ")}
+      set_coloumn.signal_connect("clicked"){current_page.insert_at_cursor(".TP\n")}
+      start_indent_paragraph.signal_connect("clicked"){current_page.insert_at_cursor(".IP ")}
+      nofill.signal_connect("clicked"){current_page.insert_at_cursor(".nf ")}
+      fill.signal_connect("clicked"){current_page.insert_at_cursor(".fi ")}
+      hp.signal_connect("clicked"){current_page.insert_at_cursor(".HP ")}
+      subhead.signal_connect("clicked"){current_page.insert_at_cursor(".SS ")}
       return tbFont
   end
 end

@@ -362,19 +362,22 @@ end
 
 class TextManiplation
 
-  def cut_text(editor)
+  def cut_text(tab)
+      current_page = tab.get_nth_page(tab.page)
       clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
-      editor.buffer.cut_clipboard(clipboard, true)
+      current_page.buffer.cut_clipboard(clipboard, true)
   end
 
-  def copy_text(editor)
+  def copy_text(tab)
+      current_page = tab.get_nth_page(tab.page)
       clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
-      editor.buffer.copy_clipboard(clipboard)
+      current_page.buffer.copy_clipboard(clipboard)
   end
   
-  def paste_text(editor)
+  def paste_text(tab)
+      current_page = tab.get_nth_page(tab.page)
       clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
-      editor.buffer.paste_clipboard(clipboard, nil, true)
+      current_page.buffer.paste_clipboard(clipboard, nil, true)
   end
  
   def find_text(editor)
