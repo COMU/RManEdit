@@ -114,7 +114,11 @@ class Editor
     end
     return @tab
   end
-
+ 
+  def remove_tab
+    @tab.remove_page(@tab.page)
+  end
+  
   def menuBar      
      mb = Gtk::MenuBar.new
      filemenu = Gtk::Menu.new
@@ -126,12 +130,14 @@ class Editor
      save_as = Gtk::MenuItem.new(_("Save as"))
      make_html = Gtk::MenuItem.new(_("Convert to html file"))
      new_tab = Gtk::MenuItem.new(_("New Tab"))
+     removetab = Gtk::MenuItem.new(_("Remove Tab"))
      exit_ = Gtk::MenuItem.new(_("Quit"))
      filemenu.append(open)    
      filemenu.append(new) 
      filemenu.append(save) 
      filemenu.append(save_as)
      filemenu.append(new_tab)
+     filemenu.append(removetab)
      filemenu.append(make_html)
      filemenu.append(exit_)
      mb.append(filemenuitem)
@@ -182,7 +188,8 @@ class Editor
      save_as.signal_connect("activate"){o=Utils.new; o.save_as(@tab, true)}
      exit_.signal_connect("activate"){Gtk.main_quit}
      make_html.signal_connect("activate"){o=Utils.new; o.create_html_file(@tab)}
-     new_tab.signal_connect("activate"){create_tabs;@win.show_all}
+     new_tab.signal_connect("activate"){create_tabs; @win.show_all}
+     removetab.signal_connect("activate"){remove_tab}
      # settings
      en.signal_connect("activate"){o=Utils.new;o.lang_choice(@win,"en")}
      tr.signal_connect("activate"){o=Utils.new;o.lang_choice(@win,"tr")}
