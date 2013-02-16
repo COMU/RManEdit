@@ -99,15 +99,17 @@ class Utils
       end
   end
  
-  def open_new_empty_file(win,tab) 
-      if not @@saved
-          which_func = "open_new_empty_file"
-          will_change_lost(win,editor,which_func)
+  def open_new_empty_file(tab) 
+      current_page = tab.get_nth_page(tab.page)
+      if not current_page.saved
+        which_func = "open_new_empty_file"
+        will_change_lost(tab, which_func)
      else
-        @tab.get_nth_page(@tab.page).buffer.text = ""
-        @@saved = true
-        @@filename = ""
-        win.set_title("RManEdit")
+       current_page.buffer.text = ""
+       current_page.saved = true
+       @@filename = ""
+       tab.set_tab_label(current_page,
+       Gtk::Label.new("Untitled Document " + tab.n_pages.to_s))
     end
   end
 
@@ -130,12 +132,15 @@ class Utils
       _("Your changes will be lost. Do you want to continue?"))
      if dialog.run == Gtk::Dialog::RESPONSE_YES
           @@filename = ""
-          buf = tab.get_nth_page(tab.page).buffer
-          buf.text = ""
-          tab.get_nth_page(tab.page).saved = true
+          current_page = tab.get_nth_page(tab.page)
+          current_page.buffer.text = ""
+          current_page.saved = true
           if which_func == "open_file"
               open_new_file(tab)
-              tab.get_nth_page(tab.page).saved = true
+              current_page.saved = true
+          else
+            tab.set_tab_label(current_page,
+            Gtk::Label.new("Untitled Document " + tab.n_pages.to_s))
           end
      end   
     dialog.destroy

@@ -97,7 +97,7 @@ class Editor
     editor = Textview.new
     # toplam sayfa sayisi
     pagenum = (@tab.n_pages+1).to_s
-    @tab.append_page(editor,Gtk::Label.new("Untitled Document"+pagenum))
+    @tab.append_page(editor,Gtk::Label.new("Untitled Document "+pagenum))
     @tab.signal_connect("switch-page") do |a,b,current_page|
       # o anki buffer
       buf = @tab.get_nth_page(current_page).buffer
@@ -168,7 +168,7 @@ class Editor
      mb.append(aboutmenuitem)
      # file
      open.signal_connect("activate"){o=Utils.new; o.open_file(@tab)}
-     new.signal_connect("activate"){o=Utils.new; o.open_new_empty_file(@win,@editor)}
+     new.signal_connect("activate"){o=Utils.new; o.open_new_empty_file(@tab)}
      save.signal_connect("activate"){o=Utils.new; o.save(@win,@editor,"")}
      save_as.signal_connect("activate"){o=Utils.new; o.save_as(@win,@editor,"save_as")}
      exit_.signal_connect("activate"){Gtk.main_quit}
