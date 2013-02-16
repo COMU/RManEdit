@@ -169,8 +169,8 @@ class Editor
      # file
      open.signal_connect("activate"){o=Utils.new; o.open_file(@tab)}
      new.signal_connect("activate"){o=Utils.new; o.open_new_empty_file(@tab)}
-     save.signal_connect("activate"){o=Utils.new; o.save(@tab)}
-     save_as.signal_connect("activate"){o=Utils.new; o.save_as(@win,@editor,"save_as")}
+     save.signal_connect("activate"){o=Utils.new; o.save(@tab, false)}
+     save_as.signal_connect("activate"){o=Utils.new; o.save_as(@tab, true)}
      exit_.signal_connect("activate"){Gtk.main_quit}
      make_html.signal_connect("activate"){o=Utils.new; o.create_html_file(@editor,@win)}
      new_tab.signal_connect("activate"){create_tabs;@win.show_all}
@@ -222,8 +222,8 @@ class Editor
         # view_but sensitive
 #        @buf.signal_connect("changed"){o = Utils.new; o.buf_changed(@buf,view_but,@treeview,@renderer)}
 	opentb.signal_connect("clicked"){o = Utils.new; o.open_file(@tab)}
-        saveastb.signal_connect("clicked"){o = Utils.new; o.save_as(@win,@editor,"save_as")}
-	savetb.signal_connect("clicked"){o = Utils.new; o.save(@win,@editor,"")}
+        saveastb.signal_connect("clicked"){o = Utils.new; o.save_as(@tab, true)}
+	savetb.signal_connect("clicked"){o = Utils.new; o.save(@tab, false)}
 	cuttb.signal_connect("clicked"){o = TextManiplation.new; o.cut_text(@editor)}
 	copytb.signal_connect("clicked"){o = TextManiplation.new; o.copy_text(@editor)}
 	pastetb.signal_connect("clicked"){o= TextManiplation.new; o.paste_text(@editor)}

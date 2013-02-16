@@ -41,13 +41,14 @@ class Utils
       end
   end
 
-  def save_as(win,editor,temp)
-      save(win,editor,temp)   
+  def save_as(tab,saveas)
+      save(tab,saveas)   
   end
 
-  def save(tab)
-
-    if @@filename == ""
+  def save(tab,saveas)
+    current_page = tab.get_nth_page(tab.page)
+    content = current_page.buffer.text
+    if @@filename == "" or saveas
       dialog = Gtk::FileChooserDialog.new(_("Save"), nil, 
       Gtk::FileChooser::ACTION_SAVE, nil,
       [Gtk::Stock::CANCEL,Gtk::Dialog::RESPONSE_CANCEL],
@@ -57,8 +58,6 @@ class Utils
       if dialog.run  == Gtk::Dialog::RESPONSE_APPLY
         # dosyanin tam yolu
         @@filename = dialog.filename
-        current_page = tab.get_nth_page(tab.page)
-        content = current_page.buffer.text
         # ikinci kez yazma için gz uzantisi eklenmesi
         @@filename = @@filename + ".gz"
         File.open(@@filename, 'w') do |f|
@@ -77,15 +76,14 @@ class Utils
           msg.destroy
           dialog.destroy
         end
+      end
     else
-      content = current_page.buffer.text
       File.open(@@filename, 'w') do |f|
       gz = Zlib::GzipWriter.new(f)
       gz.write(content)
       gz.close
       end
         current_page.saved = true
-      end
     end
   end
 
