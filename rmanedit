@@ -59,7 +59,7 @@ class Editor
     end
     @treeview.model = store
     @treeview.signal_connect("cursor-changed"){selection = @treeview.selection;
-    iter = selection.selected; o = Utils.new; o.label_find(iter[0],@editor)}     
+    iter = selection.selected; o = Utils.new; o.label_find(iter[0],@tab)}     
   end
    
   def man_view
@@ -116,7 +116,17 @@ class Editor
   end
  
   def remove_tab
-    @tab.remove_page(@tab.page)
+    if @tab.get_nth_page(@tab.page).saved 
+      @tab.remove_page(@tab.page)
+      return
+    end
+    dialog = Gtk::MessageDialog.new(nil, Gtk::Dialog::MODAL,
+    Gtk::MessageDialog::QUESTION,Gtk::MessageDialog::BUTTONS_YES_NO,
+    _("Your changes will be lost. Do you want to continue?"))
+    if dialog.run == Gtk::Dialog::RESPONSE_YES
+      @tab.remove_page(@tab.page)
+    end
+    dialog.destroy
   end
   
   def menuBar      

@@ -115,22 +115,22 @@ class Utils
   
   # dosya acikken yeni dosya acma icin dialog
   def will_change_lost(tab, which_func)
-      dialog = Gtk::MessageDialog.new(nil, Gtk::Dialog::MODAL,
-      Gtk::MessageDialog::QUESTION,Gtk::MessageDialog::BUTTONS_YES_NO,
-      _("Your changes will be lost. Do you want to continue?"))
-     if dialog.run == Gtk::Dialog::RESPONSE_YES
-          @@filename = ""
-          current_page = tab.get_nth_page(tab.page)
-          current_page.buffer.text = ""
-          current_page.saved = true
-          if which_func == "open_file"
-              open_new_file(tab)
-              current_page.saved = true
-          else
-            tab.set_tab_label(current_page,
-            Gtk::Label.new("Untitled Document " + tab.n_pages.to_s))
-          end
-     end   
+    dialog = Gtk::MessageDialog.new(nil, Gtk::Dialog::MODAL,
+    Gtk::MessageDialog::QUESTION,Gtk::MessageDialog::BUTTONS_YES_NO,
+    _("Your changes will be lost. Do you want to continue?"))
+    if dialog.run == Gtk::Dialog::RESPONSE_YES
+      @@filename = ""
+      current_page = tab.get_nth_page(tab.page)
+      current_page.buffer.text = ""
+      current_page.saved = true
+      if which_func == "open_file"
+        open_new_file(tab)
+        current_page.saved = true
+      else
+        tab.set_tab_label(current_page,
+        Gtk::Label.new("Untitled Document " + tab.n_pages.to_s))
+      end
+    end   
     dialog.destroy
   end 
 
@@ -258,21 +258,24 @@ class Utils
   end
 
   # secilen etikete gitme 
-  def label_find(find,editor)
-      start = editor.buffer.start_iter
-      first, last = start.forward_search(find, Gtk::TextIter::SEARCH_TEXT_ONLY, nil)
-      if (first)    
-          mark = editor.buffer.create_mark(nil, first, false)
-          editor.scroll_mark_onscreen(mark)
-      #    editor.buffer.delete_mark(mark)
-          editor.buffer.select_range(first, last)
-      else
-          dialogue = Gtk::MessageDialog.new(nil, Gtk::Dialog::MODAL, Gtk::MessageDialog::INFO, 
-          Gtk::MessageDialog::BUTTONS_OK, _("No such tag"))
-         dialogue.run
-         dialogue.destroy
-      end
-      first = last = nil
+  def label_find(find, tab)
+    current_page = tab.get_nth_page(tab.page)
+    start = current_page.buffer.start_iter
+    first, last = start.forward_search(find, 
+    Gtk::TextIter::SEARCH_TEXT_ONLY, nil)
+    if (first)    
+      mark = current_page.buffer.create_mark(nil, first, false)
+      current_page.scroll_mark_onscreen(mark)
+      current_page.buffer.delete_mark(mark)
+      current_page.buffer.select_range(first, last)
+    else
+      dialogue = Gtk::MessageDialog.new(nil, Gtk::Dialog::MODAL, 
+      Gtk::MessageDialog::INFO, 
+      Gtk::MessageDialog::BUTTONS_OK, _("No such tag"))
+      dialogue.run
+      dialogue.destroy
+    end
+     first = last = nil
   end
   
   # html dosyasina donusturme  
