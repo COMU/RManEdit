@@ -101,8 +101,12 @@ class Editor
     @tab.signal_connect("switch-page") do |a,b,current_page|
       # o anki buffer
       buf = @tab.get_nth_page(current_page).buffer
-      buf.signal_connect("changed"){o=Utils.new; o.text_changed(@tab);}
-    end 
+      buf.signal_connect("changed"){o=Utils.new; o.text_changed(@tab);
+      o.view_sensitive(@tab, @treeview, @view_but)}
+      o=Utils.new;
+      text = @tab.get_nth_page(current_page).buffer.text
+      o.view_sensitive(text, @treeview, @view_but)
+    end
     return @tab
   end
 
@@ -199,8 +203,8 @@ class Editor
 	cuttb = Gtk::ToolButton.new(Gtk::Stock::CUT)
 	copytb = Gtk::ToolButton.new(Gtk::Stock::COPY)
 	pastetb = Gtk::ToolButton.new(Gtk::Stock::PASTE)
-        view_but = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/preview3.png"))
-        view_but.set_size_request(60,40)
+        @view_but = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/preview3.png"))
+        @view_but.set_size_request(60,40)
         tip = Gtk::Tooltips.new
         tip.set_tip(newtb,_("New"),nil)
         tip.set_tip(opentb, _("Open"),nil)
@@ -209,7 +213,7 @@ class Editor
         tip.set_tip(cuttb, _("Cut"),nil)
         tip.set_tip(copytb,_("Copy"),nil)
         tip.set_tip(pastetb,_("Paste"),nil)
-        tip.set_tip(view_but, _("Preview"),nil)
+        tip.set_tip(@view_but, _("Preview"),nil)
         toolbar.insert(0, newtb)
         toolbar.insert(1, opentb)
         toolbar.insert(2, savetb)
@@ -217,8 +221,8 @@ class Editor
 	toolbar.insert(4, cuttb)
 	toolbar.insert(5, copytb)
 	toolbar.insert(6, pastetb)
-        toolbar.insert(7,view_but)
-	view_but.set_sensitive false       
+        toolbar.insert(7,@view_but)
+	@view_but.set_sensitive false       
         # view_but sensitive
 #        @buf.signal_connect("changed"){o = Utils.new; o.buf_changed(@buf,view_but,@treeview,@renderer)}
 	opentb.signal_connect("clicked"){o = Utils.new; o.open_file(@tab)}
@@ -228,7 +232,7 @@ class Editor
 	copytb.signal_connect("clicked"){o = TextManiplation.new; o.copy_text(@tab)}
 	pastetb.signal_connect("clicked"){o= TextManiplation.new; o.paste_text(@tab)}
 	newtb.signal_connect("clicked"){o= Utils.new; o.open_new_empty_file(@tab)}
-        view_but.signal_connect("clicked"){o = Utils.new; o.preview(@win,@editor,@manview)}
+        @view_but.signal_connect("clicked"){o = Utils.new; o.preview(@win,@editor,@manview)}
         return toolbar
   end
   
