@@ -85,9 +85,9 @@ class Editor
       hpaned2.set_size_request(800, 500)
       @win.set_size_request(900, 500)
       @win.set_resizable(true)
-      @vbox.pack_start(menuBar, true, true, 0)
-      @vbox.pack_start(toolBar, true, true, 0)
-      @vbox.pack_start(toolBarFont, true, true, 0)
+      @vbox.pack_start(menuBar, false, false, 0)
+      @vbox.pack_start(toolBar, false, false, 0)
+      @vbox.pack_start(toolBarFont, false, false, 0)
       @vbox.pack_start(@hbox, true, true, 0)
       @hbox.pack_start(hpaned ,true, true, 0)
       treeView_create
@@ -244,7 +244,7 @@ class Editor
   def toolBar
     toolbar = Gtk::Toolbar.new
     toolbar.set_toolbar_style(Gtk::Toolbar::Style::ICONS)
-    toolbar.icon_size = 3
+    toolbar.set_size_request(60, 50)
     newtb = Gtk::ToolButton.new(Gtk::Stock::NEW)
     opentb = Gtk::ToolButton.new(Gtk::Stock::OPEN)
     savetb = Gtk::ToolButton.new(Gtk::Stock::SAVE)
@@ -285,6 +285,7 @@ class Editor
   
   def toolBarFont
     tbFont = Gtk::Toolbar.new
+    tbFont.set_size_request(60, 50)
     t1 = Gtk::Tooltips.new
     tbFont.set_toolbar_style(Gtk::Toolbar::Style::ICONS)
     italik = Gtk::ToolButton.new(Gtk::Stock::ITALIC)
@@ -300,19 +301,6 @@ class Editor
     fill = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/fi.png"))
     hp = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/hp.png"))
     subhead = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/subhead.png"))
-    italik.set_size_request(50,40)
-    bold.set_size_request(50,40)
-    indent.set_size_request(50,40)
-    justify_left.set_size_request(50,40)
-    br.set_size_request(50,40)
-    paragraph.set_size_request(50,40)
-    comment_line.set_size_request(50,40)
-    set_coloumn.set_size_request(50,40)
-    start_indent_paragraph.set_size_request(50,40)
-    nofill.set_size_request(50,40)
-    fill.set_size_request(50,40)
-    hp.set_size_request(50,40)
-    subhead.set_size_request(50,40)
     t1.set_tip(italik,_("Italic\n .I"),nil)
     t1.set_tip(bold,_("Bold\n .B"),nil)
     t1.set_tip(indent,_("Indention\n .RE"),nil)
