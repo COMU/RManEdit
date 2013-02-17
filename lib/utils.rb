@@ -14,31 +14,41 @@ class Utils
   @@filename = ""
  
   def text_changed(tab)
-    tab.get_nth_page(tab.page).saved = false
+    current_page = tab.get_nth_page(tab.page)
+    # sayfa ismine surekli * ekler bu if olmazsa
+    if current_page.saved
+      pagename = "* " + tab.get_tab_label(current_page).text
+    end
+    current_page.saved = false
+    tab.set_tab_label(current_page, 
+    Gtk::Label.new(pagename))
   end 
  
-  def lang_choice(win,lang)
-      if not @@saved
-        dialog = Gtk::MessageDialog.new(win, Gtk::Dialog::MODAL,
-        Gtk::MessageDialog::QUESTION,Gtk::MessageDialog::BUTTONS_YES_NO,
-        _("Your changes will be lost because of RManEdit will start"))
-        if dialog.run == Gtk::Dialog::RESPONSE_YES
-          dialog.destroy
-          f = File.open("/home/#{ENV["USER"]}/.config/rmanedit/lang.rb","w")
-          f.write("LANGUAGE=\"#{lang}\"")
-          f.close
-          IO.popen("rmanedit")
-          Gtk.main_quit
-        else
-          dialog.destroy
-        end
-      else 
-          f = File.open("/home/#{ENV["USER"]}/.config/rmanedit/lang.rb","w")
-          f.write("LANGUAGE=\"#{lang}\"")
-          f.close
-          IO.popen("rmanedit")
-          Gtk.main_quit 
+  def lang_choice(tab,lang)
+
+    if not current_page.saved
+      dialog = Gtk::MessageDialog.new(nil, 
+      Gtk::Dialog::MODAL,
+      Gtk::MessageDialog::QUESTION,
+      Gtk::MessageDialog::BUTTONS_YES_NO,
+      _("Your changes will be lost because of RManEdit will start"))
+      if dialog.run == Gtk::Dialog::RESPONSE_YES
+        dialog.destroy
+        f = File.open("/home/#{ENV["USER"]}/.config/rmanedit/lang.rb","w")
+        f.write("LANGUAGE=\"#{lang}\"")
+        f.close
+        IO.popen("rmanedit")
+        Gtk.main_quit
+      else
+        dialog.destroy
       end
+    else 
+      f = File.open("/home/#{ENV["USER"]}/.config/rmanedit/lang.rb","w")
+      f.write("LANGUAGE=\"#{lang}\"")
+      f.close
+      IO.popen("rmanedit")
+      Gtk.main_quit 
+    end
   end
 
   def save_as(tab,saveas)
