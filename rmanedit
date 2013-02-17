@@ -12,11 +12,13 @@ require 'rubygems'
 class Textview < Gtk::TextView
 
   attr_accessor :saved
-
+  attr_accessor :file_path
   def initialize
     super
     # dosya kayit durumu
     @saved = true
+    # acilan her sekmenin yolu dil secimi icin gerekli
+    @file_path = ""
   end
 end
 
@@ -32,6 +34,7 @@ class Editor
     @win = Gtk::Window.new
     @editor = Gtk::TextView.new
     @tab = Gtk::Notebook.new
+    @tab.scrollable = true
     # birden fazla yerde kullanildigindan burada tanimlandi
     @treeview = Gtk::TreeView.new
     @renderer = Gtk::CellRendererText.new
@@ -98,32 +101,18 @@ class Editor
       @win.add(@vbox)
       @win.show_all     
   end
- 
-  def tab_name
-    i = 0
-    new_page_num = 0
-    pagenum = @tab.n_pages
-    while i < pagenum
-      page = @tab.get_nth_page(i)
-      if @tab.get_tab_label(page).text.scan("Untitled") != 0
-        new_page_num += 1
-      end
-     i += 1
-    end
-    return i
-  end
- 
+  
   def create_tabs
     editor = Textview.new
-    # toplam sayfa sayisi
-    pagenum = tab_name.to_s
+    # sayfa no
+    o = Utils.new
+    pagenum = o.tab_name(@tab).to_s
     @tab.append_page(editor, Gtk::Label.new("Untitled Document "+pagenum))
     @tab.signal_connect("switch-page") do |a,b,current_page|
       # o anki buffer
       buf = @tab.get_nth_page(current_page).buffer
       buf.signal_connect("changed"){o=Utils.new; o.text_changed(@tab);
       o.view_sensitive(@tab, @treeview, @view_but)}
-      o=Utils.new;
       text = @tab.get_nth_page(current_page).buffer.text
       o.view_sensitive(text, @treeview, @view_but)
     end

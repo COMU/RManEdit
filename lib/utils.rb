@@ -11,17 +11,16 @@ require 'webkit'
 class Utils
   include GetText 
   bindtextdomain("rmanedit")
-  @@filename = ""
  
   def text_changed(tab)
     current_page = tab.get_nth_page(tab.page)
     # sayfa ismine surekli * ekler bu if olmazsa
     if current_page.saved
       pagename = "* " + tab.get_tab_label(current_page).text
-    end
-    current_page.saved = false
-    tab.set_tab_label(current_page, 
-    Gtk::Label.new(pagename))
+      tab.set_tab_label(current_page,
+      Gtk::Label.new(pagename))
+     end
+     current_page.saved = false
   end 
  
   def lang_choice(tab,lang)
@@ -58,7 +57,7 @@ class Utils
   def save(tab,saveas)
     current_page = tab.get_nth_page(tab.page)
     content = current_page.buffer.text
-    if @@filename == "" or saveas
+    if current_page.saved == false or saveas
       dialog = Gtk::FileChooserDialog.new(_("Save"), nil, 
       Gtk::FileChooser::ACTION_SAVE, nil,
       [Gtk::Stock::CANCEL,Gtk::Dialog::RESPONSE_CANCEL],
@@ -78,6 +77,7 @@ class Utils
         msg = Gtk::MessageDialog.new(dialog,
         Gtk::Dialog::DESTROY_WITH_PARENT, Gtk::MessageDialog::INFO,
         Gtk::MessageDialog::BUTTONS_OK, _("Saved"))
+        current_page.file_path = @@filename
         filename = @@filename.split('/')
         filename = filename[filename.length-1]
         tab.set_tab_label(current_page, Gtk::Label.new(filename))
@@ -86,9 +86,12 @@ class Utils
           msg.destroy
           dialog.destroy
         end
+      else
+        dialog.destroy 
       end
     else
-      File.open(@@filename, 'w') do |f|
+      file_name = current_page.file_path
+      File.open(file_name, 'w') do |f|
       gz = Zlib::GzipWriter.new(f)
       gz.write(content)
       gz.close
@@ -105,7 +108,7 @@ class Utils
     else
       current_page.buffer.text = ""
       current_page.saved = true
-      @@filename = ""
+      current_page.file_path = ""
       tab.set_tab_label(current_page,
       Gtk::Label.new("Untitled Document " + tab.n_pages.to_s))
     end
@@ -122,7 +125,21 @@ class Utils
         tab.get_nth_page(tab.page).saved = true
       end
   end 
-  
+
+  def tab_name(tab)
+    i = 0
+    new_page_num = 0
+    pagenum = tab.n_pages
+    while i < pagenum
+      page = tab.get_nth_page(i)
+      if tab.get_tab_label(page).text.scan("Untitled") != 0
+        new_page_num += 1
+      end
+     i += 1
+    end
+    return i
+  end
+ 
   # dosya acikken yeni dosya acma icin dialog
   def will_change_lost(tab, which_func)
 
@@ -131,16 +148,17 @@ class Utils
     Gtk::MessageDialog::BUTTONS_YES_NO,
     _("Your changes will be lost. Do you want to continue?"))
     if dialog.run == Gtk::Dialog::RESPONSE_YES
-      @@filename = ""
       current_page = tab.get_nth_page(tab.page)
+      current_page.file_path = ""
       current_page.buffer.text = ""
       current_page.saved = true
       if which_func == "open_file"
         open_new_file(tab)
         current_page.saved = true
+      # yeni bos dosya ac
       else
         tab.set_tab_label(current_page,
-        Gtk::Label.new("Untitled Document " + tab.n_pages.to_s))
+        Gtk::Label.new("Untitled Document " + tab_name(tab).n_pages.to_s))
       end
     end   
     dialog.destroy
@@ -163,7 +181,7 @@ class Utils
 
   def preview(tab, manview)
     current_page = tab.get_nth_page(tab.page)
-    if @@filename == "" or current_page.saved == false
+    if current_page.saved == false
       msg = Gtk::MessageDialog.new(nil,
       Gtk::Dialog::DESTROY_WITH_PARENT, 
       Gtk::MessageDialog::INFO, 
@@ -218,7 +236,8 @@ class Utils
     dialog.show
     begin
       if dialog.run == Gtk::Dialog::RESPONSE_ACCEPT
-        tab.get_nth_page(tab.page).saved = true
+        current_page = tab.get_nth_page(tab.page)
+        current_page.saved = true
         @@filename = dialog.filename
         fm = FileMagic.new
         # gzip dosyasi
@@ -238,6 +257,7 @@ class Utils
           IO.foreach(@@filename){|block|  content = content + "\n"+ block}
           tab.get_nth_page(tab.page).buffer.text = content
         end
+      current_page.file_path = @@filename
       # sekme isminin acik olan dosyanin adini almasi
       filename = @@filename.split('/')
       filename = filename[filename.length-1]
@@ -417,5 +437,4 @@ class TextManiplation
     count += 1
   end
   end
-
 end
