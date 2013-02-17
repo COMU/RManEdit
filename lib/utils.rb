@@ -7,6 +7,8 @@ require 'rubygems'
 require 'gtk2'
 require 'tempfile'
 require 'webkit'
+require 'textView'
+require 'add_remove_tab'
 
 class Utils
   include GetText 
@@ -15,12 +17,13 @@ class Utils
   def text_changed(tab)
     current_page = tab.get_nth_page(tab.page)
     # sayfa ismine surekli * ekler bu if olmazsa
-    if current_page.saved
-      pagename = "* " + tab.get_tab_label(current_page).text
+    if current_page.child.saved
+      old_label = tab.get_tab_label(current_page)
+      pagename = "* " + old_label.text
       tab.set_tab_label(current_page,
       Gtk::Label.new(pagename))
      end
-     current_page.saved = false
+     current_page.child.saved = false
   end 
  
   def lang_choice(tab,lang)
@@ -116,7 +119,7 @@ class Utils
 
   # kaydedilmis bir dosyayi acma
   def open_file(tab) 
-    saved = tab.get_nth_page(tab.page).saved 
+    saved = tab.get_nth_page(tab.page).child.saved 
       if not saved
         which_func = "open_file"
         will_change_lost(tab, which_func)
@@ -126,20 +129,6 @@ class Utils
       end
   end 
 
-  def tab_name(tab)
-    i = 0
-    new_page_num = 0
-    pagenum = tab.n_pages
-    while i < pagenum
-      page = tab.get_nth_page(i)
-      if tab.get_tab_label(page).text.scan("Untitled") != 0
-        new_page_num += 1
-      end
-     i += 1
-    end
-    return i
-  end
- 
   # dosya acikken yeni dosya acma icin dialog
   def will_change_lost(tab, which_func)
 
@@ -148,7 +137,7 @@ class Utils
     Gtk::MessageDialog::BUTTONS_YES_NO,
     _("Your changes will be lost. Do you want to continue?"))
     if dialog.run == Gtk::Dialog::RESPONSE_YES
-      current_page = tab.get_nth_page(tab.page)
+      current_page = tab.get_nth_page(tab.page).child
       current_page.file_path = ""
       current_page.buffer.text = ""
       current_page.saved = true
@@ -407,19 +396,19 @@ end
 class TextManiplation
 
   def cut_text(tab)
-      current_page = tab.get_nth_page(tab.page)
+      current_page = tab.get_nth_page(tab.page).child
       clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
       current_page.buffer.cut_clipboard(clipboard, true)
   end
 
   def copy_text(tab)
-      current_page = tab.get_nth_page(tab.page)
+      current_page = tab.get_nth_page(tab.page).child
       clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
       current_page.buffer.copy_clipboard(clipboard)
   end
   
   def paste_text(tab)
-      current_page = tab.get_nth_page(tab.page)
+      current_page = tab.get_nth_page(tab.page).child
       clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
       current_page.buffer.paste_clipboard(clipboard, nil, true)
   end

@@ -5,22 +5,11 @@ require 'webkit'
 require 'filemagic'
 require 'zlib'
 require 'zip/zip'
-require 'utils'
 require '~/.config/rmanedit/lang'
 require 'rubygems'
-
-class Textview < Gtk::TextView
-
-  attr_accessor :saved
-  attr_accessor :file_path
-  def initialize
-    super
-    # dosya kayit durumu
-    @saved = true
-    # acilan her sekmenin yolu dil secimi icin gerekli
-    @file_path = ""
-  end
-end
+require 'utils'
+require 'textView'
+require 'add_remove_tab'
 
 class Editor 
 
@@ -96,44 +85,19 @@ class Editor
       treeView_create
       hpaned.pack1(@treeview, true, false)
       hpaned.pack2(hpaned2, true, true)
-      hpaned2.pack1(create_tabs, true, true)
+      hpaned2.pack1(tab_param_sender, true, true)
       hpaned2.pack2(man_view, true, false)
       @win.add(@vbox)
       @win.show_all     
   end
   
-  def create_tabs
-    editor = Textview.new
-    # sayfa no
-    o = Utils.new
-    pagenum = o.tab_name(@tab).to_s
-    @tab.append_page(editor, Gtk::Label.new("Untitled Document "+pagenum))
-    @tab.signal_connect("switch-page") do |a,b,current_page|
-      # o anki buffer
-      buf = @tab.get_nth_page(current_page).buffer
-      buf.signal_connect("changed"){o=Utils.new; o.text_changed(@tab);
-      o.view_sensitive(@tab, @treeview, @view_but)}
-      text = @tab.get_nth_page(current_page).buffer.text
-      o.view_sensitive(text, @treeview, @view_but)
-    end
+  # yeni tab icin parametreleri gonderme  
+  def tab_param_sender
+    o = AddRemoveTab.new
+    o.new_tab(@tab, @treeview, @view_but)
     return @tab
   end
- 
-  def remove_tab
-    if @tab.get_nth_page(@tab.page).saved 
-      @tab.remove_page(@tab.page)
-      return
-    end
-    dialog = Gtk::MessageDialog.new(nil, Gtk::Dialog::MODAL,
-    Gtk::MessageDialog::QUESTION,
-    Gtk::MessageDialog::BUTTONS_YES_NO,
-    _("Your changes will be lost. Do you want to continue?"))
-    if dialog.run == Gtk::Dialog::RESPONSE_YES
-      @tab.remove_page(@tab.page)
-    end
-    dialog.destroy
-  end
-  
+
   def menuBar      
      mb = Gtk::MenuBar.new
      filemenu = Gtk::Menu.new
@@ -206,9 +170,9 @@ class Editor
      exit_.signal_connect("activate"){Gtk.main_quit}
      make_html.signal_connect("activate"){o=Utils.new; 
      o.create_html_file(@tab)}
-     new_tab.signal_connect("activate"){create_tabs; 
+     new_tab.signal_connect("activate"){tab_param_sender; 
      @win.show_all}
-     removetab.signal_connect("activate"){remove_tab}
+     removetab.signal_connect("activate"){o=AddRemoveTab.new; o.remove_tab(@tab)}
      # settings
      en.signal_connect("activate"){o=Utils.new; 
      o.lang_choice(@win,"en")}
@@ -316,20 +280,45 @@ class Editor
     tbFont.insert(10,fill)
     tbFont.insert(11,hp)
     tbFont.insert(12,subhead)
-    current_page = @tab.get_nth_page(@tab.page)
-    italik.signal_connect("clicked"){current_page.insert_at_cursor(".I")}
-    bold.signal_connect("clicked"){current_page.insert_at_cursor(".B ")}
-    indent.signal_connect("clicked"){current_page.insert_at_cursor(".RE ")}
-    justify_left.signal_connect("clicked"){current_page.insert_at_cursor(".SH ")}
-    br.signal_connect("clicked"){current_page.insert_at_cursor(".br\n")}
-    paragraph.signal_connect("clicked"){current_page.insert_at_cursor(".P ")}
-    comment_line.signal_connect("clicked"){current_page.insert_at_cursor(".\\\" ")}
-    set_coloumn.signal_connect("clicked"){current_page.insert_at_cursor(".TP\n")}
-    start_indent_paragraph.signal_connect("clicked"){current_page.insert_at_cursor(".IP ")}
-    nofill.signal_connect("clicked"){current_page.insert_at_cursor(".nf ")}
-    fill.signal_connect("clicked"){current_page.insert_at_cursor(".fi ")}
-    hp.signal_connect("clicked"){current_page.insert_at_cursor(".HP ")}
-    subhead.signal_connect("clicked"){current_page.insert_at_cursor(".SS ")}
+    italik.signal_connect("clicked"){buf = @tab.get_nth_page(@tab.page).child;
+    buf.insert_at_cursor(".I")}
+
+    bold.signal_connect("clicked"){buf = @tab.get_nth_page(@tab.page).child;
+    buf.insert_at_cursor(".B ")}
+
+    indent.signal_connect("clicked"){buf = @tab.get_nth_page(@tab.page).child;
+    buf.insert_at_cursor(".RE ")}
+
+    justify_left.signal_connect("clicked"){buf = @tab.get_nth_page(@tab.page).child;
+    buf.insert_at_cursor(".SH ")}
+
+    br.signal_connect("clicked"){buf = @tab.get_nth_page(@tab.page).child;
+    buf.insert_at_cursor(".br\n")}
+ 
+    paragraph.signal_connect("clicked"){buf = @tab.get_nth_page(@tab.page).child;
+    buf.insert_at_cursor(".P ")}
+   
+    comment_line.signal_connect("clicked"){buf = @tab.get_nth_page(@tab.page).child;
+    buf.insert_at_cursor(".\\\" ")}
+
+    set_coloumn.signal_connect("clicked"){buf = @tab.get_nth_page(@tab.page).child;
+    buf.insert_at_cursor(".TP\n")}
+
+    start_indent_paragraph.signal_connect("clicked"){buf = @tab.get_nth_page(@tab.page).child;
+    buf.insert_at_cursor(".IP ")}
+
+    nofill.signal_connect("clicked"){buf = @tab.get_nth_page(@tab.page).child;
+    buf.insert_at_cursor(".nf ")}
+
+    fill.signal_connect("clicked"){buf = @tab.get_nth_page(@tab.page).child;
+    buf.insert_at_cursor(".fi ")}
+
+    hp.signal_connect("clicked"){buf = @tab.get_nth_page(@tab.page).child;
+    buf.insert_at_cursor(".HP ")}
+
+    subhead.signal_connect("clicked"){buf = @tab.get_nth_page(@tab.page).child;
+    buf.insert_at_cursor(".SS ")}
+
     return tbFont
   end
 end
