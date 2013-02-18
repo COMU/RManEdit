@@ -12,7 +12,7 @@ class Textview < Gtk::TextView
     # dosya kayit durumu
     @saved = true
     @first_save = false
-    # acilan her sekmenin yolu dil secimi icin gerekli
+    # acilan sekmedeki dosya yolu
     @file_path = ""
 
   end

@@ -31,7 +31,7 @@ class Editor
     @win.set_size_request(900,500)
     @win.set_resizable(true)
     @win.set_title("RManEdit")
-    @win.signal_connect('delete_event'){false}
+    @win.signal_connect('delete_event'){files_save?}
     @win.signal_connect('destroy'){Gtk.main_quit}
     @win.set_window_position(Gtk::Window::POS_CENTER)
     win_contain
@@ -93,6 +93,7 @@ class Editor
   
   # yeni tab icin parametreleri gonderme  
   def tab_param_sender
+
     o = AddRemoveTab.new
     o.new_tab(@tab, @treeview, @view_but)
     return @tab
@@ -326,6 +327,20 @@ class Editor
 
     return tbFont
   end
+ 
+  def files_save?
+    
+    pagenum = @tab.n_pages - 1
+    while pagenum >= 0
+      # dosya kayitli mi kontrol
+      if not @tab.get_nth_page(pagenum).child.saved      
+        return true
+      end
+    pagenum -= 1
+    end
+    return false
+  end
+  
 end
 
 app = Editor.new
