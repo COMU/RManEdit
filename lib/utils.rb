@@ -30,29 +30,20 @@ class Utils
  
   def lang_choice(tab,lang)
 
-    if not current_page.saved
-      dialog = Gtk::MessageDialog.new(nil, 
-      Gtk::Dialog::MODAL,
-      Gtk::MessageDialog::QUESTION,
-      Gtk::MessageDialog::BUTTONS_YES_NO,
-      _("Your changes will be lost because of RManEdit will start"))
-      if dialog.run == Gtk::Dialog::RESPONSE_YES
-        dialog.destroy
-        f = File.open("/home/#{ENV["USER"]}/.config/rmanedit/lang.rb","w")
-        f.write("LANGUAGE=\"#{lang}\"")
-        f.close
-        IO.popen("rmanedit")
-        Gtk.main_quit
-      else
-        dialog.destroy
-      end
-    else 
-      f = File.open("/home/#{ENV["USER"]}/.config/rmanedit/lang.rb","w")
-      f.write("LANGUAGE=\"#{lang}\"")
-      f.close
-      IO.popen("rmanedit")
-      Gtk.main_quit 
+    f = File.open("/home/#{ENV["USER"]}/.config/rmanedit/lang.rb","w")
+    f.write("LANGUAGE=\"#{lang}\"")
+    f.close
+
+    msg = Gtk::MessageDialog.new(nil,
+    Gtk::Dialog::DESTROY_WITH_PARENT, 
+    Gtk::MessageDialog::INFO,
+    Gtk::MessageDialog::BUTTONS_OK,
+     _("If you restart RManEdit, your settins will implement"))
+
+    if msg.run == Gtk::Dialog::RESPONSE_OK 
+      msg.destroy
     end
+
   end
 
   def save_as(tab,saveas)
@@ -271,6 +262,15 @@ class Utils
       Gtk::MessageDialog::BUTTONS_OK, _("No such tag"))
       dialogue.run
       dialogue.destroy
+    end
+    while first
+      start.forward_char
+      first, last = start.forward_search(find, Gtk::TextIter::SEARCH_TEXT_ONLY, nil)
+      start = first
+      mark = current_page.buffer.create_mark(nil, first, false)
+      current_page.scroll_mark_onscreen(mark)
+      current_page.buffer.delete_mark(mark)
+      current_page.buffer.select_range(first, last)
     end
      first = last = nil
   end

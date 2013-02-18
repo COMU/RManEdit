@@ -331,14 +331,25 @@ class Editor
   def files_save?
     
     pagenum = @tab.n_pages - 1
+
     while pagenum >= 0
       # dosya kayitli mi kontrol
       if not @tab.get_nth_page(pagenum).child.saved      
-        return true
+        dialog = Gtk::MessageDialog.new(nil,
+        Gtk::Dialog::MODAL,
+        Gtk::MessageDialog::QUESTION,
+        Gtk::MessageDialog::BUTTONS_YES_NO,
+        _("Your changes will be lost. Do you want continue?"))
+        if dialog.run == Gtk::Dialog::RESPONSE_YES
+          dialog.destroy
+          return false
+        else
+          dialog.destroy
+          return true 
+        end
       end
     pagenum -= 1
     end
-    return false
   end
   
 end

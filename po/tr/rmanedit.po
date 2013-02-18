@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-02-13 20:57+0200\n"
-"PO-Revision-Date: 2013-02-13 20:57+0200\n"
+"POT-Creation-Date: 2013-02-18 21:02+0200\n"
+"PO-Revision-Date: 2013-02-18 21:02+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,178 +16,198 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: rmanedit:41
-msgid "Man file is not installed"
-msgstr "Yüklenmiş man dosyası yok"
-
-#: rmanedit:49
+#: rmanedit:42
 msgid "Category"
 msgstr "Bölüm"
 
-#: rmanedit:83
+#: rmanedit:62
+msgid "Man file is not installed"
+msgstr ""
+
+#: rmanedit:105
 msgid "File"
-msgstr "Dosya"
+msgstr ""
 
-#: rmanedit:85 rmanedit:151 lib/utils.rb:197
+#: rmanedit:107 rmanedit:215 lib/utils.rb:193
 msgid "Open"
-msgstr "Aç"
+msgstr ""
 
-#: rmanedit:86 rmanedit:150
+#: rmanedit:108 rmanedit:214
 msgid "New"
-msgstr "Yeni"
+msgstr ""
 
-#: rmanedit:87 rmanedit:152 lib/utils.rb:52 lib/utils.rb:278
+#: rmanedit:109 rmanedit:216 lib/utils.rb:60 lib/utils.rb:281
 msgid "Save"
-msgstr "Kaydet"
+msgstr ""
 
-#: rmanedit:88 rmanedit:153
+#: rmanedit:110 rmanedit:217
 msgid "Save as"
-msgstr "Farklı Kaydet"
+msgstr ""
 
-#: rmanedit:89
+#: rmanedit:111
 msgid "Convert to html file"
-msgstr "Html dosyasına dönüştür"
+msgstr ""
 
-#: rmanedit:90
+#: rmanedit:112
+msgid "New Tab"
+msgstr ""
+
+#: rmanedit:113
+msgid "Remove Tab"
+msgstr ""
+
+#: rmanedit:114
 msgid "Quit"
-msgstr "Çıkış"
+msgstr ""
 
-#: rmanedit:100
+#: rmanedit:126
+msgid "Edit"
+msgstr ""
+
+#: rmanedit:128 rmanedit:219
+msgid "Copy"
+msgstr ""
+
+#: rmanedit:129 rmanedit:218
+msgid "Cut"
+msgstr ""
+
+#: rmanedit:130 rmanedit:220
+msgid "Paste"
+msgstr ""
+
+#: rmanedit:131
+msgid "Find"
+msgstr ""
+
+#: rmanedit:132
+msgid "Replace"
+msgstr ""
+
+#: rmanedit:141
 msgid "Settings"
-msgstr "Ayarlar"
+msgstr ""
 
-#: rmanedit:104
+#: rmanedit:145
 msgid "Languages"
-msgstr "Dil Seçenekleri"
+msgstr ""
 
-#: rmanedit:106
+#: rmanedit:147
 msgid "English"
-msgstr "İngilizce"
+msgstr ""
 
-#: rmanedit:107
+#: rmanedit:148
 msgid "Turkish"
-msgstr "Türkçe"
-
-#: rmanedit:108
-msgid "German"
-msgstr "Almanca"
-
-#: rmanedit:115
-msgid "About"
-msgstr "Hakkında"
-
-#: rmanedit:117 lib/utils.rb:329
-msgid "About RManEdit"
-msgstr "RManEDit Hakkında"
-
-#: rmanedit:120 lib/utils.rb:344
-msgid "Help"
-msgstr "Yardım"
+msgstr ""
 
 #: rmanedit:154
-msgid "Cut"
-msgstr "Kes"
+msgid "About"
+msgstr ""
 
-#: rmanedit:155
-msgid "Copy"
-msgstr "Kopyala"
+#: rmanedit:156 lib/utils.rb:338
+msgid "About RManEdit"
+msgstr ""
 
-#: rmanedit:156
-msgid "Paste"
-msgstr "Yapıştır"
-
-#: rmanedit:157
-msgid "Preview"
-msgstr "Önizleme"
-
-#: rmanedit:212
-msgid "Italic\n .I"
-msgstr "İtalik\n .I"
-
-#: rmanedit:213
-msgid "Bold\n .B"
-msgstr "Koyu\n .B"
-
-#: rmanedit:214
-msgid "Indention\n .RE"
-msgstr "Girinti\n .RE"
-
-#: rmanedit:215
-msgid "Subhead and justify left\n .SH"
-msgstr "Bölüm başlığı ve sola dayalı\n .SH"
-
-#: rmanedit:216
-msgid "Jump to the bottom line\n .br"
-msgstr "Alt satıra geç\n .br"
-
-#: rmanedit:217
-msgid "Paragraph\n .P"
-msgstr "Paragraf\n .P"
-
-#: rmanedit:218
-msgid "Comment line\n .\\\""
-msgstr "Yorum satırı\n .\\\""
-
-#: rmanedit:219
-msgid "Seperate to coloumns\n .TP"
-msgstr "Sütunlara ayır\n .TP"
-
-#: rmanedit:220
-msgid "Start indent on paragraph\n .IP"
-msgstr "Paragrafa girinti ile başla\n .IP"
+#: rmanedit:159 lib/utils.rb:355
+msgid "Help"
+msgstr ""
 
 #: rmanedit:221
+msgid "Preview"
+msgstr ""
+
+#: rmanedit:263
+msgid "Italic\n .I"
+msgstr ""
+
+#: rmanedit:264
+msgid "Bold\n .B"
+msgstr ""
+
+#: rmanedit:265
+msgid "Indention\n .RE"
+msgstr ""
+
+#: rmanedit:266
+msgid "Subhead and justify left\n .SH"
+msgstr ""
+
+#: rmanedit:267
+msgid "Jump to the bottom line\n .br"
+msgstr ""
+
+#: rmanedit:268
+msgid "Paragraph\n .P"
+msgstr ""
+
+#: rmanedit:269
+msgid "Comment line\n .\\""
+msgstr ""
+
+#: rmanedit:270
+msgid "Seperate to coloumns\n .TP"
+msgstr ""
+
+#: rmanedit:271
+msgid "Start indent on paragraph\n .IP"
+msgstr ""
+
+#: rmanedit:272
 msgid "Nofill\n .nf"
-msgstr "Nofill\n .nf"
+msgstr ""
 
-#: rmanedit:222
+#: rmanedit:273
 msgid "Fill\n .fi"
-msgstr "Fill\n .fi"
+msgstr ""
 
-#: rmanedit:223
+#: rmanedit:274
 msgid "First indent after line\n .HP"
-msgstr "Satırdan sonraki ilk girinti\n .HP"
+msgstr ""
 
-#: rmanedit:224
+#: rmanedit:275
 msgid "Subhead\n .SS"
-msgstr "Alt başlık\n .SS"
+msgstr ""
 
-#: lib/utils.rb:21
-msgid "Your changes will be lost because of RManEdit will start"
-msgstr "RManEdit yeniden başlatılacağı için değişiklikleriniz kaybedilecek"
+#: rmanedit:342
+msgid "Your changes will be lost. Do you want continue?"
+msgstr ""
 
-#: lib/utils.rb:70 lib/utils.rb:313
+#: lib/utils.rb:41
+msgid "If you restart RManEdit, your settins will implement"
+msgstr ""
+
+#: lib/utils.rb:78 lib/utils.rb:318
 msgid "Saved"
-msgstr "Kaydedildi"
+msgstr ""
 
-#: lib/utils.rb:128
-msgid "Your changes will be lost. Do you want to continue?"
-msgstr "Değişiklikleriniz kaybolacak. Devam etmek ister misiniz?"
-
-#: lib/utils.rb:158
+#: lib/utils.rb:149
 msgid "If you want to view file, you must save it"
-msgstr "Dosyayı görüntülemek istiyorsanız, kaydetmelisiniz"
+msgstr ""
 
-#: lib/utils.rb:174 lib/utils.rb:293
+#: lib/utils.rb:167 lib/utils.rb:298
 msgid "It is not a man file"
-msgstr "Bu bir man dosyası değil"
+msgstr ""
 
-#: lib/utils.rb:235
+#: lib/utils.rb:237
 msgid "Please select a man file to open"
-msgstr "Lütfen açmak için bir man dosyası seçin"
+msgstr ""
 
-#: lib/utils.rb:269
+#: lib/utils.rb:262
 msgid "No such tag"
-msgstr "Böyle bir etiket yok"
+msgstr ""
 
-#: lib/utils.rb:326
-msgid "RManEdit licence is Creative Commons.\n Written by Ebru Akagündüz"
-msgstr "RManeEdit Creative Commons ile lisanslanmıştır\n. Ebru Akagündüz tarafından geliştirilmektedir"
+#: lib/utils.rb:333
+msgid "\n    RManEdit licence is Creative Commons.\n    Written by Ebru Akagündüz"
+msgstr ""
 
-#: lib/utils.rb:328
+#: lib/utils.rb:337 lib/utils.rb:353
 msgid "OK"
-msgstr "Tamam"
+msgstr ""
 
-#: lib/utils.rb:347
-msgid "<!DOCTYPE html><html><head><h3>RManEdit</h3>\n RmanEdit is a editor for man page preparing. Specified tags like italic, bold, indetion is used for man pages. RmanEdit facilitates to use the tags and you can make man pages quickly.</head><br><body>\n</ul>\n<li>First feature which make man pages quickly are icons at menu bar. There are buttons that includes tags like paragraph, indentation, italic, bold etc. in menu bar at downside. Description of icons appear when you move on buttons your mouse cursor.<br><p></li>\n<li>There is a section on right of program interface. In this section, you can view your aplication. You can write man pages on middle section. There are tags on left section. Cursor is moves when you click tags like <b>NAME, SYNOPSIS</b> on left section.<p></li>\n<li> At menu bar <I>File->Convert to html file</I> converts to html file your man file."
-msgstr "<!DOCTYPE html><html><head><h3>RManEdit</h3>Man sayfaları hazırlamak için bir metin editörüdür. Man sayfaları hazırlanırken koyu, italik, girintili yazma için belirli etiketler kullanılır. RManEdit ise bu etiketlerin kullanımı kolaylaştırıp, man sayfalarını daha hızlı bir şekilde hazırlamanızı sağlar.</head><br><body></ul><li>Çabuk bir şekilde man sayfası hazırlamayı sağlayan ilk özellik menü çubuğundaki simgelerdir. Alttaki menü çubuğunda italik, koyu, girinti,paragraf gibi etiketleri  içeren butonlar vardır. Bilgisayarınızın faresiyle bu simgelerin üzerine geldiğinizde açıklaması yazmaktadır.<br><p></li><li><B>RManEdit</B> programında en sağ kısımda yazdığınız uygulamayı görüntülemeniz için bölüm vardır. Orta kısım man sayfalarının yazılacağı kısımdır. Sol kısımdaki etiketlere tıkladığınızda ise imleç man sayfanızdaki <b>NAME, SYNOPSIS</b> gibi alanlara gider.<p></li><li>Menü çubuğunda <I>Dosya-> Html dosyasına dönüştür</I> kısmı kaydettiğiniz man dosyasını dosyasını html dosyasına çevirir.</li></ul></body></html>"
+#: lib/utils.rb:358
+msgid "\n    RManEdit\n    RmanEdit is a editor for man page preparing. Specified tags like italic, bold, indetion \n    is used for man pages. RmanEdit facilitates to use the tags and you can make\n    man pages quickly.\n\n    First feature which make man pages quickly are icons at menu bar. There are buttons \n    that includes tags like paragraph, indentation, italic, bold etc. in menu bar at downside. \n    Description of icons appear when you move on buttons your mouse cursor.\n\n    There is a section on right of program interface. In this section, you can view your \n    aplication. You can write man pages on middle section. There are tags on left section.\n    Cursor is moves when you click tags like NAME, SYNOPSIS on left section.\n \n    At menu bar File->Convert to html file converts to html file your man file."
+msgstr ""
+
+#: lib/add_remove_tab.rb:44
+msgid "Your changes will be lost. Do you want to continue?"
+msgstr ""
