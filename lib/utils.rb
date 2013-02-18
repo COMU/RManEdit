@@ -159,20 +159,7 @@ class Utils
       file.write(content)
       file.rewind
       file.read
-      fm = FileMagic.new
-      if fm.file(file.path).scan(/troff/i).length == 0
-        msg = Gtk::MessageDialog.new(nil, 
-        Gtk::Dialog::DESTROY_WITH_PARENT,
-        Gtk::MessageDialog::INFO, Gtk::MessageDialog::BUTTONS_OK,
-        _("It is not a man file"))
-        msg.show_all()
-        if msg.run == Gtk::Dialog::RESPONSE_OK
-            file.close
-            file.unlink
-            msg.destroy
-        end
-        return
-      end
+      fm = FileMagic.new      
       output = IO.popen("man2html #{file.path}")
       str = output.readlines
       i = 5
