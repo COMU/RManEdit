@@ -160,9 +160,10 @@ class Editor
      mb.append(aboutmenuitem)
      # file
      open.signal_connect("activate"){o=Utils.new; 
-     o.open_file(@tab)}
+     o.open_file(@tab, @treeview, @view_but); @win.show_all}
      new.signal_connect("activate"){o=Utils.new; 
-     o.open_new_empty_file(@tab)}
+     o.open_new_empty_file(@tab, @treeview, @view_but);
+     @win.show_all}
      save.signal_connect("activate"){o=Utils.new; 
      o.save(@tab, false)}
      save_as.signal_connect("activate"){o=Utils.new; 
@@ -225,13 +226,16 @@ class Editor
     toolbar.insert(6, pastetb)
     toolbar.insert(7,@view_but)
     @view_but.set_sensitive false       
-    opentb.signal_connect("clicked"){o = Utils.new; o.open_file(@tab)}
+    opentb.signal_connect("clicked"){o = Utils.new; 
+    o.open_file(@tab, @treeview, @view_but); @win.show_all}
     saveastb.signal_connect("clicked"){o = Utils.new; o.save_as(@tab, true)}
     savetb.signal_connect("clicked"){o = Utils.new; o.save(@tab, false)}
     cuttb.signal_connect("clicked"){o = TextManiplation.new; o.cut_text(@tab)}
     copytb.signal_connect("clicked"){o = TextManiplation.new; o.copy_text(@tab)}
     pastetb.signal_connect("clicked"){o= TextManiplation.new; o.paste_text(@tab)}
-    newtb.signal_connect("clicked"){o= Utils.new; o.open_new_empty_file(@tab)}
+    newtb.signal_connect("clicked"){o= Utils.new; 
+    o.open_new_empty_file(@tab, @treeview, @view_but)
+    @win.show_all}
     @view_but.signal_connect("clicked"){o = Utils.new; o.preview(@tab, @manview)}
     return toolbar
   end

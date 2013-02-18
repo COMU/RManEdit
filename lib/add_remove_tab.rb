@@ -1,8 +1,12 @@
 require 'gtk2'
+require 'gettext'
 require 'utils'
 require 'textView'
 
 class AddRemoveTab
+
+  include GetText
+  bindtextdomain("rmanedit")
 
   def new_tab(tab, treeview, view_but)
     editor = Textview.new
@@ -15,16 +19,18 @@ class AddRemoveTab
     swin.add(editor)
     tab.append_page(swin,
     Gtk::Label.new("Untitled Document " + pagenum))
+ 
     tab.signal_connect("switch-page") do |a, b, current_page|
-    buf = tab.get_nth_page(current_page).child.buffer
-    buf.signal_connect("changed"){o=Utils.new;
-    o.text_changed(tab);
-    o.view_sensitive(tab, treeview, view_but)}
-    o = Utils.new
-    text = buf.text
-    o.view_sensitive(text, treeview, view_but)
+      buf = tab.get_nth_page(current_page).child.buffer
+      buf.signal_connect("changed"){o=Utils.new;
+      o.text_changed(tab);
+      # sayfa degisip textin degisme durumu
+      o.view_sensitive(buf.text, treeview, view_but)}
+      # sadece sayfa degisme durumu
+      o=Utils.new;
+      o.view_sensitive(buf.text, treeview, view_but)
     end
-  end
+ end
  
   def remove_tab(tab)
     # kaldirilmak istenen sayfa kayitli mi
@@ -63,7 +69,4 @@ class AddRemoveTab
       i += 1
     end
  end
- 
-    
-
 end

@@ -11,10 +11,12 @@ require 'textView'
 require 'add_remove_tab'
 
 class Utils
+
   include GetText 
   bindtextdomain("rmanedit")
  
   def text_changed(tab)
+
     current_page = tab.get_nth_page(tab.page)
     # sayfa ismine surekli * ekler bu if olmazsa
     if current_page.child.saved
@@ -22,8 +24,8 @@ class Utils
       pagename = "* " + old_label.text
       tab.set_tab_label(current_page,
       Gtk::Label.new(pagename))
-     end
-     current_page.child.saved = false
+    end
+    current_page.child.saved = false
   end 
  
   def lang_choice(tab,lang)
@@ -54,13 +56,16 @@ class Utils
   end
 
   def save_as(tab,saveas)
+
     save(tab,saveas)   
   end
 
   def save(tab,saveas)
-    current_page = tab.get_nth_page(tab.page)
+    
+    current_page = tab.get_nth_page(tab.page).child
     content = current_page.buffer.text
-    if current_page.saved == false or saveas
+
+    if current_page.first_save == false or saveas
       dialog = Gtk::FileChooserDialog.new(_("Save"), nil, 
       Gtk::FileChooser::ACTION_SAVE, nil,
       [Gtk::Stock::CANCEL,Gtk::Dialog::RESPONSE_CANCEL],
@@ -83,7 +88,8 @@ class Utils
         current_page.file_path = @@filename
         filename = @@filename.split('/')
         filename = filename[filename.length-1]
-        tab.set_tab_label(current_page, Gtk::Label.new(filename))
+        page = tab.get_nth_page(tab.page)
+        tab.set_tab_label(page, Gtk::Label.new(filename))
         msg.show_all()
         if msg.run == Gtk::Dialog::RESPONSE_OK
           msg.destroy
@@ -91,71 +97,43 @@ class Utils
         end
       else
         dialog.destroy 
+        return
       end
     else
-      file_name = current_page.file_path
-      File.open(file_name, 'w') do |f|
+      file_path = current_page.file_path
+      File.open(file_path, 'w') do |f|
       gz = Zlib::GzipWriter.new(f)
       gz.write(content)
       gz.close
+      filename = file_path.split('/')
+      filename = filename[filename.length-1]
+      page = tab.get_nth_page(tab.page)
+      tab.set_tab_label(page, Gtk::Label.new(filename))
       end
-        current_page.saved = true
     end
+    current_page.first_save = true
+    current_page.saved = true
   end
 
-  def open_new_empty_file(tab) 
-    current_page = tab.get_nth_page(tab.page)
-    if not current_page.saved
-      which_func = "open_new_empty_file"
-      will_change_lost(tab, which_func)
-    else
-      current_page.buffer.text = ""
-      current_page.saved = true
-      current_page.file_path = ""
-      tab.set_tab_label(current_page,
-      Gtk::Label.new("Untitled Document " + tab.n_pages.to_s))
-    end
+  def open_new_empty_file(tab, treeview, view_but) 
+
+    o = AddRemoveTab.new
+    o.new_tab(tab, treeview, view_but)
   end
 
-  # kaydedilmis bir dosyayi acma
-  def open_file(tab) 
-    saved = tab.get_nth_page(tab.page).child.saved 
-      if not saved
-        which_func = "open_file"
-        will_change_lost(tab, which_func)
-      else
-        open_new_file(tab)
-        tab.get_nth_page(tab.page).saved = true
-      end
-  end 
+  # kayitli bir dosyayi acma
+  def open_file(tab, treeview, view_but) 
 
-  # dosya acikken yeni dosya acma icin dialog
-  def will_change_lost(tab, which_func)
-
-    dialog = Gtk::MessageDialog.new(nil, Gtk::Dialog::MODAL,
-    Gtk::MessageDialog::QUESTION, 
-    Gtk::MessageDialog::BUTTONS_YES_NO,
-    _("Your changes will be lost. Do you want to continue?"))
-    if dialog.run == Gtk::Dialog::RESPONSE_YES
-      current_page = tab.get_nth_page(tab.page).child
-      current_page.file_path = ""
-      current_page.buffer.text = ""
-      current_page.saved = true
-      if which_func == "open_file"
-        open_new_file(tab)
-        current_page.saved = true
-      # yeni bos dosya ac
-      else
-        tab.set_tab_label(current_page,
-        Gtk::Label.new("Untitled Document " + tab_name(tab).n_pages.to_s))
-      end
-    end   
-    dialog.destroy
+    o = AddRemoveTab.new
+    o.new_tab(tab, treeview, view_but)
+    open_new_file(tab)
   end 
 
   def view_sensitive(text, treeview, view_but)
+
     if text == ""
       view_but.set_sensitive(false)
+      view_but.show_all
       selection = treeview.selection
       iter = selection.selected
       if iter != nil
@@ -166,9 +144,11 @@ class Utils
       view_but.set_sensitive(true)
       treeview.sensitive=true
     end
+
   end
 
   def preview(tab, manview)
+
     current_page = tab.get_nth_page(tab.page)
     if current_page.saved == false
       msg = Gtk::MessageDialog.new(nil,
@@ -218,6 +198,7 @@ class Utils
   end
 
   def open_new_file(tab)
+
     dialog = Gtk::FileChooserDialog.new(_("Open"), nil, 
     Gtk::FileChooser::ACTION_OPEN, nil, 
     [Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL],
@@ -225,34 +206,37 @@ class Utils
     dialog.show
     begin
       if dialog.run == Gtk::Dialog::RESPONSE_ACCEPT
-        current_page = tab.get_nth_page(tab.page)
-        current_page.saved = true
+        new_page = tab.get_nth_page(tab.n_pages-1).child
+        new_page.saved = true
         @@filename = dialog.filename
         fm = FileMagic.new
         # gzip dosyasi
         if fm.file(@@filename).scan(/gziP/i).length != 0
           gz = Zlib::GzipReader.new(open(@@filename)).read 
-          tab.get_nth_page(tab.page).buffer.text = gz
+          new_page.buffer.text = gz
         # zip dosyasi
         elsif fm.file(@@filename).scan(/zip/i).length != 0
        	  Zip::ZipFile.open(@@filename) do |zip_file|
        	  zip_file.each do |f|
-          tab.get_nth_page(tab.page).buffer.text = zip_file.read(f)
+          new_page.buffer.text = zip_file.read(f)
             end
           end
         # herhangi bir text
         else
           content = ""
           IO.foreach(@@filename){|block|  content = content + "\n"+ block}
-          tab.get_nth_page(tab.page).buffer.text = content
+          new_page.buffer.text = content
         end
-      current_page.file_path = @@filename
+      new_page.file_path = @@filename
       # sekme isminin acik olan dosyanin adini almasi
       filename = @@filename.split('/')
       filename = filename[filename.length-1]
-      child = tab.get_nth_page(tab.page)
-      tab.set_tab_label(child, Gtk::Label.new(filename))
-      end
+      page = tab.get_nth_page(tab.n_pages-1)
+      tab.set_tab_label(page, Gtk::Label.new(filename))
+      page.child.first_save = true
+    else 
+      tab.remove_page(tab.n_pages-1)
+    end
     dialog.destroy
     rescue
       msg = Gtk::MessageDialog.new(nil,
@@ -271,6 +255,7 @@ class Utils
 
   # secilen etikete gitme 
   def label_find(find, tab)
+
     current_page = tab.get_nth_page(tab.page)
     start = current_page.buffer.start_iter
     first, last = start.forward_search(find, 
@@ -292,6 +277,7 @@ class Utils
   
   # html dosyasina donusturme  
   def create_html_file(tab)
+
     dialog = Gtk::FileChooserDialog.new(_("Save"), nil,
     Gtk::FileChooser::ACTION_SAVE, nil,
     [Gtk::Stock::CANCEL,Gtk::Dialog::RESPONSE_CANCEL],
@@ -341,6 +327,7 @@ class Utils
   end
 
   def app_about
+
     w = Gtk::Window.new
     layout = Gtk::Layout.new
     info = Gtk::Label.new(_("""
@@ -360,6 +347,7 @@ class Utils
   end
 
   def help
+
     w = Gtk::Window.new
     layout = Gtk::Layout.new    
     btn = Gtk::Button.new(_("OK"))
@@ -396,18 +384,21 @@ end
 class TextManiplation
 
   def cut_text(tab)
+
       current_page = tab.get_nth_page(tab.page).child
       clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
       current_page.buffer.cut_clipboard(clipboard, true)
   end
 
   def copy_text(tab)
+
       current_page = tab.get_nth_page(tab.page).child
       clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
       current_page.buffer.copy_clipboard(clipboard)
   end
   
   def paste_text(tab)
+
       current_page = tab.get_nth_page(tab.page).child
       clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
       current_page.buffer.paste_clipboard(clipboard, nil, true)
