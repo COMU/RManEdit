@@ -59,7 +59,7 @@ class Editor
   def man_view
     @manview = WebKit::WebView.new
     swinman_view = Gtk::ScrolledWindow.new
-    no_man_file = _("Man file is not installed")
+    no_man_file = _("Nothing to preview")
     content = "<html><head><h2> #{no_man_file}</h2></head></HTML>"
     @manview.load_string(content,"text/html", "UTF-8", "file://home")
     # man goruntusu icin scrollWind 
