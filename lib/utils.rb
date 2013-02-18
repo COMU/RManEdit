@@ -213,11 +213,23 @@ class Utils
             end
           end
         # herhangi bir text
-        else
+        elsif fm.file(@@filename).scan(/text/i).length != 0
           content = ""
           IO.foreach(@@filename){|block|  content = content + "\n"+ block}
           new_page.buffer.text = content
-        end
+       else
+         msg = Gtk::MessageDialog.new(nil,
+         Gtk::Dialog::DESTROY_WITH_PARENT,
+         Gtk::MessageDialog::INFO, Gtk::MessageDialog::BUTTONS_OK,
+         _("If the file is not text, you can't open"))
+         msg.show_all()
+         if msg.run == Gtk::Dialog::RESPONSE_OK
+             tab.remove_page(tab.n_pages-1)
+             msg.destroy
+             dialog.destroy
+             return 
+         end
+       end
       new_page.file_path = @@filename
       # sekme isminin acik olan dosyanin adini almasi
       filename = @@filename.split('/')
