@@ -149,7 +149,7 @@ class Utils
 
   def preview(tab, manview)
 
-    current_page = tab.get_nth_page(tab.page)
+    current_page = tab.get_nth_page(tab.page).child
     if current_page.saved == false
       msg = Gtk::MessageDialog.new(nil,
       Gtk::Dialog::DESTROY_WITH_PARENT, 
@@ -256,7 +256,7 @@ class Utils
   # secilen etikete gitme 
   def label_find(find, tab)
 
-    current_page = tab.get_nth_page(tab.page)
+    current_page = tab.get_nth_page(tab.page).child
     start = current_page.buffer.start_iter
     first, last = start.forward_search(find, 
     Gtk::TextIter::SEARCH_TEXT_ONLY, nil)
@@ -286,7 +286,7 @@ class Utils
     if dialog.run  == Gtk::Dialog::RESPONSE_APPLY
       file = dialog.filename
       # yandaki textin bir dosya icine atilmasi
-      current_page = tab.get_nth_page(tab.page)
+      current_page = tab.get_nth_page(tab.page).child
       content = current_page.buffer.text
       File.open(file, "w") { |f| f <<  content }
       # ayni textin htmlye donusturulmesi

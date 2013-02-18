@@ -173,7 +173,8 @@ class Editor
      o.create_html_file(@tab)}
      new_tab.signal_connect("activate"){tab_param_sender; 
      @win.show_all}
-     removetab.signal_connect("activate"){o=AddRemoveTab.new; o.remove_tab(@tab)}
+     removetab.signal_connect("activate"){o=AddRemoveTab.new; 
+     o.remove_tab(@tab); @win.show_all}
      # settings
      en.signal_connect("activate"){o=Utils.new; 
      o.lang_choice(@win,"en")}
