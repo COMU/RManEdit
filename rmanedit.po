@@ -1,0 +1,193 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2013-02-13 21:19+0200\n"
+"PO-Revision-Date: 2013-02-13 21:19+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: rmanedit:41
+msgid "Man file is not installed"
+msgstr ""
+
+#: rmanedit:49
+msgid "Category"
+msgstr ""
+
+#: rmanedit:83
+msgid "File"
+msgstr ""
+
+#: rmanedit:85 rmanedit:151 lib/utils.rb:197
+msgid "Open"
+msgstr ""
+
+#: rmanedit:86 rmanedit:150
+msgid "New"
+msgstr ""
+
+#: rmanedit:87 rmanedit:152 lib/utils.rb:52 lib/utils.rb:278
+msgid "Save"
+msgstr ""
+
+#: rmanedit:88 rmanedit:153
+msgid "Save as"
+msgstr ""
+
+#: rmanedit:89
+msgid "Convert to html file"
+msgstr ""
+
+#: rmanedit:90
+msgid "Quit"
+msgstr ""
+
+#: rmanedit:100
+msgid "Settings"
+msgstr ""
+
+#: rmanedit:104
+msgid "Languages"
+msgstr ""
+
+#: rmanedit:106
+msgid "English"
+msgstr ""
+
+#: rmanedit:107
+msgid "Turkish"
+msgstr ""
+
+#: rmanedit:108
+msgid "German"
+msgstr ""
+
+#: rmanedit:115
+msgid "About"
+msgstr ""
+
+#: rmanedit:117 lib/utils.rb:329
+msgid "About RManEdit"
+msgstr ""
+
+#: rmanedit:120 lib/utils.rb:344
+msgid "Help"
+msgstr ""
+
+#: rmanedit:154
+msgid "Cut"
+msgstr ""
+
+#: rmanedit:155
+msgid "Copy"
+msgstr ""
+
+#: rmanedit:156
+msgid "Paste"
+msgstr ""
+
+#: rmanedit:157
+msgid "Preview"
+msgstr ""
+
+#: rmanedit:212
+msgid "Italic\n .I"
+msgstr ""
+
+#: rmanedit:213
+msgid "Bold\n .B"
+msgstr ""
+
+#: rmanedit:214
+msgid "Indention\n .RE"
+msgstr ""
+
+#: rmanedit:215
+msgid "Subhead and justify left\n .SH"
+msgstr ""
+
+#: rmanedit:216
+msgid "Jump to the bottom line\n .br"
+msgstr ""
+
+#: rmanedit:217
+msgid "Paragraph\n .P"
+msgstr ""
+
+#: rmanedit:218
+msgid "Comment line\n .\\\""
+msgstr ""
+
+#: rmanedit:219
+msgid "Seperate to coloumns\n .TP"
+msgstr ""
+
+#: rmanedit:220
+msgid "Start indent on paragraph\n .IP"
+msgstr ""
+
+#: rmanedit:221
+msgid "Nofill\n .nf"
+msgstr ""
+
+#: rmanedit:222
+msgid "Fill\n .fi"
+msgstr ""
+
+#: rmanedit:223
+msgid "First indent after line\n .HP"
+msgstr ""
+
+#: rmanedit:224
+msgid "Subhead\n .SS"
+msgstr ""
+
+#: lib/utils.rb:21
+msgid "Your changes will be lost because of RManEdit will start"
+msgstr ""
+
+#: lib/utils.rb:70 lib/utils.rb:313
+msgid "Saved"
+msgstr ""
+
+#: lib/utils.rb:128
+msgid "Your changes will be lost. Do you want to continue?"
+msgstr ""
+
+#: lib/utils.rb:158
+msgid "If you want to view file, you must save it"
+msgstr ""
+
+#: lib/utils.rb:174 lib/utils.rb:293
+msgid "It is not a man file"
+msgstr ""
+
+#: lib/utils.rb:235
+msgid "Please select a man file to open"
+msgstr ""
+
+#: lib/utils.rb:269
+msgid "No such tag"
+msgstr ""
+
+#: lib/utils.rb:326
+msgid "RManEdit licence is Creative Commons.\n Written by Ebru Akagündüz"
+msgstr ""
+
+#: lib/utils.rb:328
+msgid "OK"
+msgstr ""
+
+#: lib/utils.rb:347
+msgid "<!DOCTYPE html><html><head><h3>RManEdit</h3>\n RmanEdit is a editor for man page preparing. Specified tags like italic, bold, indetion is used for man pages. RmanEdit facilitates to use the tags and you can make man pages quickly.</head><br><body>\n</ul>\n<li>First feature which make man pages quickly are icons at menu bar. There are buttons that includes tags like paragraph, indentation, italic, bold etc. in menu bar at downside. Description of icons appear when you move on buttons your mouse cursor.<br><p></li>\n<li>There is a section on right of program interface. In this section, you can view your aplication. You can write man pages on middle section. There are tags on left section. Cursor is moves when you click tags like <b>NAME, SYNOPSIS</b> on left section.<p></li>\n<li> At menu bar <I>File->Convert to html file</I> converts to html file your man file."
+msgstr ""
