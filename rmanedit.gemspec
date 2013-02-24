@@ -6,6 +6,6 @@ Gem::Specification.new do |s|
   s.description = "UNIX Manual Page Editor with Ruby & GTK"
   s.authors     = ["Ebru Akagündüz"]
   s.email       = 'ebru.akagunduz@gmail.com'
-  s.files = ['lib/utils.rb', 'lib/textView.rb', 'lib/add_remove_tab.rb']
+  s.files = ['bin/rmanedit','lib/utils.rb', 'lib/textView.rb', 'lib/add_remove_tab.rb']
   s.require_paths = ["lib"]
 end
