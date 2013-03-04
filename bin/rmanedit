@@ -205,7 +205,8 @@ class Editor
     cuttb = Gtk::ToolButton.new(Gtk::Stock::CUT)
     copytb = Gtk::ToolButton.new(Gtk::Stock::COPY)
     pastetb = Gtk::ToolButton.new(Gtk::Stock::PASTE)
-    @view_but = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/preview3.png"))
+    image_path = "/usr/share/pixmaps/images"
+    @view_but = Gtk::ToolButton.new(Gtk::Image.new("#{image_path}"+"/preview3.png"))
     @view_but.set_size_request(60,40)
     tip = Gtk::Tooltips.new
     tip.set_tip(newtb,_("New"),nil)
@@ -240,6 +241,7 @@ class Editor
   end
   
   def toolBarFont
+    image_path = "/usr/share/pixmaps/images"
     tbFont = Gtk::Toolbar.new
     tbFont.set_size_request(60, 50)
     t1 = Gtk::Tooltips.new
@@ -249,14 +251,14 @@ class Editor
     indent = Gtk::ToolButton.new(Gtk::Stock::INDENT)
     justify_left = Gtk::ToolButton.new(Gtk::Stock::JUSTIFY_LEFT)
     br = Gtk::ToolButton.new(Gtk::Stock::JUMP_TO)
-    paragraph = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/paragraph.png"))
-    comment_line = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/comment_line.png"))
-    set_coloumn = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/coloumns.png"))
-    start_indent_paragraph = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/paragraph_indent.png"))
-    nofill = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/nf.png"))
-    fill = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/fi.png"))
-    hp = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/hp.png"))
-    subhead = Gtk::ToolButton.new(Gtk::Image.new("/usr/share/pixmaps/images/subhead.png"))
+    paragraph = Gtk::ToolButton.new(Gtk::Image.new("#{image_path}"+"/paragraph.png"))
+    comment_line = Gtk::ToolButton.new(Gtk::Image.new("#{image_path}"+"/comment_line.png"))
+    set_coloumn = Gtk::ToolButton.new(Gtk::Image.new("#{image_path}"+"/coloumns.png"))
+    start_indent_paragraph = Gtk::ToolButton.new(Gtk::Image.new("#{image_path}"+"/paragraph_indent.png"))
+    nofill = Gtk::ToolButton.new(Gtk::Image.new("#{image_path}"+"/nf.png"))
+    fill = Gtk::ToolButton.new(Gtk::Image.new("#{image_path}"+"/fi.png"))
+    hp = Gtk::ToolButton.new(Gtk::Image.new("#{image_path}"+"/hp.png"))
+    subhead = Gtk::ToolButton.new(Gtk::Image.new("#{image_path}"+"/subhead.png"))
     t1.set_tip(italik,_("Italic\n .I"),nil)
     t1.set_tip(bold,_("Bold\n .B"),nil)
     t1.set_tip(indent,_("Indention\n .RE"),nil)
