@@ -404,16 +404,17 @@ class TextManiplation
   end
  
   def find_text(editor)
-  editor.buffer.create_tag("highlight", {"background" => "#f8d60d", "foreground" => "red"})
-  start = editor.buffer.start_iter
-  first, last = start.forward_search("text", Gtk::TextIter::SEARCH_TEXT_ONLY, nil)
+    
+    start = editor.buffer.start_iter
+  #                   forward_search(find, flags, limit=(nil==entire text buffer))
+  first, last = start.forward_search(ent.text, Gtk::TextIter::SEARCH_TEXT_ONLY, nil)
   count = 0
   while (first)
     start.forward_char
-    first, last = start.forward_search("text", Gtk::TextIter::SEARCH_TEXT_ONLY, nil)
+    first, last = start.forward_search(ent.text, Gtk::TextIter::SEARCH_TEXT_ONLY, nil)
     start = first
-    editor.buffer.apply_tag("highlight", first, last)
     count += 1
   end
+
   end
 end

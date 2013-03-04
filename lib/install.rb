@@ -16,6 +16,8 @@ begin
       `sudo mkdir -p /usr/local/share/locale/tr/LC_MESSAGES`
     end
     `sudo rmsgfmt po/tr/rmanedit.po -o /usr/local/share/locale/tr/LC_MESSAGES/rmanedit.mo`
+    `sudo mkdir /usr/share/doc/rmanedit/`
+    `sudo cp LICENSE AUTHORS TRANSLATORS Changelog /usr/share/doc/rmanedit`
   end
 rescue
   puts "installation error"
