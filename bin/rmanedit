@@ -68,10 +68,18 @@ class Editor
     swinman_view.set_size_request(300,500)
     return swinman_view
   end
-
+  
   def win_contain
+      buf = Gtk::TextBuffer.new
+      find_entry = Gtk::Entry.new
+      count_label = Gtk::Label.new("0")
+      find_btn = Gtk::Button.new(_("Find"))
+      replace_btn = Gtk::Button.new(_("Replace"))
+      replace_entry = Gtk::Entry.new
+      # barlarin vbox, tablarin hbox
       @vbox = Gtk::VBox.new(false, 2)
       @hbox = Gtk::HBox.new(false, 2)
+      hbox_find = Gtk::HBox.new(false, 0)
       hpaned = Gtk::HPaned.new
       hpaned2 = Gtk::HPaned.new
       hpaned.set_size_request(900, -1) 
@@ -82,6 +90,12 @@ class Editor
       @vbox.pack_start(toolBar, false, false, 0)
       @vbox.pack_start(toolBarFont, false, false, 0)
       @vbox.pack_start(@hbox, true, true, 0)
+      @vbox.pack_start(hbox_find, false, false, 3)
+      hbox_find.pack_start(find_entry, false, false, 5)
+      hbox_find.pack_start(count_label, false, false, 5)
+      hbox_find.pack_start(find_btn, false, false, 5)
+      hbox_find.pack_start(replace_btn, false, false, 5)
+      hbox_find.pack_start(replace_entry, false, false, 5)
       @hbox.pack_start(hpaned ,true, true, 0)
       treeView_create
       hpaned.pack1(@treeview, true, false)
@@ -89,6 +103,8 @@ class Editor
       hpaned2.pack1(tab_param_sender, true, true)
       hpaned2.pack2(man_view, true, false)
       @win.add(@vbox)
+      find_btn.signal_connect("clicked"){o=Utils.new; o.find_text(@tab, find_entry, count_label)}
+      replace_btn.signal_connect("clicked"){o=Utils.new; o.replace_text(@tab, replace_entry, find_entry)}
       @win.show_all     
   end
   
@@ -182,13 +198,13 @@ class Editor
      app_about.signal_connect("activate"){o=Utils.new; o.app_about}
      helpmenuitem.signal_connect("activate"){o=Utils.new; o.help}
      # edit
-     copy.signal_connect("activate"){o=TextManiplation.new; 
+     copy.signal_connect("activate"){o=Utils.new; 
      o.copy_text(@tab)}
-     paste.signal_connect("activate"){o=TextManiplation.new; 
+     paste.signal_connect("activate"){o=Utils.new; 
      o.paste_text(@tab)}
-     cut.signal_connect("activate"){o=TextManiplation.new; 
+     cut.signal_connect("activate"){o=Utils.new; 
      o.cut_text(@tab)}
-     find.signal_connect("activate"){o=TextManiplation.new; 
+     find.signal_connect("activate"){o=Utils.new; 
      o.find_text(@tab)} 
      return mb
   end
@@ -230,9 +246,9 @@ class Editor
     o.open_file(@tab, @treeview, @view_but); @win.show_all}
     saveastb.signal_connect("clicked"){o = Utils.new; o.save_as(@tab, true)}
     savetb.signal_connect("clicked"){o = Utils.new; o.save(@tab, false)}
-    cuttb.signal_connect("clicked"){o = TextManiplation.new; o.cut_text(@tab)}
-    copytb.signal_connect("clicked"){o = TextManiplation.new; o.copy_text(@tab)}
-    pastetb.signal_connect("clicked"){o= TextManiplation.new; o.paste_text(@tab)}
+    cuttb.signal_connect("clicked"){o = Utils.new; o.cut_text(@tab)}
+    copytb.signal_connect("clicked"){o = Utils.new; o.copy_text(@tab)}
+    pastetb.signal_connect("clicked"){o= Utils.new; o.paste_text(@tab)}
     newtb.signal_connect("clicked"){o= Utils.new; 
     o.open_new_empty_file(@tab, @treeview, @view_but)
     @win.show_all}

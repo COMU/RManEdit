@@ -11,12 +11,12 @@ require 'textView'
 require 'add_remove_tab'
 
 class Utils
-
+  
   include GetText 
   bindtextdomain("rmanedit")
- 
+  
   def text_changed(tab)
-
+    
     current_page = tab.get_nth_page(tab.page)
     # sayfa ismine surekli * ekler bu if olmazsa
     if current_page.child.saved
@@ -24,6 +24,14 @@ class Utils
       pagename = "* " + old_label.text
       tab.set_tab_label(current_page,
       Gtk::Label.new(pagename))
+    end
+    r = defined? @@find 
+    if r != nil
+      current_page.child.buffer.create_tag("highlight", {"background" => "yellow"})
+      start = current_page.child.buffer.start_iter
+      iter_end = current_page.child.buffer.end_iter  
+      current_page.child.buffer.remove_tag("highlight", start, iter_end) 
+      find_text(tab, @@find, @@count_label) 
     end
     current_page.child.saved = false
   end 
@@ -378,43 +386,57 @@ class Utils
     w.show_all
   end
 
-end
-
-class TextManiplation
-
   def cut_text(tab)
 
-      current_page = tab.get_nth_page(tab.page).child
-      clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
-      current_page.buffer.cut_clipboard(clipboard, true)
+    current_page = tab.get_nth_page(tab.page).child
+    clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
+    current_page.buffer.cut_clipboard(clipboard, true)
   end
 
   def copy_text(tab)
 
-      current_page = tab.get_nth_page(tab.page).child
-      clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
-      current_page.buffer.copy_clipboard(clipboard)
+    current_page = tab.get_nth_page(tab.page).child
+    clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
+    current_page.buffer.copy_clipboard(clipboard)
   end
   
   def paste_text(tab)
 
-      current_page = tab.get_nth_page(tab.page).child
-      clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
-      current_page.buffer.paste_clipboard(clipboard, nil, true)
+    current_page = tab.get_nth_page(tab.page).child
+    clipboard = Gtk::Clipboard.get(Gdk::Selection::CLIPBOARD)
+    current_page.buffer.paste_clipboard(clipboard, nil, true)
   end
  
-  def find_text(editor)
-    
-    start = editor.buffer.start_iter
-  #                   forward_search(find, flags, limit=(nil==entire text buffer))
-  first, last = start.forward_search(ent.text, Gtk::TextIter::SEARCH_TEXT_ONLY, nil)
-  count = 0
-  while (first)
-    start.forward_char
-    first, last = start.forward_search(ent.text, Gtk::TextIter::SEARCH_TEXT_ONLY, nil)
-    start = first
-    count += 1
-  end
+  def find_text(tab, find, count_label)
 
+    count = 0
+    current_page = tab.get_nth_page(tab.page).child
+    start = current_page.buffer.start_iter
+    first, last = start.forward_search(find.text, Gtk::TextIter::SEARCH_TEXT_ONLY, nil)
+    current_page.buffer.create_tag("highlight", {"background" => "yellow"})
+    while (first)
+      current_page.buffer.apply_tag("highlight", first, last)
+      start.forward_char
+      first, last = start.forward_search(find.text, Gtk::TextIter::SEARCH_TEXT_ONLY, nil)
+      start = first
+      count += 1 
+    end
+    count_label.label = count.to_s
+    # removed
+    # if count_label.label == "0"      
+    # find.modify_base(Gtk::STATE_NORMAL, Gdk::Color.parse("red"))    
+    # find.show_all
+    # end
+    @@find = find
+    @@count_label = count_label
   end
+   
+  def replace_text(tab, replace, find)
+    current_page = tab.get_nth_page(tab.page).child
+    content = current_page.buffer.text
+    content = content.gsub(find.text, replace.text)
+    current_page.buffer.text = content
+  end  
+
 end
+
