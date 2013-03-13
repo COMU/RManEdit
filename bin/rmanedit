@@ -41,7 +41,7 @@ class Editor
   
   def treeView_create
     column   = Gtk::TreeViewColumn.new(_("Category"), @renderer,  :text => INDEX)
-    @treeview.sensitive=false
+    @treeview.sensitive = false
     @treeview.append_column(column)
     list = Array.new
     list = ["NAME", "SYNOPSIS","AVAILABILITY","DESCRIPTION","OPTIONS",
@@ -103,8 +103,12 @@ class Editor
       hpaned2.pack1(tab_param_sender, true, true)
       hpaned2.pack2(man_view, true, false)
       @win.add(@vbox)
+      find_btn.sensitive = false
+      replace_btn.sensitive = false
+      find_entry.signal_connect("changed"){o=Utils.new; o.find_entry_changed(find_btn, find_entry, replace_btn, replace_entry, count_label)}
       find_btn.signal_connect("clicked"){o=Utils.new; o.find_text(@tab, find_entry, count_label)}
-      replace_btn.signal_connect("clicked"){o=Utils.new; o.replace_text(@tab, replace_entry, find_entry)}
+      replace_entry.signal_connect("changed"){o=Utils.new; o.replace_entry_changed(replace_btn, replace_entry, find_entry)}
+      replace_btn.signal_connect("clicked"){o=Utils.new; o.replace_text(@tab, replace_entry, find_entry, count_label)}
       @win.show_all     
   end
   
@@ -241,7 +245,7 @@ class Editor
     toolbar.insert(5, copytb)
     toolbar.insert(6, pastetb)
     toolbar.insert(7,@view_but)
-    @view_but.set_sensitive false       
+    @view_but.sensitive = false       
     opentb.signal_connect("clicked"){o = Utils.new; 
     o.open_file(@tab, @treeview, @view_but); @win.show_all}
     saveastb.signal_connect("clicked"){o = Utils.new; o.save_as(@tab, true)}

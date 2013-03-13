@@ -25,6 +25,7 @@ class Utils
       tab.set_tab_label(current_page,
       Gtk::Label.new(pagename))
     end
+    # metinde renkli yazi varsa kaldirmak icin
     r = defined? @@find 
     if r != nil
       current_page.child.buffer.create_tag("highlight", {"background" => "yellow"})
@@ -408,9 +409,17 @@ class Utils
   end
  
   def find_text(tab, find, count_label)
-
+    
     count = 0
     current_page = tab.get_nth_page(tab.page).child
+    # onceden renklendirilmis yazi varsa kaldirsin diye
+    if count_label.label != "0"
+      current_page.buffer.create_tag("highlight", {"background" => "yellow"})
+      start = current_page.buffer.start_iter
+      iter_end = current_page.buffer.end_iter
+      current_page.buffer.remove_tag("highlight", start, iter_end)
+    end
+
     start = current_page.buffer.start_iter
     first, last = start.forward_search(find.text, Gtk::TextIter::SEARCH_TEXT_ONLY, nil)
     current_page.buffer.create_tag("highlight", {"background" => "yellow"})
@@ -421,22 +430,60 @@ class Utils
       start = first
       count += 1 
     end
-    count_label.label = count.to_s
-    # removed
-    # if count_label.label == "0"      
-    # find.modify_base(Gtk::STATE_NORMAL, Gdk::Color.parse("red"))    
-    # find.show_all
-    # end
+    count_label.label = count.to_s 
+    if count_label.label == "0"      
+      find.modify_base(Gtk::STATE_NORMAL, Gdk::Color.parse("red"))    
+      find.show_all
+    else
+      find.modify_base(Gtk::STATE_NORMAL, Gdk::Color.parse("white"))   
+      find.show_all
+    end
     @@find = find
     @@count_label = count_label
   end
    
-  def replace_text(tab, replace, find)
+  def replace_text(tab, replace, find, count_label)
+
+    if count_label.label == "0"
+      msg = Gtk::MessageDialog.new(nil,
+      Gtk::Dialog::DESTROY_WITH_PARENT,
+      Gtk::MessageDialog::INFO,
+      Gtk::MessageDialog::BUTTONS_OK,
+      _("Search key not found"))
+      if msg.run == Gtk::Dialog::RESPONSE_OK
+        msg.destroy
+      end
+      return
+    end
+
     current_page = tab.get_nth_page(tab.page).child
     content = current_page.buffer.text
     content = content.gsub(find.text, replace.text)
     current_page.buffer.text = content
-  end  
+  end 
+
+  def find_entry_changed(find_btn, find_entry, replace_btn, replace_entry, count_label)
+
+    if find_entry.text == ""
+      find_btn.sensitive = false
+      replace_btn.sensitive = false
+      find_entry.modify_base(Gtk::STATE_NORMAL, Gdk::Color.parse("white"))
+      find_entry.show_all
+    else
+      find_btn.sensitive = true
+      if replace_entry.text != ""
+        replace_btn.sensitive = true
+      end
+    end
+  end 
+  def replace_entry_changed(replace_btn, replace_entry, find_entry)
+    
+    if replace_entry.text == "" or find_entry.text == ""
+      replace_btn.sensitive = false
+      return
+    end
+    replace_btn.sensitive = true
+  end
 
 end
 
