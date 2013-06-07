@@ -8,6 +8,7 @@ require 'zip/zip'
 require '~/.config/rmanedit/lang'
 require 'rubygems'
 #require 'install'
+require '../constants'
 require 'utils'
 require 'textView'
 require 'add_remove_tab'
@@ -36,7 +37,9 @@ class Editor
     @win.signal_connect('destroy'){Gtk.main_quit}
     @win.set_window_position(Gtk::Window::POS_CENTER)
     win_contain
-    show_wizard
+		if WIZARD 
+	    show_wizard
+		end
     @win.show_all()
   end
   
@@ -75,7 +78,7 @@ class Editor
 			create_man.signal_connect("clicked"){
 			text_entry.each{|key, value|
 				if value.text != ""
-					text += "\n.SH #{key} #{value.text}" 
+					text += "\n.SH #{key} \n #{value.text} " 
 				end
 			}
 			current_page = @tab.get_nth_page(@tab.page) 
@@ -83,7 +86,22 @@ class Editor
 			win.destroy
 			}
 			win.show_all
-		end
+		else
+			msg2 = Gtk::MessageDialog.new(nil, Gtk::Dialog::MODAL, 
+			Gtk::MessageDialog::QUESTION, Gtk::MessageDialog::BUTTONS_OK_CANCEL,
+			_("Never show me"))
+			msg.show_all()
+			if msg2.run == Gtk::Dialog::RESPONSE_OK 
+				consts_array = Array.new
+				consts_dict = {"WIZARD" => WIZARD}
+				new_value_wizard = false
+				f = File.open("../constants.rb", "w")
+				f.write("WIZARD=#{new_value_wizard}")
+				f.close
+			end	
+			msg2.destroy
+			msg.destroy
+  	end
 	end
 
   def treeView_create
