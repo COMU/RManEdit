@@ -179,7 +179,6 @@ class Editor
   
   # yeni tab icin parametreleri gonderme  
   def tab_param_sender
-
     o = AddRemoveTab.new
     o.new_tab(@tab, @treeview, @view_but)
     return @tab

@@ -9,6 +9,7 @@ class AddRemoveTab
   bindtextdomain("rmanedit")
 
   def new_tab(tab, treeview, view_but)
+    time = Time.now
     editor = Textview.new
     swin = Gtk::ScrolledWindow.new
     if tab.n_pages != 0
@@ -18,10 +19,10 @@ class AddRemoveTab
     end
     swin.add(editor)
     tab.append_page(swin,
-    Gtk::Label.new("Untitled Document " + pagenum))
- 
+    Gtk::Label.new("Untitled Document " + pagenum)) 
     tab.signal_connect("switch-page") do |a, b, current_page|
       buf = tab.get_nth_page(current_page).child.buffer
+      buf.text = ".\\\" DO NOT MODIFY THIS FILE!\n .TH \"your_command_name\" \"#{time.strftime("%B")} #{time.year}\" \"your_description\""
       buf.signal_connect("changed"){o=Utils.new;
       o.text_changed(tab);
       # sayfa degisip textin degisme durumu

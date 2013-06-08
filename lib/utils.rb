@@ -116,7 +116,6 @@ class Utils
   end
 
   def open_new_empty_file(tab, treeview, view_but) 
-
     o = AddRemoveTab.new
     o.new_tab(tab, treeview, view_but)
   end
