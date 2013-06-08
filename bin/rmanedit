@@ -44,7 +44,7 @@ class Editor
   end
   
   def show_wizard
-		msg =  Gtk::MessageDialog.new(nil, Gtk::Dialog::MODAL,
+    msg =  Gtk::MessageDialog.new(nil, Gtk::Dialog::MODAL,
 		Gtk::MessageDialog::QUESTION, Gtk::MessageDialog::BUTTONS_OK_CANCEL,
     _("Do you want to use wizard?"))
 		msg.show_all()
@@ -205,6 +205,15 @@ class Editor
      filemenu.append(make_html)
      filemenu.append(exit_)
      mb.append(filemenuitem)
+     # wizard menu
+		 wizardmenu = Gtk::Menu.new
+		 wizardmenu_item = Gtk::MenuItem.new(_("Wizard")) 
+		 wizardmenu_item.set_submenu(wizardmenu)
+		 usewizard_item = Gtk::MenuItem.new(_("Use Wizard"))
+		 aboutwizard_item = Gtk::MenuItem.new(_("About Wizard"))
+		 wizardmenu.append(usewizard_item)
+		 wizardmenu.append(aboutwizard_item)
+		 mb.append(wizardmenu_item)
      # edit menu
      editmenu = Gtk::Menu.new
      editmenuitem = Gtk::MenuItem.new(_("Edit"))
@@ -258,6 +267,13 @@ class Editor
      o.create_html_file(@tab)}
      removetab.signal_connect("activate"){o=AddRemoveTab.new; 
      o.remove_tab(@tab); @win.show_all}
+     # wizard
+		 usewizard_item.signal_connect("activate"){show_wizard; 
+  	 consts_array = Array.new; consts_dict = {"WIZARD" => WIZARD};
+		 new_value_wizard = true; f = File.open("../constants.rb", "w")
+		 f.write("WIZARD=#{new_value_wizard}");
+	   f.close}
+		 aboutwizard_item.signal_connect("activate"){about_wizard()}
      # settings
      en.signal_connect("activate"){o=Utils.new; 
      o.lang_choice(@win,"en")}
@@ -276,6 +292,21 @@ class Editor
      find.signal_connect("activate"){o=Utils.new; 
      o.find_text(@tab)} 
      return mb
+  end
+
+  def about_wizard
+  about_wizard_win = Gtk::Window.new
+  info = Gtk::Label.new(_("""
+  Wizard an easy way to create man page
+  You can provide to default section for all man page using wizard.
+  For example: Name, Synopsis, Description .. etc.
+  """))
+  layout = Gtk::Layout.new
+  about_wizard_win.set_default_size(500,200)
+  about_wizard_win.window_position = Gtk::Window::POS_CENTER
+  layout.put(info, 30, 50)
+	about_wizard_win.add(layout)
+  about_wizard_win.show_all
   end
 
   # dosya islemleri icin
