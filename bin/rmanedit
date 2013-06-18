@@ -45,64 +45,64 @@ class Editor
   
   def show_wizard
     msg =  Gtk::MessageDialog.new(nil, Gtk::Dialog::MODAL,
-		Gtk::MessageDialog::QUESTION, Gtk::MessageDialog::BUTTONS_OK_CANCEL,
+    Gtk::MessageDialog::QUESTION, Gtk::MessageDialog::BUTTONS_OK_CANCEL,
     _("Do you want to use wizard?"))
-		msg.show_all()
-		if msg.run == Gtk::Dialog::RESPONSE_OK 
-    	msg.destroy
-			i = 0
-			x1 = 10 
-			y1 = 30
-			x2 = 100
-			text = ""
-			win = Gtk::Window.new
-   		layout = Gtk::Layout.new
-			create_man = Gtk::Button.new("Create man page")
-			cancel = Gtk::Button.new("Cancel")
-			text_entry = {"NAME" => Gtk::Entry.new, "SYNOPSIS" => Gtk::Entry.new, 
-										"DESCRIPTION" => Gtk::Entry.new, "SEE ALSO" => Gtk::Entry.new, 
-										"BUGS" => Gtk::Entry.new, "AUTHOR" => Gtk::Entry.new}
-			win.set_title(_("RManEditWizard"))
-   		win.set_default_size(330,400)
+    msg.show_all()
+    if msg.run == Gtk::Dialog::RESPONSE_OK 
+      msg.destroy
+      i = 0
+      x1 = 10 
+      y1 = 30
+      x2 = 100
+      text = ""
+      win = Gtk::Window.new
+      layout = Gtk::Layout.new
+      create_man = Gtk::Button.new("Create man page")
+      cancel = Gtk::Button.new("Cancel")
+      text_entry = {"NAME" => Gtk::Entry.new, "SYNOPSIS" => Gtk::Entry.new, 
+                    "DESCRIPTION" => Gtk::Entry.new, "SEE ALSO" => Gtk::Entry.new, 
+                    "BUGS" => Gtk::Entry.new, "AUTHOR" => Gtk::Entry.new}
+      win.set_title(_("RManEditWizard"))
+      win.set_default_size(330,400)
       win.window_position = Gtk::Window::POS_CENTER
-			text_entry.each {|key, value| 
-				l = Gtk::Label.new(key)
-				layout.put(l, x1, y1)
-				layout.put(value, x2, y1)
-				y1 += 50
-			}
-			layout.put(cancel, x1, y1+10)
-			layout.put(create_man, x2+90, y1+10)
-			win.add(layout)
-			cancel.signal_connect("clicked"){win.destroy}
-			create_man.signal_connect("clicked"){
-			text_entry.each{|key, value|
-				if value.text != ""
-					text += "\n.SH #{key} \n #{value.text} " 
-				end
-			}
-			current_page = @tab.get_nth_page(@tab.page) 
-			current_page.child.buffer.text = text
-			win.destroy
-			}
-			win.show_all
-		else
-			msg2 = Gtk::MessageDialog.new(nil, Gtk::Dialog::MODAL, 
-			Gtk::MessageDialog::QUESTION, Gtk::MessageDialog::BUTTONS_OK_CANCEL,
-			_("Never show me"))
-			msg.show_all()
-			if msg2.run == Gtk::Dialog::RESPONSE_OK 
-				consts_array = Array.new
-				consts_dict = {"WIZARD" => WIZARD}
-				new_value_wizard = false
-				f = File.open("../constants.rb", "w")
-				f.write("WIZARD=#{new_value_wizard}")
-				f.close
-			end	
-			msg2.destroy
-			msg.destroy
-  	end
-	end
+      text_entry.each {|key, value| 
+        l = Gtk::Label.new(key)
+        layout.put(l, x1, y1)
+        layout.put(value, x2, y1)
+        y1 += 50
+      }
+      layout.put(cancel, x1, y1+10)
+      layout.put(create_man, x2+90, y1+10)
+      win.add(layout)
+      cancel.signal_connect("clicked"){win.destroy}
+      create_man.signal_connect("clicked"){
+      text_entry.each{|key, value|
+      if value.text != ""
+        text += "\n.SH #{key} \n #{value.text} " 
+	      end
+      }
+      current_page = @tab.get_nth_page(@tab.page) 
+      current_page.child.buffer.text = text
+      win.destroy
+      }
+      win.show_all
+    else
+      msg2 = Gtk::MessageDialog.new(nil, Gtk::Dialog::MODAL, 
+      Gtk::MessageDialog::QUESTION, Gtk::MessageDialog::BUTTONS_OK_CANCEL,
+      _("Never show me"))
+		  msg.show_all()
+      if msg2.run == Gtk::Dialog::RESPONSE_OK 
+        consts_array = Array.new
+        consts_dict = {"WIZARD" => WIZARD}
+        new_value_wizard = false
+        f = File.open("../constants.rb", "w")
+        f.write("WIZARD=#{new_value_wizard}")
+        f.close
+      end	
+      msg2.destroy
+      msg.destroy
+    end
+  end
 
   def treeView_create
     column   = Gtk::TreeViewColumn.new(_("Category"), @renderer,  :text => INDEX)
