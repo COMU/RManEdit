@@ -149,38 +149,25 @@ class Utils
   def preview(tab, manview)
 
     current_page = tab.get_nth_page(tab.page).child
-    if current_page.saved == false
-      msg = Gtk::MessageDialog.new(nil,
-      Gtk::Dialog::DESTROY_WITH_PARENT, 
-      Gtk::MessageDialog::INFO, 
-      Gtk::MessageDialog::BUTTONS_OK,
-      _("If you want to view file, you must save it"))
-      msg.show_all()
-      if msg.run == Gtk::Dialog::RESPONSE_OK 
-        msg.destroy
-      end
-        return
-      end
-      # dosya kayitli ise
-      content = current_page.buffer.text
-      file = Tempfile.new('foo')
-      file.write(content)
-      file.rewind
-      file.read
-      fm = FileMagic.new      
-      output = IO.popen("man2html #{file.path}")
-      str = output.readlines
-      i = 5
-      content = str[1]+str[2]+str[3]
-      content += "<meta http-equiv=\"Content-Type\"" 
-      content += "content=\"text/html;charset=UTF-8\"></HEAD><BODY>"
-      while i< str.length do
-          content = content + str[i]
-          i = i + 1
-      end
-      manview.load_string(content,"text/html", "UTF-8", "file://home")   
-      file.close
-      file.unlink 
+    content = current_page.buffer.text
+    file = Tempfile.new('foo')
+    file.write(content)
+    file.rewind
+    file.read
+    fm = FileMagic.new      
+    output = IO.popen("man2html #{file.path}")
+    str = output.readlines
+    i = 5
+    content = str[1]+str[2]+str[3]
+    content += "<meta http-equiv=\"Content-Type\"" 
+    content += "content=\"text/html;charset=UTF-8\"></HEAD><BODY>"
+    while i< str.length do
+      content = content + str[i]
+      i = i + 1
+    end
+    manview.load_string(content,"text/html", "UTF-8", "file://home")   
+    file.close
+    file.unlink 
   end
 
   def open_new_file(tab)
