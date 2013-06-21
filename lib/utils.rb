@@ -39,8 +39,9 @@ class Utils
  
   def lang_choice(tab,lang)
 
-    f = File.open("/home/#{ENV["USER"]}/.config/rmanedit/lang.rb","w")
-    f.write("LANGUAGE=\"#{lang}\"")
+    text = "WIZARD=#{WIZARD}"
+    text += "LANGUAGE=\"#{lang}\""
+    f.write(text)
     f.close
 
     msg = Gtk::MessageDialog.new(nil,

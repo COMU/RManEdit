@@ -5,19 +5,22 @@ require 'webkit'
 require 'filemagic'
 require 'zlib'
 require 'zip/zip'
-require '~/.config/rmanedit/lang'
+#require '~/.config/rmanedit/lang'
 require 'rubygems'
-#require 'install'
-require '../constants'
-require 'utils'
-require 'textView'
-require 'add_remove_tab'
+load '../constants'
+require '../lib/utils'
+require '../lib/textView'
+require '../lib/add_remove_tab'
 
 class Editor 
 
   include GetText
   bindtextdomain("rmanedit")
-  GetText.set_locale_all(LANGUAGE)
+  if LANGUAGE == "empty"
+    GetText.set_locale_all(ENV['LANG'].split("_").first)
+  else 
+    GetText.set_locale_all(LANGUAGE)
+  end
   INDEX = 0
   attr_accessor :data
 
@@ -95,8 +98,10 @@ class Editor
         consts_array = Array.new
         consts_dict = {"WIZARD" => WIZARD}
         new_value_wizard = false
-        f = File.open("../constants.rb", "w")
-        f.write("WIZARD=#{new_value_wizard}")
+        f = File.open("../constants", "w")
+        text = "WIZARD=#{new_value_wizard}\n"
+        text += "LANGUAGE=\"#{LANGUAGE}\""
+        f.write(text)
         f.close
       end	
       msg2.destroy

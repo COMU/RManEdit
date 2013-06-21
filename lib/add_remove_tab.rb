@@ -1,7 +1,7 @@
 require 'gtk2'
 require 'gettext'
-require 'utils'
-require 'textView'
+require './utils'
+require './textView'
 
 class AddRemoveTab
 
