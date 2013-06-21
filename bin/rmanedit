@@ -5,17 +5,24 @@ require 'webkit'
 require 'filemagic'
 require 'zlib'
 require 'zip/zip'
-#require '~/.config/rmanedit/lang'
 require 'rubygems'
-load '../constants'
-require '../lib/utils'
-require '../lib/textView'
-require '../lib/add_remove_tab'
+require 'utils'
+require 'textView'
+require 'add_remove_tab'
 
 class Editor 
 
   include GetText
   bindtextdomain("rmanedit")
+  if not File::directory?("~/.config/rmanedit")
+    `mkdir ~/.config/rmanedit`
+    f = File.open("/home/ebru/.config/rmanedit/constants", "w")
+    text = "WIZARD=true\n"
+    text += "LANGUAGE=\"#{}\""
+    f.write(text)
+    f.close    
+  end
+  load '~/.config/rmanedit/constants'
   if LANGUAGE == "empty"
     GetText.set_locale_all(ENV['LANG'].split("_").first)
   else 
@@ -95,10 +102,8 @@ class Editor
       _("Never show me"))
 		  msg.show_all()
       if msg2.run == Gtk::Dialog::RESPONSE_OK 
-        consts_array = Array.new
-        consts_dict = {"WIZARD" => WIZARD}
         new_value_wizard = false
-        f = File.open("../constants", "w")
+        f = File.open("#{ENV['HOME']}/constants", "w")
         text = "WIZARD=#{new_value_wizard}\n"
         text += "LANGUAGE=\"#{LANGUAGE}\""
         f.write(text)
@@ -272,11 +277,7 @@ class Editor
      removetab.signal_connect("activate"){o=AddRemoveTab.new; 
      o.remove_tab(@tab); @win.show_all}
      # wizard
-		 usewizard_item.signal_connect("activate"){show_wizard; 
-  	 consts_array = Array.new; consts_dict = {"WIZARD" => WIZARD};
-		 new_value_wizard = true; f = File.open("../constants.rb", "w")
-		 f.write("WIZARD=#{new_value_wizard}");
-	   f.close}
+		 usewizard_item.signal_connect("activate"){show_wizard}
 		 aboutwizard_item.signal_connect("activate"){about_wizard()}
      # settings
      en.signal_connect("activate"){o=Utils.new; 
