@@ -14,15 +14,17 @@ class Editor
 
   include GetText
   bindtextdomain("rmanedit")
-  if not File::directory?("~/.config/rmanedit")
+  if not File::directory?("/home/ebru/.config/rmanedit")
     `mkdir ~/.config/rmanedit`
     f = File.open("/home/ebru/.config/rmanedit/constants", "w")
     text = "WIZARD=true\n"
-    text += "LANGUAGE=\"#{}\""
+    text += "LANGUAGE=\"empty\""
     f.write(text)
     f.close    
   end
-  load '~/.config/rmanedit/constants'
+ # x = ENV['HOME']
+#  x += ".config/rmanedit/constants"
+  load '/home/ebru/.config/rmanedit/constants'
   if LANGUAGE == "empty"
     GetText.set_locale_all(ENV['LANG'].split("_").first)
   else 
@@ -103,7 +105,7 @@ class Editor
 		  msg.show_all()
       if msg2.run == Gtk::Dialog::RESPONSE_OK 
         new_value_wizard = false
-        f = File.open("#{ENV['HOME']}/constants", "w")
+        f = File.open("#{ENV['HOME']}/.config/rmanedit/constants", "w")
         text = "WIZARD=#{new_value_wizard}\n"
         text += "LANGUAGE=\"#{LANGUAGE}\""
         f.write(text)
