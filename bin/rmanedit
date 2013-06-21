@@ -14,9 +14,10 @@ class Editor
 
   include GetText
   bindtextdomain("rmanedit")
-  if not File::directory?("/home/ebru/.config/rmanedit")
+  
+  if not File::directory?("#{ENV['HOME']}/.config/rmanedit")
     `mkdir ~/.config/rmanedit`
-    f = File.open("/home/ebru/.config/rmanedit/constants", "w")
+    f = File.open("#{ENV['HOME']}/.config/rmanedit/constants", "w")
     text = "WIZARD=true\n"
     text += "LANGUAGE=\"empty\""
     f.write(text)
@@ -24,7 +25,7 @@ class Editor
   end
  # x = ENV['HOME']
 #  x += ".config/rmanedit/constants"
-  load '/home/ebru/.config/rmanedit/constants'
+  load "#{ENV['HOME']}/.config/rmanedit/constants"
   if LANGUAGE == "empty"
     GetText.set_locale_all(ENV['LANG'].split("_").first)
   else 
