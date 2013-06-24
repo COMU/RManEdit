@@ -8,4 +8,8 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/COMU/RManEdit"
   s.files = Dir["bin/rmanedit","lib/install", "lib/utils.rb", "lib/textView.rb", "lib/add_remove_tab.rb", "images/*", "constants"]
   s.require_paths = ["lib"]
+  s.add_dependency('rubyzip')
+  s.add_dependency('ruby-filemagic')
+  s.add_dependency('gtk2')
+  s.add_dependency('gtk-webkit-ruby', '0.0.5')
 end
