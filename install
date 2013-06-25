@@ -6,7 +6,6 @@ begin
   if not File::directory?("~/.config/rmanedit")
     `mkdir ~/.config/rmanedit`
   end
-#  `cp lang.rb ~/.config/rmanedit`
   `sudo mkdir /etc/rmanedit`
   `sudo cp constants /etc/rmanedit`
   `sudo chmod +x bin/rmanedit`
