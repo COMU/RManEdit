@@ -42,7 +42,7 @@ class AddRemoveTab
     tab.append_page(swin,
     Gtk::Label.new("Untitled Document " + pagenum)) 
     if empty_file
-       editor.buffer.text = ".\\\" DO NOT MODIFY THIS FILE!\n .TH \"your_command_name\" \"#{time.strftime("%B")} #{time.year}\" \"your_description\""
+       editor.buffer.text = ".TH your_command_name \"1\" \"#{time.strftime("%B")} #{time.year}\" \"your_description\""
     end
     tab.signal_connect("switch-page") do |a, b, current_page|
       buf = tab.get_nth_page(current_page).child.buffer
