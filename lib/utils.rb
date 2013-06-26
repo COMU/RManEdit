@@ -279,16 +279,6 @@ class Utils
       dialogue.run
       dialogue.destroy
     end
-    while first
-      start.forward_char
-      first, last = start.forward_search(find, Gtk::TextIter::SEARCH_TEXT_ONLY, nil)
-      start = first
-      mark = current_page.buffer.create_mark(nil, first, false)
-      current_page.scroll_mark_onscreen(mark)
-      current_page.buffer.delete_mark(mark)
-      current_page.buffer.select_range(first, last)
-    end
-     first = last = nil
   end
   
   # html dosyasina donusturme  

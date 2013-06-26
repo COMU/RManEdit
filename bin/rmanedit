@@ -149,7 +149,7 @@ class Editor
     end
     @treeview.model = store
     @treeview.signal_connect("cursor-changed"){selection = @treeview.selection;
-    iter = selection.selected; o = Utils.new; o.label_find(iter[0],@tab)}     
+    iter = selection.selected; o = Utils.new; o.label_find(iter[0], @tab)}     
   end
    
   def man_view
