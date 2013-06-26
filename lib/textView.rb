@@ -1,3 +1,4 @@
+#encoding: UTF-8
 """
 Copyright (C) 2013 - Ebru Akagündüz <ebru.akagunduz@gmail.com>
 

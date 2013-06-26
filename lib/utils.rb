@@ -1,3 +1,4 @@
+#encoding: UTF-8
 """
 Copyright (C) 2013 - Ebru Akagündüz <ebru.akagunduz@gmail.com>
 
@@ -138,14 +139,14 @@ class Utils
 
   def open_new_empty_file(tab, treeview, view_but) 
     o = AddRemoveTab.new
-    o.new_tab(tab, treeview, view_but)
+    o.new_tab(tab, treeview, view_but, true)
   end
 
   # kayitli bir dosyayi acma
   def open_file(tab, treeview, view_but) 
 
     o = AddRemoveTab.new
-    o.new_tab(tab, treeview, view_but)
+    o.new_tab(tab, treeview, view_but, false)
     open_new_file(tab)
   end 
 

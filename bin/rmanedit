@@ -1,3 +1,5 @@
+#!/usr/bin/ruby
+#encoding: UTF-8
 """
 Copyright (C) 2013 - Ebru Akagündüz <ebru.akagunduz@gmail.com>
 
@@ -15,11 +17,8 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>
-
 """
 
-#!/usr/bin/ruby
-#encoding: UTF-8
 require 'gtk2'
 require 'webkit'
 require 'filemagic'
@@ -43,8 +42,6 @@ class Editor
     f.write(text)
     f.close    
   end
- # x = ENV['HOME']
-#  x += ".config/rmanedit/constants"
   load "#{ENV['HOME']}/.config/rmanedit/constants"
   if LANGUAGE == "empty"
     GetText.set_locale_all(ENV['LANG'].split("_").first)
@@ -213,7 +210,7 @@ class Editor
   # yeni tab icin parametreleri gonderme  
   def tab_param_sender
     o = AddRemoveTab.new
-    o.new_tab(@tab, @treeview, @view_but)
+    o.new_tab(@tab, @treeview, @view_but, true)
     return @tab
   end
 
