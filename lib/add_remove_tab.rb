@@ -46,7 +46,6 @@ class AddRemoveTab
     end
     tab.signal_connect("switch-page") do |a, b, current_page|
       buf = tab.get_nth_page(current_page).child.buffer
-#      buf.text = ".\\\" DO NOT MODIFY THIS FILE!\n .TH \"your_command_name\" \"#{time.strftime("%B")} #{time.year}\" \"your_description\""
       buf.signal_connect("changed"){o=Utils.new;
       o.text_changed(tab);
       # sayfa degisip textin degisme durumu
