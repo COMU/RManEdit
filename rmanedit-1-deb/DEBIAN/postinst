@@ -1,0 +1,11 @@
+#!/bin/sh
+
+sudo gem install gtk2
+sudo gem install ruby-filemagic
+sudo gem install -v 0.0.5 gtk-webkit-ruby
+sudo gem install rubyzip
+
+sudo gem build /rmanedit.gemspec
+sudo gem install RManEdit-1.0.0.gem
+sudo chmod +x /install
+sudo /install
